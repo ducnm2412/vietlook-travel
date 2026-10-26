@@ -194,7 +194,7 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
       <div className={`container-x relative flex h-[76px] items-center justify-between gap-4 ${overlay ? "border-b border-white/30" : ""}`}>
         <Link href="/" className="shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={`${SITE.logo}&w=280`} alt={SITE.shortName} className="h-12 w-auto md:h-14" />
+          <img src={`${SITE.logo}&w=260`} alt={SITE.shortName} className="h-12 w-auto md:h-14" />
         </Link>
 
         <nav className="hidden lg:block">

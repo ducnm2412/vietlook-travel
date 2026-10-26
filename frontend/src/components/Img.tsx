@@ -8,7 +8,8 @@ const NEXT_WIDTHS = [256, 384, 640, 750, 828, 1080, 1200, 1920];
 // Ảnh CDN của vietlooktravel.com nhận ?w= để trả đúng kích thước (format=auto → webp/avif);
 // ảnh wp-content gốc là jpg/png nặng nên đi qua /_next/image để được resize + webp/avif
 function sized(src: string, width: number) {
-  if (src.startsWith("https://vietlooktravel.com/wp-content/")) {
+  // Ảnh trong /images/ cũng đi qua /_next/image để nhận avif (nhẹ hơn webp ~40% cùng chất lượng)
+  if (src.startsWith("https://vietlooktravel.com/wp-content/") || src.startsWith("/images/")) {
     const w = NEXT_WIDTHS.find((n) => n >= width) ?? 1920;
     return `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=75`;
   }
