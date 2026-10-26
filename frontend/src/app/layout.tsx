@@ -76,6 +76,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     ["/tours?q=food", dests.find((d) => d.slug === "ha-noi-tour")?.image ?? null],
     ["/tours?q=adventure", dests.find((d) => d.slug === "cao-bang-tour")?.image ?? null],
     ["/tours?q=honeymoon", dests.find((d) => d.slug === "phu-quoc-tour")?.image ?? null],
+    ["/tours?q=private", dests.find((d) => d.slug === "ha-noi-tour")?.image ?? null],
+    ["/tours?q=photo", "https://vietlooktravel.com/wp-content/uploads/2025/12/ao-dai-selection-and-preparation.jpg"],
     ["/tours?q=luxury", "https://vietlooktravel.com/wp-content/uploads/2026/01/paradise-delight-ha-long-bay-cruise.jpg"],
     ["/tours?minDays=2&maxDays=5", dests.find((d) => d.slug === "ninh-binh-tour")?.image ?? null],
     ["/tours?minDays=6&maxDays=10", dests.find((d) => d.slug === "da-nang-tour")?.image ?? null],

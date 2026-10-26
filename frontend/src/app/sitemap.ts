@@ -7,7 +7,7 @@ import { CAR_CITIES, cityPath } from "@/components/car/cities";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [tours, cars, fastTrack, posts] = await Promise.all([getTours(), getTours("?kind=car"), getTours("?kind=fast-track"), getPosts("?limit=1000")]);
   const now = new Date();
-  const statics = ["", "/tours", "/tailor-made", "/car-rental", "/visa", "/news", "/about", "/contact", "/partners", ...CAR_CITIES.map((c) => cityPath(c.slug))].map((p) => ({
+  const statics = ["", "/tours", "/tailor-made", "/car-rental", "/visa", "/news", "/about", "/contact", "/partners", "/privacy-policy", ...CAR_CITIES.map((c) => cityPath(c.slug))].map((p) => ({
     url: `${SITE_URL}${p}`,
     lastModified: now,
     changeFrequency: "weekly" as const,

@@ -108,6 +108,11 @@ const MENU: MenuItem[] = [
           { label: "Relaxed / Slow Travel", zh: "慢旅行", href: "/tailor-made#senior" },
           { label: "Honeymoon trips", zh: "蜜月游", href: "/tours?q=honeymoon" },
           { label: "Luxury packages", zh: "豪华套餐", href: "/tours?q=luxury" },
+          { label: "Hand-picked tours", zh: "精选线路", href: "/tours?q=private" },
+          { label: "Classic tours", zh: "经典线路", href: "/tours?theme=vietnam-tours" },
+          { label: "Culture trips", zh: "文化之旅", href: "/tours?theme=travel-experience" },
+          { label: "Photography tours", zh: "摄影之旅", href: "/tours?q=photo" },
+          { label: "Tailor-made trips", zh: "私人定制", href: "/tailor-made" },
         ],
       },
       {
@@ -141,7 +146,19 @@ const MENU: MenuItem[] = [
   },
   { key: "nav.visa", href: "/visa" },
   { key: "nav.news", href: "/news" },
-  { key: "nav.about", href: "/about" },
+  {
+    key: "nav.about",
+    href: "/about",
+    mega: [
+      {
+        title: "About us", zh: "关于我们",
+        links: [
+          { label: "About Vietlook Travel", zh: "关于 Vietlook Travel", href: "/about" },
+          { label: "Privacy policy", zh: "隐私政策", href: "/privacy-policy" },
+        ],
+      },
+    ],
+  },
 ];
 
 // Ô ảnh trong dropdown: ảnh nền tối, tên nằm giữa
@@ -207,7 +224,7 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
                 {item.panels && item.mega && (() => {
                   const p = item.panels[panel] ?? item.panels[0];
                   return (
-                    <div className="invisible absolute right-0 top-full z-50 flex w-[min(1100px,calc(100vw-2rem))] bg-white normal-case tracking-normal text-ink opacity-0 shadow-2xl transition group-hover:visible group-hover:opacity-100">
+                    <div className="invisible absolute right-0 top-full z-50 flex w-[min(1100px,calc(100vw-2rem))] bg-white normal-case tracking-normal text-ink -translate-y-2 opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
                       <div className="w-72 shrink-0 border-r border-black/10 py-4">
                         {item.panels.map((x, i) => (
                           <button key={x.title} type="button" onMouseEnter={() => setPanel(i)} onFocus={() => setPanel(i)} onClick={() => setPanel(i)} className={`flex w-full items-center justify-between gap-3 whitespace-normal border-b border-black/5 px-5 py-3.5 text-left text-sm font-bold uppercase tracking-wide transition ${i === panel ? "text-brand" : "text-ink/70 hover:text-brand"}`}>
@@ -228,7 +245,7 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
                   const all: MenuLink = { label: zh ? "查看全部" : "View all", href: item.href };
                   const extra = item.extra != null ? item.mega[item.extra] : null;
                   return (
-                    <div className="invisible absolute right-0 top-full z-50 w-[min(900px,calc(100vw-2rem))] bg-white p-1.5 normal-case tracking-normal text-ink opacity-0 shadow-2xl transition group-hover:visible group-hover:opacity-100">
+                    <div className="invisible absolute right-0 top-full z-50 w-[min(900px,calc(100vw-2rem))] bg-white p-1.5 normal-case tracking-normal text-ink -translate-y-2 opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
                       <div className="grid grid-cols-4 gap-1.5">
                         {item.tiles.map((href) => {
                           const l = links.find((x) => x.href === href) ?? (href === item.href ? all : null);
@@ -252,6 +269,14 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
                     </div>
                   );
                 })()}
+                {/* Dropdown dạng danh sách (mục có menu con nhưng không có lưới ảnh) */}
+                {item.mega && !item.panels && !item.tiles && (
+                  <ul className="invisible absolute top-full z-50 min-w-56 bg-white py-2 text-sm normal-case tracking-normal text-ink -translate-y-2 opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                    {item.mega.flatMap((c) => c.links).map((l) => (
+                      <li key={l.href}><Link href={l.href} className="block px-5 py-2.5 font-semibold hover:bg-brand-light hover:text-brand">{zh && l.zh ? l.zh : l.label}</Link></li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>

@@ -29,6 +29,7 @@ const SERVICES: Item[] = [
 
 const COMPANY: Item[] = [
   { en: "About us", zh: "关于我们", href: "/about" },
+  { en: "Privacy policy", zh: "隐私政策", href: "/privacy-policy" },
   { en: "Guest reviews", zh: "客人评价", href: "/#reviews" },
   { en: "News & blog", zh: "新闻与博客", href: "/news" },
   { en: "Contact", zh: "联系我们", href: "/contact" },
