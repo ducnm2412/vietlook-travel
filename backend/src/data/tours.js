@@ -2,6 +2,8 @@
 import { readFileSync } from 'node:fs';
 import { PRICE_FROM, estimatePrice } from './prices.js';
 
+// Tên tiếng Anh cho các tour site gốc đặt tên tiếng Việt (dịch theo slug)
+const TITLES_EN = JSON.parse(readFileSync(new URL('./titles-en.json', import.meta.url), 'utf8'));
 // Tên tour tiếng Trung (dịch theo slug)
 const TITLES_ZH = JSON.parse(readFileSync(new URL('./titles-zh.json', import.meta.url), 'utf8'));
 const POSTS_ZH = JSON.parse(readFileSync(new URL('./posts-zh.json', import.meta.url), 'utf8'));
@@ -54,7 +56,7 @@ const all = raw.tours.map((t) => {
   const region = DEST[destinations[0]]?.[2] || null;
   const theme = Object.keys(THEMES).find((k) => t.categories.includes(k)) || (t.kind === 'tour' && !region ? 'vietnam-tours' : null);
   const real = PRICE_FROM[t.slug];
-  return { ...t, titleZh: TITLES_ZH[t.slug] ?? null, summaryZh: CONTENT_ZH[t.slug]?.summaryZh ?? null, contentHtmlZh: CONTENT_ZH[t.slug]?.contentHtmlZh ?? null, destinations, region, theme, priceFrom: real ?? estimatePrice(t), priceEstimated: real == null };
+  return { ...t, title: TITLES_EN[t.slug] ?? t.title, titleZh: TITLES_ZH[t.slug] ?? null, summaryZh: CONTENT_ZH[t.slug]?.summaryZh ?? null, contentHtmlZh: CONTENT_ZH[t.slug]?.contentHtmlZh ?? null, destinations, region, theme, priceFrom: real ?? estimatePrice(t), priceEstimated: real == null };
 });
 
 export const tours = all.filter((t) => t.kind === 'tour');
