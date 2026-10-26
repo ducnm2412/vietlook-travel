@@ -173,7 +173,7 @@ export default function TourFilter({ tours, destinations, themes, initial, initi
         <label className="mb-3 flex items-center gap-3 rounded-xl bg-white px-4 py-2.5">
           <FontAwesomeIcon icon={faMagnifyingGlass} className="text-muted" />
           <span className="flex-1">
-            <span className="block text-xs font-semibold">{zh ? "关键词" : "Keyword"}</span>
+            <span className="block text-xs font-semibold">{zh ? "搜索" : "Search"}</span>
             <input value={q} onChange={(e) => on(setQ)(e.target.value)} placeholder={zh ? "线路、地点…" : "Tour, place…"} className="w-full bg-transparent text-sm text-muted outline-none" />
           </span>
         </label>
