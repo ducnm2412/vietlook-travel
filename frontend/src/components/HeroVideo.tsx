@@ -10,7 +10,7 @@ import { T } from "@/lib/i18n";
 // Hero toàn màn hình với video nền, bố cục theo auroratravel.asia
 export default function HeroVideo({ destinations }: { destinations: Destination[] }) {
   return (
-    <section className="relative isolate flex min-h-[760px] flex-col overflow-hidden md:h-[115vh]">
+    <section className="relative isolate flex min-h-[760px] flex-col overflow-hidden md:min-h-[115vh]">
       <HeroBackground />
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/60 via-black/30 to-black/10" />
       <div className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-black/60 to-transparent" />
@@ -30,7 +30,7 @@ export default function HeroVideo({ destinations }: { destinations: Destination[
             <T k="hero.car" />
           </Link>
         </div>
-        <div className="mt-8 md:mt-14">
+        <div className="relative z-10 mt-8 md:mt-14">
           <HeroSearch destinations={destinations} styles={TOUR_THEMES.map(({ slug, name, zh }) => ({ slug, name, zh }))} />
         </div>
       </div>
