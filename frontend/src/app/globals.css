@@ -1,0 +1,344 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-brand: #0e4d4a;
+  --color-brand-dark: #08312f;
+  --color-brand-light: #e7f1ef;
+  --color-accent: #c8943f;
+  --color-accent-dark: #a8772a;
+  --color-ink: #1d2b2a;
+  --color-muted: #5f6f6d;
+  --color-sand: #f7f3ec;
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+  --font-script: var(--font-great-vibes), cursive;
+  --font-hand: var(--font-caveat), "Kaiti SC", "STKaiti", cursive;
+  --font-card: var(--font-poppins), var(--font-inter), sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --color-sign: #ffc20e;
+  --color-tarmac: #15191c;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+@layer components {
+.container-x {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+@media (min-width: 768px) {
+  .container-x {
+    padding-inline: 24px;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn-accent {
+  background: var(--color-accent);
+  color: #fff;
+}
+.btn-accent:hover {
+  background: var(--color-accent-dark);
+}
+.btn-brand {
+  background: var(--color-brand);
+  color: #fff;
+}
+.btn-brand:hover {
+  background: var(--color-brand-dark);
+}
+.btn-outline {
+  border: 1.5px solid currentColor;
+}
+
+.field {
+  width: 100%;
+  border: 1px solid #d5dedc;
+  border-radius: 0.6rem;
+  padding: 0.7rem 0.9rem;
+  background: #fff;
+  font-size: 0.95rem;
+}
+.field:focus {
+  outline: 2px solid var(--color-brand);
+  outline-offset: -1px;
+}
+}
+
+/* Ảnh nền đứng yên khi cuộn: chỉ bật trên máy có chuột (iOS/Android không hỗ trợ background-attachment: fixed) */
+@media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+  .parallax-bg {
+    background-attachment: fixed;
+  }
+}
+
+/* Hero trang chủ: chữ/nút hiện lần lượt khi mở trang, ảnh nền phóng chậm */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 28px, 0);
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+@keyframes ken-burns {
+  from {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  to {
+    -webkit-transform: scale(1.12);
+    transform: scale(1.12);
+  }
+}
+.hero-in > * {
+  animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-in > *:nth-child(2) { animation-delay: 0.15s; }
+.hero-in > *:nth-child(3) { animation-delay: 0.35s; }
+.ken-burns {
+  animation: ken-burns 18s ease-out both;
+}
+
+/* Thẻ trong lưới hiện lần lượt khi section được cuộn tới */
+.reveal .stagger > * {
+  opacity: 0;
+  -webkit-transform: translate3d(0, 32px, 0);
+  transform: translate3d(0, 32px, 0);
+}
+.reveal.reveal-in .stagger > * {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.reveal.reveal-in .stagger > *:nth-child(2) { animation-delay: 0.08s; }
+.reveal.reveal-in .stagger > *:nth-child(3) { animation-delay: 0.16s; }
+.reveal.reveal-in .stagger > *:nth-child(4) { animation-delay: 0.24s; }
+.reveal.reveal-in .stagger > *:nth-child(5) { animation-delay: 0.32s; }
+.reveal.reveal-in .stagger > *:nth-child(6) { animation-delay: 0.4s; }
+.reveal.reveal-in .stagger > *:nth-child(n + 7) { animation-delay: 0.48s; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-in > *,
+  .ken-burns,
+  .reveal .stagger > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Hiện dần khi cuộn tới (ScrollReveal) */
+.reveal {
+  opacity: 0;
+  -webkit-transform: translate3d(0, 48px, 0);
+  transform: translate3d(0, 48px, 0);
+  transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.reveal-in {
+  opacity: 1;
+  -webkit-transform: none;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Sóng chuyển động ở đáy hero trang chủ */
+.hero-waves use {
+  animation: hero-wave-move 18s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+}
+.hero-waves use:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 10s;
+}
+.hero-waves use:nth-child(2) {
+  animation-delay: -4s;
+  animation-duration: 14s;
+}
+.hero-waves use:nth-child(3) {
+  animation-delay: -6s;
+  animation-duration: 22s;
+}
+@keyframes hero-wave-move {
+  0% {
+    transform: translate3d(-44px, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-waves use {
+    animation: none;
+  }
+}
+
+/* Nội dung HTML lấy từ WordPress */
+.tour-content {
+  font-size: 16px;
+  line-height: 1.75;
+  color: #2a3837;
+}
+.tour-content p,
+.tour-content div,
+.tour-content ul,
+.tour-content ol {
+  margin-bottom: 0.9rem;
+}
+.tour-content h2,
+.tour-content h3,
+.tour-content h4 {
+  font-family: var(--font-playfair), serif;
+  font-weight: 700;
+  color: var(--color-brand);
+  margin: 1.6rem 0 0.7rem;
+  font-size: 1.35rem;
+}
+.tour-content ul {
+  list-style: disc;
+  padding-left: 1.4rem;
+}
+.tour-content ol {
+  list-style: decimal;
+  padding-left: 1.4rem;
+}
+.tour-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  margin: 1rem auto;
+}
+.tour-content a {
+  color: var(--color-brand);
+  text-decoration: underline;
+}
+.tour-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+.tour-content td,
+.tour-content th {
+  border: 1px solid #d5dedc;
+  padding: 0.5rem;
+}
+.tour-content iframe {
+  max-width: 100%;
+  border-radius: 1rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: var(--color-ink);
+}
+
+/* Trang chi tiết tour: trình bày nội dung gốc gọn, dễ đọc */
+.tour-content { font-size: 15.5px; color: #3a4847; overflow-wrap: break-word; }
+.tour-content h2,
+.tour-content h3,
+.tour-content h4 {
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 1.2rem;
+  color: var(--color-ink);
+  margin: 2.2rem 0 0.8rem;
+  padding-left: 0.85rem;
+  border-left: 4px solid var(--color-accent);
+  line-height: 1.35;
+}
+.tour-content > :first-child { margin-top: 0; }
+.tour-content ul { list-style: none; padding-left: 0; }
+.tour-content ul li { position: relative; padding-left: 1.6rem; margin-bottom: 0.35rem; }
+.tour-content ul li::before {
+  content: "";
+  position: absolute; left: 0.2rem; top: 0.55em;
+  width: 0.7rem; height: 0.4rem;
+  border-left: 2px solid var(--color-brand); border-bottom: 2px solid var(--color-brand);
+  transform: rotate(-45deg);
+}
+.tour-content table {
+  display: table; width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; overflow: hidden;
+  border-radius: 0; border: 1px solid #d9d3c7; font-size: 0.9rem;
+}
+.tour-content td, .tour-content th { border: 0; border-bottom: 1px solid #eee9e0; padding: 0.6rem 0.5rem; white-space: normal; overflow-wrap: break-word; hyphens: auto; vertical-align: top; font-size: 0.85rem; }
+.tour-content td + td, .tour-content th + th { border-left: 1px solid #e6e1d8; }
+.tour-content tr:last-child > td { border-bottom: 0; }
+/* Chỉ hàng đầu của bảng là tiêu đề (tránh tô màu cả hàng đầu của tbody khi đã có thead) */
+.tour-content table > :first-child > tr:first-child > *, .tour-content th { background: var(--color-sand); font-weight: 600; color: var(--color-ink); }
+/* Canh thẳng cột: bỏ căn giữa/inline từ WordPress, mọi ô căn trái và giữa theo chiều dọc */
+.tour-content td, .tour-content th, .tour-content td *, .tour-content th * { text-align: left !important; }
+.tour-content td, .tour-content th { vertical-align: middle; padding: 0.7rem 0.9rem; }
+.tour-content td > p, .tour-content th > p { margin: 0; }
+.tour-content img { max-height: 420px; width: auto; object-fit: cover; }
+.tour-content.hide-media img, .tour-content.hide-media figure { display: none; }
+/* Bỏ độ rộng cố định từ WordPress để bảng luôn vừa khung */
+.tour-content table { width: 100% !important; height: auto !important; }
+.tour-content td, .tour-content th, .tour-content col { width: auto !important; height: auto !important; }
+/* Mobile: bảng nhiều cột không bóp chữ nữa mà cuộn ngang, cột đầu (tên dòng) ghim bên trái */
+@media (max-width: 640px) {
+  .tour-content table { display: block; overflow-x: auto; table-layout: auto; -webkit-overflow-scrolling: touch; }
+  .tour-content td, .tour-content th { padding: 0.55rem 0.75rem; font-size: 0.85rem; min-width: 7.5rem; max-width: 12rem; overflow-wrap: normal; hyphens: none; }
+  .tour-content tr > :first-child { position: sticky; left: 0; z-index: 1; min-width: 6rem; background: #fff; box-shadow: 1px 0 0 #e6e1d8; }
+  .tour-content table > :first-child > tr:first-child > :first-child { background: var(--color-sand); }
+}
+
+/* Thanh trượt giá 2 đầu: chồng 2 input range lên nhau, chỉ nút kéo nhận thao tác */
+.dual-range input[type="range"] {
+  position: absolute; inset: 0; width: 100%; margin: 0;
+  background: transparent; pointer-events: none;
+  -webkit-appearance: none; appearance: none;
+}
+.dual-range input[type="range"]::-webkit-slider-runnable-track { background: transparent; }
+.dual-range input[type="range"]::-moz-range-track { background: transparent; }
+.dual-range input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; pointer-events: auto; cursor: pointer;
+  width: 18px; height: 18px; margin-top: 1px; border-radius: 9999px;
+  background: #fff; border: 2px solid var(--color-brand); box-shadow: 0 1px 4px rgb(0 0 0 / 0.15);
+}
+.dual-range input[type="range"]::-moz-range-thumb {
+  pointer-events: auto; cursor: pointer;
+  width: 14px; height: 14px; border-radius: 9999px;
+  background: #fff; border: 2px solid var(--color-brand); box-shadow: 0 1px 4px rgb(0 0 0 / 0.15);
+}
+
+/* Thanh tiến độ cuộn ở mép trên (ScrollReveal) */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-brand), var(--color-accent));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
