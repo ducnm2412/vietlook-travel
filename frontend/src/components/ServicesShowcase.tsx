@@ -31,7 +31,7 @@ export default function ServicesShowcase() {
               <FontAwesomeIcon icon={faChevronRight} className="text-sm text-white/80 transition group-hover:translate-x-1 group-hover:text-accent" />
             </div>
             <div className="overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/20">
-              <Img src={s.image} alt="" className="aspect-[4/5] transition duration-700 group-hover:scale-105" />
+              <Img src={s.image} alt="" width={680} className="aspect-[4/5] transition duration-700 group-hover:scale-105" />
             </div>
           </Link>
         ))}

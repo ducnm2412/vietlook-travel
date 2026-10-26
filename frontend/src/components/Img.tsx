@@ -2,8 +2,16 @@
 
 import { useState } from "react";
 
-// Ảnh CDN của vietlooktravel.com nhận ?w= để trả đúng kích thước (format=auto → webp/avif)
+// Các bề rộng mà bộ tối ưu ảnh của Next chấp nhận (imageSizes + deviceSizes mặc định)
+const NEXT_WIDTHS = [256, 384, 640, 750, 828, 1080, 1200, 1920];
+
+// Ảnh CDN của vietlooktravel.com nhận ?w= để trả đúng kích thước (format=auto → webp/avif);
+// ảnh wp-content gốc là jpg/png nặng nên đi qua /_next/image để được resize + webp/avif
 function sized(src: string, width: number) {
+  if (src.startsWith("https://vietlooktravel.com/wp-content/")) {
+    const w = NEXT_WIDTHS.find((n) => n >= width) ?? 1920;
+    return `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=75`;
+  }
   if (!src.includes("cdn.ngay.net") || /[?&]w=/.test(src)) return src;
   return `${src}${src.includes("?") ? "&" : "?"}w=${width}`;
 }
