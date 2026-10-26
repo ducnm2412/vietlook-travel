@@ -56,12 +56,15 @@ const CAR_CITIES = {
   'da-lat-private-cars': ['Da Lat', '大叻'],
 };
 
+// Sửa lỗi gõ còn sót trong nội dung tiếng Anh của site gốc (VNĐ, SHADULE, "hotel nin")
+const fixEn = (s) => s && s.replace(/VNĐ/gi, 'VND').replace(/SHADULE/g, 'SCHEDULE').replace(/hotel nin /g, 'hotel in ');
+
 const all = raw.tours.map((t) => {
   const destinations = t.categories.filter((c) => DEST[c]);
   const region = DEST[destinations[0]]?.[2] || null;
   const theme = Object.keys(THEMES).find((k) => t.categories.includes(k)) || (t.kind === 'tour' && !region ? 'vietnam-tours' : null);
   const real = PRICE_FROM[t.slug];
-  return { ...t, title: TITLES_EN[t.slug] ?? t.title, summary: CONTENT_EN[t.slug]?.summaryEn ?? t.summary, contentHtml: CONTENT_EN[t.slug]?.contentHtmlEn ?? t.contentHtml, titleZh: TITLES_ZH[t.slug] ?? null, summaryZh: CONTENT_ZH[t.slug]?.summaryZh ?? null, contentHtmlZh: CONTENT_ZH[t.slug]?.contentHtmlZh ?? null, destinations, region, theme, priceFrom: real ?? estimatePrice(t), priceEstimated: real == null };
+  return { ...t, title: TITLES_EN[t.slug] ?? t.title, summary: fixEn(CONTENT_EN[t.slug]?.summaryEn ?? t.summary), contentHtml: fixEn(CONTENT_EN[t.slug]?.contentHtmlEn ?? t.contentHtml), titleZh: TITLES_ZH[t.slug] ?? null, summaryZh: CONTENT_ZH[t.slug]?.summaryZh ?? null, contentHtmlZh: CONTENT_ZH[t.slug]?.contentHtmlZh ?? null, destinations, region, theme, priceFrom: real ?? estimatePrice(t), priceEstimated: real == null };
 });
 
 export const tours = all.filter((t) => t.kind === 'tour');
