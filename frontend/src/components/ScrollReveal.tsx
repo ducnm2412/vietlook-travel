@@ -68,6 +68,8 @@ export default function ScrollReveal() {
       if (el.classList.contains("reveal-in")) return;
       if (!el.classList.contains("reveal") && tops[k] < vh * 0.9) return;
       el.classList.add("reveal");
+      // Hiệu ứng phụ (tiêu đề trượt vào, ảnh mở dần) – bỏ trên máy yếu
+      if (!lite) el.classList.add("reveal-fx");
       // Lưới thẻ có từ 2 phần tử: hiện lần lượt
       if (!lite) el.querySelectorAll<HTMLElement>(".grid").forEach((g) => { if (g.children.length > 1) g.classList.add("stagger"); });
       io.observe(el);

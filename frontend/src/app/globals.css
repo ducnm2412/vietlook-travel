@@ -162,10 +162,33 @@ body {
   -webkit-transform: none;
   transform: none;
 }
+/* Hiệu ứng phụ trong section đang hiện: tiêu đề trượt vào từ trái, ảnh (ngoài lưới thẻ) mở dần từ dưới lên */
+.reveal-fx h2 {
+  opacity: 0;
+  transform: translate3d(-28px, 0, 0);
+  transition: opacity 0.8s ease-out 0.15s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+}
+.reveal-fx img:not(.stagger img) {
+  -webkit-clip-path: inset(0 0 100% 0);
+  clip-path: inset(0 0 100% 0);
+  transition: -webkit-clip-path 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.2s, clip-path 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+}
+.reveal-fx.reveal-in h2 {
+  opacity: 1;
+  transform: none;
+}
+.reveal-fx.reveal-in img:not(.stagger img) {
+  -webkit-clip-path: inset(0 0 0 0);
+  clip-path: inset(0 0 0 0);
+}
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  .reveal,
+  .reveal-fx h2,
+  .reveal-fx img {
     opacity: 1;
     transform: none;
+    -webkit-clip-path: none;
+    clip-path: none;
     transition: none;
   }
 }
