@@ -65,7 +65,7 @@ function GridCard({ t, zh, fav, onFav, theme, place }: { t: Tour; zh: boolean; f
   return (
     <Link href={`/tours/${t.slug}`} className="group block">
       <div className="relative overflow-hidden rounded-lg">
-        <Img src={imgs[i] ?? t.image} alt={t.title} width={600} className="aspect-square transition duration-500 group-hover:scale-105" />
+        <Img src={imgs[i] ?? t.image} alt={t.title} width={440} className="aspect-square transition duration-500 group-hover:scale-105" />
         {badge && <span className={`absolute left-3 top-3 rounded px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${badge.cls}`}>{badge.text}</span>}
         <button type="button" aria-label="Save" onClick={(e) => { e.preventDefault(); onFav(); }}
           className={`absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white text-sm shadow transition ${fav ? "text-red-500" : "text-ink hover:text-red-500"}`}>

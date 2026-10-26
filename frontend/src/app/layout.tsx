@@ -19,7 +19,7 @@ config.autoAddCss = false;
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 // Font chỉ dùng dưới màn hình đầu: không preload để không làm chậm LCP
 const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"], preload: false });
-const script = Great_Vibes({ variable: "--font-great-vibes", weight: "400", subsets: ["latin"] });
+const script = Great_Vibes({ variable: "--font-great-vibes", weight: "400", subsets: ["latin"], preload: false });
 const hand = Caveat({ variable: "--font-caveat", weight: ["500", "600"], subsets: ["latin"], preload: false });
 // Font kiểu biển báo/vé máy bay cho trang visa
 const mono = IBM_Plex_Mono({ variable: "--font-plex-mono", weight: ["500", "700"], subsets: ["latin"], preload: false });

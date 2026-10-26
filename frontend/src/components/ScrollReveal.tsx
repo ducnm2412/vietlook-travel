@@ -59,16 +59,19 @@ export default function ScrollReveal() {
       { rootMargin: "0px 0px -10% 0px", threshold: 0.08 },
     );
 
-    for (const el of els) {
+    // Đọc vị trí của tất cả section trước rồi mới thêm class, tránh mỗi vòng lặp ép trình duyệt tính lại layout
+    const vh = window.innerHeight;
+    const tops = els.map((el) => el.getBoundingClientRect().top);
+    els.forEach((el, k) => {
       // Section đã nằm trong màn hình lúc tải thì không cần hiệu ứng
       // (effect có thể chạy lại – StrictMode, đổi trang – nên section đã gắn .reveal mà chưa hiện vẫn phải được theo dõi tiếp)
-      if (el.classList.contains("reveal-in")) continue;
-      if (!el.classList.contains("reveal") && el.getBoundingClientRect().top < window.innerHeight * 0.9) continue;
+      if (el.classList.contains("reveal-in")) return;
+      if (!el.classList.contains("reveal") && tops[k] < vh * 0.9) return;
       el.classList.add("reveal");
       // Lưới thẻ có từ 2 phần tử: hiện lần lượt
       if (!lite) el.querySelectorAll<HTMLElement>(".grid").forEach((g) => { if (g.children.length > 1) g.classList.add("stagger"); });
       io.observe(el);
-    }
+    });
     return () => io.disconnect();
   }, [pathname]);
 

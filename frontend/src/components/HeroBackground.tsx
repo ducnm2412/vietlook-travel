@@ -30,7 +30,6 @@ export default function HeroBackground() {
         <video
           className={`absolute inset-0 -z-20 h-full w-full object-cover transition-opacity duration-[1500ms] ${done ? "opacity-0" : "opacity-100"}`}
           src="/videos/hero-720.mp4"
-          poster="/videos/hero-poster.webp"
           autoPlay
           muted
           playsInline

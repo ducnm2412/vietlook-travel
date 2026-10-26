@@ -46,7 +46,7 @@ export default function RegionTours({ destinations }: { destinations: Destinatio
           {list.map((d, i) => (
             <Link key={d.slug} href={`/tours?destination=${d.slug}`} className={`group relative block h-64 overflow-hidden rounded-2xl md:h-80 ${wide.includes(i) ? "md:col-span-2" : ""}`}>
               <div className="absolute inset-0">
-                <Img src={d.image} alt={d.name} className="h-full w-full transition duration-700 group-hover:scale-105" />
+                <Img src={d.image} alt={d.name} width={600} className="h-full w-full transition duration-700 group-hover:scale-105" />
               </div>
               <div className="absolute inset-0 bg-black/25 transition group-hover:bg-black/35" />
               <div className="absolute inset-0 grid place-items-center p-4 text-center">
