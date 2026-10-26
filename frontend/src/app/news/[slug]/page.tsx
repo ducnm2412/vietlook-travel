@@ -3,7 +3,7 @@ import Link from "next/link";
 import { clip, pageMeta } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import Img from "@/components/Img";
-import { L, T } from "@/lib/i18n";
+import { L, LHtml, T } from "@/lib/i18n";
 import { getPost, getPosts } from "@/lib/api";
 
 export async function generateMetadata({ params }: PageProps<"/news/[slug]">): Promise<Metadata> {
@@ -32,10 +32,10 @@ export default async function PostPage({ params }: PageProps<"/news/[slug]">) {
         <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-accent">{post.category} · {new Date(post.date).toLocaleDateString("en-GB")}</p>
         <h1 className="mt-2 font-serif text-3xl font-bold md:text-4xl"><L en={post.title} zh={post.titleZh ?? undefined} /></h1>
         {post.image && <Img src={post.image} alt={post.title} className="mt-6 aspect-[16/9] rounded-2xl" />}
-        <div className="tour-content mt-8" dangerouslySetInnerHTML={{ __html: post.contentHtml ?? "" }} />
+        <LHtml className="tour-content mt-8" en={post.contentHtml ?? ""} zh={post.contentHtmlZh} />
       </article>
       <aside className="space-y-4 lg:sticky lg:top-32 lg:h-fit">
-        <p className="font-serif text-xl font-bold">Latest news</p>
+        <p className="font-serif text-xl font-bold"><L en="Latest news" zh="最新资讯" /></p>
         {latest.map((p) => (
           <Link key={p.slug} href={`/news/${p.slug}`} className="group flex gap-3">
             <Img src={p.image} alt={p.title} className="h-16 w-24 shrink-0 rounded-lg" />

@@ -4,9 +4,14 @@ import { PRICE_FROM, estimatePrice } from './prices.js';
 
 // Tên tiếng Anh cho các tour site gốc đặt tên tiếng Việt (dịch theo slug)
 const TITLES_EN = JSON.parse(readFileSync(new URL('./titles-en.json', import.meta.url), 'utf8'));
+// Bản dịch tiếng Anh summary/contentHtml của các tour đó: { slug: { summaryEn, contentHtmlEn } }
+const CONTENT_EN = JSON.parse(readFileSync(new URL('./content-en.json', import.meta.url), 'utf8'));
 // Tên tour tiếng Trung (dịch theo slug)
 const TITLES_ZH = JSON.parse(readFileSync(new URL('./titles-zh.json', import.meta.url), 'utf8'));
 const POSTS_ZH = JSON.parse(readFileSync(new URL('./posts-zh.json', import.meta.url), 'utf8'));
+// Bản dịch tiếng Trung nội dung bài viết: { slug: { excerptZh, contentHtmlZh } } (chưa có file thì bỏ qua)
+const readOpt = (f) => { try { return JSON.parse(readFileSync(new URL(f, import.meta.url), 'utf8')); } catch { return {}; } };
+const POST_CONTENT_ZH = readOpt('./post-content-zh.json');
 // Bài spam (quảng cáo cờ bạc) lọt vào blog site gốc – không hiển thị
 const BLOCKED_POSTS = new Set(['best-online-casinos-australia-top-aussie-gambling-sites-2024']);
 
@@ -56,7 +61,7 @@ const all = raw.tours.map((t) => {
   const region = DEST[destinations[0]]?.[2] || null;
   const theme = Object.keys(THEMES).find((k) => t.categories.includes(k)) || (t.kind === 'tour' && !region ? 'vietnam-tours' : null);
   const real = PRICE_FROM[t.slug];
-  return { ...t, title: TITLES_EN[t.slug] ?? t.title, titleZh: TITLES_ZH[t.slug] ?? null, summaryZh: CONTENT_ZH[t.slug]?.summaryZh ?? null, contentHtmlZh: CONTENT_ZH[t.slug]?.contentHtmlZh ?? null, destinations, region, theme, priceFrom: real ?? estimatePrice(t), priceEstimated: real == null };
+  return { ...t, title: TITLES_EN[t.slug] ?? t.title, summary: CONTENT_EN[t.slug]?.summaryEn ?? t.summary, contentHtml: CONTENT_EN[t.slug]?.contentHtmlEn ?? t.contentHtml, titleZh: TITLES_ZH[t.slug] ?? null, summaryZh: CONTENT_ZH[t.slug]?.summaryZh ?? null, contentHtmlZh: CONTENT_ZH[t.slug]?.contentHtmlZh ?? null, destinations, region, theme, priceFrom: real ?? estimatePrice(t), priceEstimated: real == null };
 });
 
 export const tours = all.filter((t) => t.kind === 'tour');
@@ -65,7 +70,7 @@ export const fastTrack = all.filter((t) => t.kind === 'fast-track');
 // Bài 'news' = có tính thời sự (mùa hoa, mùa lúa, lễ hội, sự kiện, giá năm nay); còn lại là 'guide' (cẩm nang lâu dài)
 const NEWS_RE = /\b(festival|tet|lunar new year|summer|spring|autumn|winter|lotus|buckwheat|ripe|golden rice|rice season|cherry blossom|blooming|fireworks|event|new year|holiday|20\d\d)\b/i;
 const EVERGREEN_RE = /\b(best time|when is|climate|weather by)\b/i;
-export const posts = raw.posts.filter((p) => !BLOCKED_POSTS.has(p.slug)).map((p) => ({ ...p, titleZh: POSTS_ZH[p.slug] ?? null, type: NEWS_RE.test(p.title) && !EVERGREEN_RE.test(p.title) ? 'news' : 'guide' }));
+export const posts = raw.posts.filter((p) => !BLOCKED_POSTS.has(p.slug)).map((p) => ({ ...p, titleZh: POSTS_ZH[p.slug] ?? null, excerptZh: POST_CONTENT_ZH[p.slug]?.excerptZh ?? null, contentHtmlZh: POST_CONTENT_ZH[p.slug]?.contentHtmlZh ?? null, type: NEWS_RE.test(p.title) && !EVERGREEN_RE.test(p.title) ? 'news' : 'guide' }));
 
 const firstImage = (list) => list.find((t) => t.image)?.image || null;
 

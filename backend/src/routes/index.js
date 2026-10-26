@@ -25,7 +25,7 @@ router.get('/posts', (req, res) => {
   res.json({
     total: list.length,
     categories: [...new Set(posts.map((p) => p.category))],
-    items: list.slice(start, start + Number(limit)).map(({ contentHtml, ...p }) => p),
+    items: list.slice(start, start + Number(limit)).map(({ contentHtml, contentHtmlZh, ...p }) => p),
   });
 });
 

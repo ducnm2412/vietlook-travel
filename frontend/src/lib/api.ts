@@ -24,7 +24,7 @@ export type Destination = { slug: string; name: string; zh: string; region: stri
 export type Theme = { slug: string; name: string; zh: string; count: number };
 export type CarCity = { slug: string; name: string; zh: string; count: number; image: string | null };
 export type Vehicle = { seats: number; name: string; zh: string; example: string };
-export type Post = { slug: string; title: string; titleZh?: string | null; date: string; category: string; type?: "news" | "guide"; image: string | null; excerpt: string; contentHtml?: string };
+export type Post = { slug: string; title: string; titleZh?: string | null; date: string; category: string; type?: "news" | "guide"; image: string | null; excerpt: string; excerptZh?: string | null; contentHtml?: string; contentHtmlZh?: string | null };
 export type PostList = { total: number; categories: string[]; items: Post[] };
 
 // Gọi API từ server component; trả về giá trị rỗng nếu backend chưa chạy để trang vẫn hiển thị
