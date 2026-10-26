@@ -1,6 +1,6 @@
 // Dữ liệu thật import từ vietlooktravel.com (scripts/import-vietlook.mjs)
 import { readFileSync } from 'node:fs';
-import { PRICE_FROM, estimatePrice } from './prices.js';
+import { PRICE_FROM, USD_TO_VND, estimatePrice } from './prices.js';
 
 // Tên tiếng Anh cho các tour site gốc đặt tên tiếng Việt (dịch theo slug)
 const TITLES_EN = JSON.parse(readFileSync(new URL('./titles-en.json', import.meta.url), 'utf8'));
@@ -56,8 +56,11 @@ const CAR_CITIES = {
   'da-lat-private-cars': ['Da Lat', '大叻'],
 };
 
+// Giá trong nội dung gốc ghi bằng VND ("2,860,000 VND/guest", "1.250.000VNĐ/人") -> USD cho khớp giá "From $" của site
+const toUsd = (s) => s && s.replace(/(\d{1,3}(?:[.,]\d{3})+)\s*(?:VNĐ|VND)/gi, (_, n) => `$${Math.round(Number(n.replace(/[.,]/g, '')) / USD_TO_VND).toLocaleString('en-US')}`);
+
 // Sửa lỗi gõ còn sót trong nội dung tiếng Anh của site gốc (VNĐ, SHADULE, "hotel nin")
-const fixEn = (s) => s && s.replace(/VNĐ/gi, 'VND').replace(/SHADULE/g, 'SCHEDULE').replace(/hotel nin /g, 'hotel in ').replace(/experiential driver/g, 'experienced driver');
+const fixEn = (s) => s && toUsd(s).replace(/VNĐ/gi, 'VND').replace(/SHADULE/g, 'SCHEDULE').replace(/hotel nin /g, 'hotel in ').replace(/experiential driver/g, 'experienced driver');
 
 // Nội dung gốc còn bảng lịch khởi hành 2022–2025 (đã qua) và dòng giá trống ("PRICE: VND/GUEST"):
 // thay bảng bằng lời mời liên hệ, bỏ dòng giá không có số (bảng giá chi tiết vẫn còn bên dưới)
@@ -79,7 +82,7 @@ const all = raw.tours.map((t) => {
   const region = DEST[destinations[0]]?.[2] || null;
   const theme = Object.keys(THEMES).find((k) => t.categories.includes(k)) || (t.kind === 'tour' && !region ? 'vietnam-tours' : null);
   const real = PRICE_FROM[t.slug];
-  return { ...t, title: TITLES_EN[t.slug] ?? t.title, summary: fixEn(CONTENT_EN[t.slug]?.summaryEn ?? t.summary), contentHtml: stripStale(fixEn(CONTENT_EN[t.slug]?.contentHtmlEn ?? t.contentHtml), NOTE_EN), titleZh: TITLES_ZH[t.slug] ?? null, summaryZh: CONTENT_ZH[t.slug]?.summaryZh ?? null, contentHtmlZh: stripStale(CONTENT_ZH[t.slug]?.contentHtmlZh, NOTE_ZH) ?? null, destinations, region, theme, priceFrom: real ?? estimatePrice(t), priceEstimated: real == null };
+  return { ...t, title: TITLES_EN[t.slug] ?? t.title, summary: fixEn(CONTENT_EN[t.slug]?.summaryEn ?? t.summary), contentHtml: stripStale(fixEn(CONTENT_EN[t.slug]?.contentHtmlEn ?? t.contentHtml), NOTE_EN), titleZh: TITLES_ZH[t.slug] ?? null, summaryZh: toUsd(CONTENT_ZH[t.slug]?.summaryZh) ?? null, contentHtmlZh: stripStale(toUsd(CONTENT_ZH[t.slug]?.contentHtmlZh), NOTE_ZH) ?? null, destinations, region, theme, priceFrom: real ?? estimatePrice(t), priceEstimated: real == null };
 });
 
 export const tours = all.filter((t) => t.kind === 'tour');
