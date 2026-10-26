@@ -182,7 +182,7 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
             <a href={`mailto:${SITE.email}`} className="hidden md:inline">{SITE.email}</a>
             <div className="flex overflow-hidden rounded-full border border-white/30">
               {(["en", "zh"] as const).map((l) => (
-                <button key={l} onClick={() => setLang(l)} className={`px-2.5 py-0.5 ${lang === l ? "bg-accent text-white" : ""}`}>
+                <button key={l} onClick={() => setLang(l)} className={`px-2.5 py-0.5 ${lang === l ? "bg-accent font-semibold text-ink" : ""}`}>
                   {l === "en" ? "EN" : "中文"}
                 </button>
               ))}

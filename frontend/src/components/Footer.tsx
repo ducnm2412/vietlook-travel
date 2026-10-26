@@ -87,7 +87,7 @@ export default function Footer() {
               <FontAwesomeIcon icon={faLocationDot} className="mt-1.5 w-4 text-accent" />
               <span>{SITE.name}<br /><span className="text-white/75">{SITE.address}</span></span>
             </p>
-            <a href={SITE.maps} target="_blank" rel="noopener" className="btn mt-6 bg-accent text-white hover:bg-accent-dark">
+            <a href={SITE.maps} target="_blank" rel="noopener" className="btn mt-6 bg-accent text-ink hover:bg-accent-dark">
               <FontAwesomeIcon icon={faDiamondTurnRight} /> <L en="Get directions" zh="获取路线" />
             </a>
           </div>

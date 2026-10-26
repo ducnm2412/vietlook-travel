@@ -59,7 +59,7 @@ function GridCard({ t, zh, fav, onFav, theme, place }: { t: Tour; zh: boolean; f
   const go = (d: number) => (e: React.MouseEvent) => { e.preventDefault(); setI((i + d + imgs.length) % imgs.length); };
   const badge =
     t.days >= 10 ? { text: zh ? "长线精选" : "GRAND TOUR", cls: "bg-brand-dark text-white" }
-    : t.days === 1 ? { text: zh ? "一日游" : "DAY TRIP", cls: "bg-accent text-white" }
+    : t.days === 1 ? { text: zh ? "一日游" : "DAY TRIP", cls: "bg-accent text-ink" }
     : !t.priceEstimated ? { text: zh ? "固定价格" : "FIXED PRICE", cls: "bg-[#3554d1] text-white" }
     : null;
   return (

@@ -56,7 +56,7 @@ body {
 }
 .btn-accent {
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-ink);
 }
 .btn-accent:hover {
   background: var(--color-accent-dark);
