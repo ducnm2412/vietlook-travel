@@ -15,7 +15,7 @@ const subscribe = (cb: () => void) => {
 };
 
 // Ảnh nền hero (Tràng An) luôn nằm dưới cùng. Video chỉ tải trên màn hình từ 768px, phát 1 lần;
-// khi phát hết hoặc lỗi thì mờ dần để lộ ảnh. Điện thoại chỉ dùng ảnh (ngân sách hero ≤ 2–3MB).
+// màn ≥1280px dùng bản 1080p cho nét; khi phát hết hoặc lỗi thì mờ dần để lộ ảnh. Điện thoại chỉ dùng ảnh (ngân sách hero ≤ 2–3MB).
 export default function HeroBackground() {
   const desktop = useSyncExternalStore(subscribe, () => window.matchMedia(QUERY).matches, () => false);
   const [done, setDone] = useState(false);
@@ -29,7 +29,7 @@ export default function HeroBackground() {
       {desktop && (
         <video
           className={`absolute inset-0 -z-20 h-full w-full object-cover transition-opacity duration-[1500ms] ${done ? "opacity-0" : "opacity-100"}`}
-          src="/videos/hero-720.mp4"
+          src={window.matchMedia("(min-width: 1280px)").matches ? "/videos/hero-1080.mp4" : "/videos/hero-720.mp4"}
           autoPlay
           muted
           playsInline

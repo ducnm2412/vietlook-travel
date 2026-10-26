@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faLocationDot, faPhone } from "@fortawesome/free-solid-svg-icons";
 import Img from "@/components/Img";
 import PageHero from "@/components/PageHero";
 import { L, T } from "@/lib/i18n";
@@ -29,7 +31,7 @@ export default function AboutPage() {
         <div className="space-y-5 text-[17px] leading-relaxed">
           <p className={kicker}><L en="Welcome to Vietlook Travel" zh="欢迎来到 Vietlook Travel" /></p>
           <h2 className={head}><L en="Private tours in Vietnam and across Asia" zh="越南及亚洲私人定制游" /></h2>
-          {INTRO.map((p) => <p key={p.en.slice(0, 20)} className="text-ink/85"><L en={p.en} zh={p.zh} /></p>)}
+          {INTRO.map((p) => <p key={p.en.slice(0, 20)} className="text-justify hyphens-auto text-ink/85"><L en={p.en} zh={p.zh} /></p>)}
           <div className="flex flex-wrap gap-2 pt-1">
             {LANGUAGES.map((l) => <span key={l.en} className="rounded-full bg-sand px-3 py-1 text-sm"><L en={l.en} zh={l.zh} /></span>)}
           </div>
@@ -144,8 +146,9 @@ export default function AboutPage() {
 
       {/* Liên hệ */}
       <section className="bg-tarmac py-16 text-white md:py-20">
-        <div className="container-x grid gap-10 md:grid-cols-[1.3fr_1fr] md:items-center">
+        <div className="container-x grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-center md:gap-16">
           <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-accent"><L en="Free quote" zh="免费报价" /></p>
             <h2 className={head}><L en="Enquire now, decide later" zh="先咨询，后决定" /></h2>
             <p className="mt-3 max-w-xl text-white/70"><L en="Filling out an inquiry form is not a commitment to book. Take advantage of our free quote: it only takes a few minutes to create a lifetime of memories." zh="填写咨询表并不代表必须预订。免费获取报价，只需几分钟，留下一生的回忆。" /></p>
             <div className="mt-6 flex flex-wrap gap-3">
@@ -153,13 +156,24 @@ export default function AboutPage() {
               <Link href="/tours" className="btn border border-white/30 text-white hover:bg-white/10"><L en="Sample tour packages" zh="参考行程" /></Link>
             </div>
           </div>
-          <address className="space-y-2 text-sm not-italic text-white/80">
-            <p className="font-card text-base font-bold text-white">VIETLOOK TRAVEL AND TRADE COMPANY LIMITED</p>
-            <p>No 58, Yen Nghia Ward, Ha Dong District, Ha Noi, Vietnam</p>
-            <p>Hotline: (+84) 98.339.3488 / <a href={`tel:+${SITE.phoneRaw}`} className="hover:text-white">{SITE.phone}</a> · Zalo / WhatsApp / WeChat</p>
-            <p>Email: <a href={`mailto:${SITE.email}`} className="hover:text-white">{SITE.email}</a></p>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="https://vietlooktravel.com/wp-content/uploads/2023/01/dathongbao-bocongthuong.png" alt="Registered with the Ministry of Industry and Trade of Vietnam" loading="lazy" className="mt-4 h-12 w-auto" />
+          <address className="rounded-3xl bg-white/[0.04] p-6 not-italic ring-1 ring-white/10 md:p-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent"><L en="Contact us" zh="联系我们" /></p>
+            <p className="mt-2 font-card text-lg font-bold leading-snug text-white">{SITE.name}</p>
+            <ul className="mt-6 space-y-4 text-sm text-white/80 md:text-[15px]">
+              <li className="flex gap-3"><FontAwesomeIcon icon={faLocationDot} className="mt-1 w-4 text-accent" /><span>{SITE.address}</span></li>
+              <li className="flex gap-3">
+                <FontAwesomeIcon icon={faPhone} className="mt-1 w-4 text-accent" />
+                <span>
+                  <a href={`tel:+${SITE.phoneRaw}`} className="hover:text-accent">{SITE.phone}</a> · <a href={`tel:+${SITE.phone2Raw}`} className="hover:text-accent">{SITE.phone2}</a>
+                  <span className="block text-xs text-white/50">Zalo / WhatsApp / WeChat</span>
+                </span>
+              </li>
+              <li className="flex gap-3"><FontAwesomeIcon icon={faEnvelope} className="mt-1 w-4 text-accent" /><a href={`mailto:${SITE.email}`} className="break-all hover:text-accent">{SITE.email}</a></li>
+            </ul>
+            <div className="mt-6 border-t border-white/10 pt-6">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="https://vietlooktravel.com/wp-content/uploads/2023/01/dathongbao-bocongthuong.png" alt="Registered with the Ministry of Industry and Trade of Vietnam" loading="lazy" className="h-11 w-auto rounded-md" />
+            </div>
           </address>
         </div>
       </section>
