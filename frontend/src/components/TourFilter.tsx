@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownWideShort, faChevronLeft, faChevronRight, faHeart as faHeartSolid, faLocationDot, faMagnifyingGlass, faRotateLeft, faSliders, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
@@ -127,6 +127,11 @@ export default function TourFilter({ tours, destinations, themes, initial, initi
     window.history.replaceState(window.history.state, "", url);
     if (scroll) top.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+  // Khi Back từ trang chi tiết, Next dựng lại trang từ cache với initialPage cũ (=1) -> đọc lại ?page trên URL
+  useEffect(() => {
+    const n = parseInt(new URLSearchParams(window.location.search).get("page") ?? "");
+    if (n > 1) setPageState(n);
+  }, []);
   const reset = () => { setQ(""); setDestination(""); setRegions([]); setThemeSel([]); setDurs([]); setPrice(maxUsd); setMinPrice(0); setPage(1); };
   const on = <V,>(fn: (v: V) => void) => (v: V) => { fn(v); setPage(1); };
 
