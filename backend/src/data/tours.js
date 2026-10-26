@@ -57,14 +57,29 @@ const CAR_CITIES = {
 };
 
 // Sửa lỗi gõ còn sót trong nội dung tiếng Anh của site gốc (VNĐ, SHADULE, "hotel nin")
-const fixEn = (s) => s && s.replace(/VNĐ/gi, 'VND').replace(/SHADULE/g, 'SCHEDULE').replace(/hotel nin /g, 'hotel in ');
+const fixEn = (s) => s && s.replace(/VNĐ/gi, 'VND').replace(/SHADULE/g, 'SCHEDULE').replace(/hotel nin /g, 'hotel in ').replace(/experiential driver/g, 'experienced driver');
+
+// Nội dung gốc còn bảng lịch khởi hành 2022–2025 (đã qua) và dòng giá trống ("PRICE: VND/GUEST"):
+// thay bảng bằng lời mời liên hệ, bỏ dòng giá không có số (bảng giá chi tiết vẫn còn bên dưới)
+const PAST_YEAR = /\b202[2-5]\b/;
+const emptyPrice = (el) => {
+  const text = el.replace(/<[^>]+>/g, '');
+  return /(PRICE|GIÁ|价格)/i.test(text) && /(VND|VNĐ)\s*\/\s*\S+/i.test(text) && !/\d/.test(text) ? '' : el;
+};
+// Xét thẻ trong cùng trước (p, h*) rồi mới tới div bọc ngoài
+const stripStale = (html, note) => html && ['p', 'h[1-6]', 'div'].reduce(
+  (h, tag) => h.replace(new RegExp(`<(${tag})\\b[^>]*>(?:(?!<\\/?\\1\\b)[\\s\\S])*?<\\/\\1>`, 'g'), emptyPrice),
+  html.replace(/<table[\s\S]*?<\/table>/g, (tb) => (PAST_YEAR.test(tb.replace(/<[^>]+>/g, ' ')) ? `<p><em>${note}</em></p>` : tb)),
+);
+const NOTE_EN = 'Departures run regularly throughout the year – contact us for upcoming dates.';
+const NOTE_ZH = '全年定期出发，具体日期请联系我们。';
 
 const all = raw.tours.map((t) => {
   const destinations = t.categories.filter((c) => DEST[c]);
   const region = DEST[destinations[0]]?.[2] || null;
   const theme = Object.keys(THEMES).find((k) => t.categories.includes(k)) || (t.kind === 'tour' && !region ? 'vietnam-tours' : null);
   const real = PRICE_FROM[t.slug];
-  return { ...t, title: TITLES_EN[t.slug] ?? t.title, summary: fixEn(CONTENT_EN[t.slug]?.summaryEn ?? t.summary), contentHtml: fixEn(CONTENT_EN[t.slug]?.contentHtmlEn ?? t.contentHtml), titleZh: TITLES_ZH[t.slug] ?? null, summaryZh: CONTENT_ZH[t.slug]?.summaryZh ?? null, contentHtmlZh: CONTENT_ZH[t.slug]?.contentHtmlZh ?? null, destinations, region, theme, priceFrom: real ?? estimatePrice(t), priceEstimated: real == null };
+  return { ...t, title: TITLES_EN[t.slug] ?? t.title, summary: fixEn(CONTENT_EN[t.slug]?.summaryEn ?? t.summary), contentHtml: stripStale(fixEn(CONTENT_EN[t.slug]?.contentHtmlEn ?? t.contentHtml), NOTE_EN), titleZh: TITLES_ZH[t.slug] ?? null, summaryZh: CONTENT_ZH[t.slug]?.summaryZh ?? null, contentHtmlZh: stripStale(CONTENT_ZH[t.slug]?.contentHtmlZh, NOTE_ZH) ?? null, destinations, region, theme, priceFrom: real ?? estimatePrice(t), priceEstimated: real == null };
 });
 
 export const tours = all.filter((t) => t.kind === 'tour');
