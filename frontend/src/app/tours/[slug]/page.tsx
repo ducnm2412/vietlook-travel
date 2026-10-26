@@ -6,7 +6,8 @@ import Img from "@/components/Img";
 import BookingForm from "@/components/BookingForm";
 import TourCard from "@/components/TourCard";
 import { L, LHtml, T } from "@/lib/i18n";
-import { formatUsd, getTour, getTours } from "@/lib/api";
+import { formatUsd } from "@/lib/api";
+import { getTour, getTours } from "@/lib/content";
 
 // Bỏ style độ rộng cố định WordPress gắn vào bảng để bảng luôn vừa khung, không cuộn ngang
 const fitTables = (html: string) => html.replace(/(<(?:table|td|th|col)\b[^>]*?)\s(?:style|width)="[^"]*"/g, "$1");

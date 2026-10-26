@@ -6,7 +6,7 @@ import PageHero from "@/components/PageHero";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { L, T } from "@/lib/i18n";
-import { getPosts } from "@/lib/api";
+import { getPosts } from "@/lib/content";
 
 export const metadata: Metadata = pageMeta({
   title: "Vietnam Travel Guide & News",

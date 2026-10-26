@@ -27,26 +27,6 @@ export type Vehicle = { seats: number; name: string; zh: string; example: string
 export type Post = { slug: string; title: string; titleZh?: string | null; date: string; category: string; type?: "news" | "guide"; image: string | null; excerpt: string; excerptZh?: string | null; contentHtml?: string; contentHtmlZh?: string | null };
 export type PostList = { total: number; categories: string[]; items: Post[] };
 
-// Gọi API từ server component; trả về giá trị rỗng nếu backend chưa chạy để trang vẫn hiển thị
-async function get<T>(path: string, fallback: T): Promise<T> {
-  try {
-    const res = await fetch(`${API_URL}${path}`, { next: { revalidate: 60 } });
-    if (!res.ok) return fallback;
-    return (await res.json()) as T;
-  } catch {
-    return fallback;
-  }
-}
-
-export const getTours = (query = "") => get<Tour[]>(`/tours${query}`, []);
-export const getTour = (slug: string) => get<Tour | null>(`/tours/${slug}`, null);
-export const getDestinations = () => get<Destination[]>("/destinations", []);
-export const getThemes = () => get<Theme[]>("/themes", []);
-export const getCarCities = () => get<CarCity[]>("/car-cities", []);
-export const getVehicles = () => get<Vehicle[]>("/vehicles", []);
-export const getPosts = (query = "") => get<PostList>(`/posts${query}`, { total: 0, categories: [], items: [] });
-export const getPost = (slug: string) => get<Post | null>(`/posts/${slug}`, null);
-
 // Giá lưu bằng VND, hiển thị bằng USD (cùng tỷ giá với backend/src/data/prices.js)
 export const USD_TO_VND = 26000;
 // 1768000 -> "$68"

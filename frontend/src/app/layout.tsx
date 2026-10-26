@@ -8,7 +8,7 @@ import { LangProvider } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
 import { pageMeta, SITE_URL } from "@/lib/seo";
 import Header from "@/components/Header";
-import { getCarCities, getDestinations } from "@/lib/api";
+import { getCarCities, getDestinations } from "@/lib/content";
 import Footer from "@/components/Footer";
 import FloatingContact from "@/components/FloatingContact";
 import ScrollReveal from "@/components/ScrollReveal";

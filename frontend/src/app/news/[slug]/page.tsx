@@ -4,7 +4,7 @@ import { clip, pageMeta } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import Img from "@/components/Img";
 import { L, LHtml, T } from "@/lib/i18n";
-import { getPost, getPosts } from "@/lib/api";
+import { getPost, getPosts } from "@/lib/content";
 
 export async function generateMetadata({ params }: PageProps<"/news/[slug]">): Promise<Metadata> {
   const post = await getPost((await params).slug);

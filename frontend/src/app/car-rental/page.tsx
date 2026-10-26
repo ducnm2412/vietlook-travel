@@ -7,7 +7,8 @@ import { CAR_CITIES as CITIES } from "@/components/car/cities";
 import { FleetByCategory, NationwideService } from "@/components/car/CarFleet";
 import { L, T } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
-import { formatUsd, getTours, getVehicles } from "@/lib/api";
+import { formatUsd } from "@/lib/api";
+import { getTours, getVehicles } from "@/lib/content";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleCheck, faClock, faComments, faHandshake, faHeadset, faPhone,

@@ -5,7 +5,7 @@ import TourCard from "@/components/TourCard";
 import VisaForm from "@/components/forms/VisaForm";
 import { L, T } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
-import { getTours } from "@/lib/api";
+import { getTours } from "@/lib/content";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faCheck, faMinus, faPhone, faPlane } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";

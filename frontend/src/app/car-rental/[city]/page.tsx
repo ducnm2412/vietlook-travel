@@ -7,7 +7,7 @@ import TourCard from "@/components/TourCard";
 import { NationwideService } from "@/components/car/CarFleet";
 import { CAR_CITIES, cityPath } from "@/components/car/cities";
 import { L, T } from "@/lib/i18n";
-import { getCarCities, getTours, getVehicles } from "@/lib/api";
+import { getCarCities, getTours, getVehicles } from "@/lib/content";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faPlaneArrival } from "@fortawesome/free-solid-svg-icons";
 

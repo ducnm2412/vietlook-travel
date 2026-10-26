@@ -5,7 +5,7 @@ import { faChevronDown, faHeadset, faSliders, faWallet } from "@fortawesome/free
 import TailorRequestForm from "@/components/forms/TailorRequestForm";
 import { L } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
-import { getDestinations } from "@/lib/api";
+import { getDestinations } from "@/lib/content";
 
 export const metadata: Metadata = pageMeta({
   title: "Vietnam Tailor-made Tours – Free Trip Proposal",

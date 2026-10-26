@@ -8,7 +8,7 @@ import TravelGuide from "@/components/TravelGuide";
 import Divider from "@/components/Divider";
 import Reviews from "@/components/Reviews";
 import NewsSection from "@/components/NewsSection";
-import { getDestinations, getPosts, getTours } from "@/lib/api";
+import { getDestinations, getPosts, getTours } from "@/lib/content";
 
 export default async function Home() {
   const [experiences, cruises, packages, destinations, posts, news] = await Promise.all([

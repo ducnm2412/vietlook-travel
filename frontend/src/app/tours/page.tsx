@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import TourFilter from "@/components/TourFilter";
 import { T } from "@/lib/i18n";
-import { getDestinations, getThemes, getTours } from "@/lib/api";
+import { getDestinations, getThemes, getTours } from "@/lib/content";
 
 export const metadata: Metadata = pageMeta({
   title: "Vietnam Tours & Holiday Packages",
