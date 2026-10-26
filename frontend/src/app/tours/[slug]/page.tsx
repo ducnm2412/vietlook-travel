@@ -73,7 +73,7 @@ export default async function TourDetail({ params }: PageProps<"/tours/[slug]">)
       </section>
 
       {related.length > 0 && (
-        <section className="bg-sand py-14">
+        <section className="bg-photo-light py-14">
           <div className="container-x">
             <h2 className="mb-6 font-card text-2xl font-bold md:text-3xl"><L en="You may also like" zh="您可能还喜欢" /></h2>
             <div className="grid gap-6 md:grid-cols-3">{related.map((t) => <TourCard key={t.slug} tour={t} />)}</div>

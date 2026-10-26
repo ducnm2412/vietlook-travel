@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownWideShort, faChevronLeft, faChevronRight, faHeart as faHeartSolid, faLocationDot, faMagnifyingGlass, faRotateLeft, faSliders, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronLeft, faChevronRight, faHeart as faHeartSolid, faMagnifyingGlass, faSliders, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import Img from "./Img";
 import { useLang } from "@/lib/i18n";
@@ -33,22 +33,26 @@ type Filters = { region: string; destination: string; theme: string; minDays: st
 // Bật/tắt một giá trị trong danh sách chọn nhiều
 const toggle = (list: string[], v: string) => (list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
 
-function Check({ checked, onChange, label, n }: { checked: boolean; onChange: () => void; label: string; n: number }) {
+function Check({ checked, onChange, label, n, sub = false }: { checked: boolean; onChange: () => void; label: string; n: number; sub?: boolean }) {
   return (
-    <label className="flex cursor-pointer items-center gap-3 py-1.5 text-sm">
-      <input type="checkbox" checked={checked} onChange={onChange} className="h-4 w-4 shrink-0 accent-[var(--color-brand)]" />
+    <label className={`flex cursor-pointer items-center gap-3 py-1.5 text-[15px] ${sub ? "pl-7" : ""}`}>
+      <input type="checkbox" checked={checked} onChange={onChange} className="h-[18px] w-[18px] shrink-0 accent-[var(--color-brand)]" />
       <span className={`flex-1 ${checked ? "font-medium text-brand" : ""}`}>{label}</span>
-      <span className="text-xs text-muted">{n}</span>
+      {n > 0 && <span className="text-xs text-muted">{n}</span>}
     </label>
   );
 }
 
+// Nhóm lọc thu gọn được: tiêu đề in hoa, mũi tên xoay khi đóng/mở
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="border-b border-black/10 py-6 last:border-0">
-      <p className="mb-3 font-card text-base font-semibold">{title}</p>
+    <details open className="group border-t border-black/10 py-5">
+      <summary className="mb-3 flex cursor-pointer list-none items-center justify-between font-card text-sm font-bold uppercase tracking-wide group-[:not([open])]:mb-0 [&::-webkit-details-marker]:hidden">
+        {title}
+        <FontAwesomeIcon icon={faChevronDown} className="text-xs text-muted transition group-open:rotate-180" />
+      </summary>
       {children}
-    </div>
+    </details>
   );
 }
 
@@ -107,7 +111,7 @@ export default function TourFilter({ tours, destinations, themes, initial, initi
   const initDur = DUR.find((d) => String(d.min || "") === (initial.minDays ?? "") && String(d.max) === (initial.maxDays ?? ""))?.key;
 
   const [q, setQ] = useState(initial.q ?? "");
-  const [destination, setDestination] = useState(initial.destination ?? "");
+  const [dests, setDests] = useState<string[]>(initial.destination ? [initial.destination] : []);
   const [regions, setRegions] = useState<string[]>(initial.region ? [initial.region] : []);
   const [themeSel, setThemeSel] = useState<string[]>(initial.theme ? [initial.theme] : []);
   const [durs, setDurs] = useState<string[]>(initDur ? [initDur] : []);
@@ -133,15 +137,15 @@ export default function TourFilter({ tours, destinations, themes, initial, initi
     window.history.replaceState(window.history.state, "", url);
     if (scroll) top.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
-  const reset = () => { setQ(""); setDestination(""); setRegions([]); setThemeSel([]); setDurs([]); setPrice(maxUsd); setMinPrice(0); setPage(1); };
+  const reset = () => { setQ(""); setDests([]); setRegions([]); setThemeSel([]); setDurs([]); setPrice(maxUsd); setMinPrice(0); setPage(1); };
   const on = <V,>(fn: (v: V) => void) => (v: V) => { fn(v); setPage(1); };
 
   const result = useMemo(() => {
     const list = tours.filter((t) => {
       const usd = (t.priceFrom ?? 0) / USD_TO_VND;
       return (
-        (!regions.length || (t.region && regions.includes(t.region))) &&
-        (!destination || t.destinations.includes(destination)) &&
+        // Miền và điểm đến cùng một nhóm: tour khớp nếu thuộc miền đã chọn HOẶC có điểm đến đã chọn
+        ((!regions.length && !dests.length) || (!!t.region && regions.includes(t.region)) || t.destinations.some((d) => dests.includes(d))) &&
         (!themeSel.length || (t.theme && themeSel.includes(t.theme))) &&
         (!durs.length || durs.some((k) => { const d = DUR.find((x) => x.key === k)!; return t.days >= d.min && t.days <= d.max; })) &&
         (price >= maxUsd || usd <= price) &&
@@ -153,7 +157,7 @@ export default function TourFilter({ tours, destinations, themes, initial, initi
     if (sort === "price-desc") list.sort((a, b) => (b.priceFrom ?? 0) - (a.priceFrom ?? 0));
     if (sort === "days-desc") list.sort((a, b) => b.days - a.days);
     return list;
-  }, [tours, regions, destination, themeSel, durs, price, minPrice, maxUsd, q, sort]);
+  }, [tours, regions, dests, themeSel, durs, price, minPrice, maxUsd, q, sort]);
 
   const pages = Math.max(1, Math.ceil(result.length / PAGE));
   const cur = Math.min(page, pages);
@@ -167,38 +171,23 @@ export default function TourFilter({ tours, destinations, themes, initial, initi
 
   const sidebar = (
     <>
-      {/* Khối tìm kiếm */}
-      <div className="rounded-2xl bg-sand p-5">
-        <p className="mb-4 font-card font-semibold">{zh ? "搜索线路" : "Search tours"}</p>
-        <label className="mb-3 flex items-center gap-3 rounded-xl bg-white px-4 py-2.5">
-          <FontAwesomeIcon icon={faMagnifyingGlass} className="text-muted" />
-          <span className="flex-1">
-            <span className="block text-xs font-semibold">{zh ? "搜索" : "Search"}</span>
-            <input value={q} onChange={(e) => on(setQ)(e.target.value)} placeholder={zh ? "线路、地点…" : "Tour, place…"} className="w-full bg-transparent text-sm text-muted outline-none" />
-          </span>
-        </label>
-        <label className="flex items-center gap-3 rounded-xl bg-white px-4 py-2.5">
-          <FontAwesomeIcon icon={faLocationDot} className="text-muted" />
-          <span className="flex-1">
-            <span className="block text-xs font-semibold">{zh ? "目的地" : "Destination"}</span>
-            <select value={destination} onChange={(e) => on(setDestination)(e.target.value)} className="-ml-1 w-full bg-transparent text-sm text-muted outline-none">
-              <option value="">{zh ? "全部目的地" : "All destinations"}</option>
-              {destinations.map((d) => <option key={d.slug} value={d.slug}>{zh ? d.zh : d.name}</option>)}
-            </select>
-          </span>
-        </label>
-        <button onClick={reset} className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-brand py-3 text-sm font-semibold text-white transition hover:bg-brand-dark">
-          <FontAwesomeIcon icon={faRotateLeft} /> {zh ? "重置筛选" : "Reset filters"}
-        </button>
+      <div className="flex items-center justify-between pb-5">
+        <p className="flex items-center gap-2.5 font-card text-lg font-bold"><FontAwesomeIcon icon={faSliders} /> {zh ? "筛选" : "Filters"}</p>
+        <button onClick={reset} className="text-sm font-semibold text-brand hover:underline">{zh ? "重置" : "Reset"}</button>
       </div>
 
-      <Group title={zh ? "地区" : "Region"}>
+      <Group title={zh ? "目的地" : "Destination"}>
         {REGIONS.map((r) => (
-          <Check key={r.key} checked={regions.includes(r.key)} onChange={() => on(setRegions)(toggle(regions, r.key))} label={zh ? r.zh : r.en} n={count((t) => t.region === r.key)} />
+          <div key={r.key} className="mb-2 last:mb-0">
+            <Check checked={regions.includes(r.key)} onChange={() => on(setRegions)(toggle(regions, r.key))} label={zh ? r.zh : r.en} n={count((t) => t.region === r.key)} />
+            {destinations.filter((d) => d.region === r.key).map((d) => (
+              <Check key={d.slug} sub checked={dests.includes(d.slug)} onChange={() => on(setDests)(toggle(dests, d.slug))} label={zh ? d.zh : d.name} n={count((t) => t.destinations.includes(d.slug))} />
+            ))}
+          </div>
         ))}
       </Group>
 
-      <Group title={zh ? "主题" : "Category types"}>
+      <Group title={zh ? "主题" : "Tour type"}>
         {themes.map((t) => (
           <Check key={t.slug} checked={themeSel.includes(t.slug)} onChange={() => on(setThemeSel)(toggle(themeSel, t.slug))} label={zh ? t.zh : t.name} n={count((x) => x.theme === t.slug)} />
         ))}
@@ -224,9 +213,9 @@ export default function TourFilter({ tours, destinations, themes, initial, initi
   );
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[260px_minmax(0,1fr)] xl:gap-10">
+    <div className="grid gap-8 lg:grid-cols-[300px_minmax(0,1fr)] xl:gap-10">
       {/* Sidebar cuộn riêng, dính khi cuộn danh sách tour */}
-      <aside className="sticky top-28 hidden max-h-[calc(100vh-8rem)] self-start overflow-y-auto overscroll-contain pr-2 [scrollbar-width:thin] lg:block">{sidebar}</aside>
+      <aside className="sticky top-28 hidden max-h-[calc(100vh-8rem)] self-start overflow-y-auto overscroll-contain rounded-2xl border border-black/10 bg-white px-6 pb-2 pt-6 [scrollbar-width:thin] lg:block">{sidebar}</aside>
 
       {/* Bộ lọc dạng ngăn kéo trên mobile */}
       {open && (
@@ -240,22 +229,23 @@ export default function TourFilter({ tours, destinations, themes, initial, initi
       )}
 
       <div ref={top} className="scroll-mt-32">
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-black/10 pb-5">
-          <p className="whitespace-nowrap text-sm">
-            <b className="font-card text-base">{result.length} {zh ? "条线路" : "tours"}</b> <span className="text-muted">{zh ? "在越南" : "in Vietnam"}</span>
-          </p>
-          <div className="flex items-center gap-2">
-            <button onClick={() => setOpen(true)} className="flex items-center gap-2 rounded-full bg-sand px-4 py-2 text-sm font-medium text-brand lg:hidden">
-              <FontAwesomeIcon icon={faSliders} /> {zh ? "筛选" : "Filter"}
-            </button>
-            <label className="flex items-center gap-2 rounded-full bg-sand px-4 py-2 text-sm font-medium text-brand">
-              <FontAwesomeIcon icon={faArrowDownWideShort} />
-              <select value={sort} onChange={(e) => on(setSort)(e.target.value)} className="bg-transparent outline-none" aria-label="Sort">
-                {SORTS.map((s) => <option key={s.v} value={s.v}>{zh ? s.zh : s.en}</option>)}
-              </select>
-            </label>
-          </div>
+        {/* Ô tìm theo tên tour + sắp xếp */}
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="flex min-w-0 flex-1 basis-72 items-center gap-3 rounded-xl border border-black/10 bg-white px-4 py-3 focus-within:border-brand">
+            <FontAwesomeIcon icon={faMagnifyingGlass} className="text-muted" />
+            <input value={q} onChange={(e) => on(setQ)(e.target.value)} placeholder={zh ? "按线路名称搜索" : "Search by tour name"} className="w-full bg-transparent outline-none placeholder:text-muted/70" />
+          </label>
+          <button onClick={() => setOpen(true)} className="flex items-center gap-2 rounded-xl border border-black/10 px-4 py-3 text-sm font-semibold text-brand lg:hidden">
+            <FontAwesomeIcon icon={faSliders} /> {zh ? "筛选" : "Filters"}
+          </button>
+          <label className="flex items-center gap-3 text-sm text-muted">
+            <span className="whitespace-nowrap">{zh ? "排序" : "Sort by"}</span>
+            <select value={sort} onChange={(e) => on(setSort)(e.target.value)} className="rounded-xl border border-black/10 bg-white px-4 py-3 text-base text-ink outline-none focus:border-brand">
+              {SORTS.map((s) => <option key={s.v} value={s.v}>{zh ? s.zh : s.en}</option>)}
+            </select>
+          </label>
         </div>
+        <p className="mb-6 mt-5 font-card font-semibold">{zh ? `找到 ${result.length} 条线路` : `${result.length} tours found`}</p>
 
         {result.length ? (
           <div className="grid gap-x-6 gap-y-8 sm:grid-cols-2 xl:grid-cols-3">

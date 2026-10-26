@@ -47,7 +47,7 @@ export default function AboutPage() {
       </section>
 
       {/* Tầm nhìn, sứ mệnh, giá trị cốt lõi */}
-      <section className="bg-brand-dark py-16 text-white md:py-20">
+      <section className="bg-photo-dark py-16 text-white md:py-20">
         <div className="container-x">
           <div className="grid gap-10 md:grid-cols-2">
             {[["Vision", "愿景", VISION], ["Mission", "使命", MISSION]].map(([en, zh, v]) => (
@@ -92,7 +92,7 @@ export default function AboutPage() {
       </section>
 
       {/* Vì sao chọn chúng tôi */}
-      <section className="bg-sand py-16 md:py-20">
+      <section className="bg-photo-light py-16 md:py-20">
         <div className="container-x">
           <p className={kicker}><L en="Why choose us" zh="为什么选择我们" /></p>
           <h2 className={`${head} mt-2 max-w-2xl`}><L en="Six reasons travellers come back to us" zh="旅客一再选择我们的六个理由" /></h2>

@@ -137,7 +137,7 @@ export default async function CarRentalPage() {
       </section>
 
       {/* Tuyến phổ biến */}
-      <section id="routes" className="scroll-mt-28 bg-sand py-14 md:py-20">
+      <section id="routes" className="scroll-mt-28 bg-photo-light py-14 md:py-20">
         <div className="container-x">
           <h2 className={head}><L en="Popular routes" zh="热门路线" /></h2>
           <p className="mb-8 mt-2 text-muted"><L en="Choose a city to see fixed prices. Per car, not per person, tolls included." zh="选择城市查看固定价格。按车计价，含过路费。" /></p>
@@ -180,7 +180,7 @@ export default async function CarRentalPage() {
       <FleetByCategory />
 
       {/* Giá đã bao gồm */}
-      <section className="bg-sand py-14 md:py-20">
+      <section className="bg-photo-light py-14 md:py-20">
         <div className="container-x">
           <h2 className={head}><L en="What's included" zh="价格包含" /></h2>
           <p className="mb-8 mt-2 text-muted"><L en="The price you see is the price you pay." zh="所见即所付。" /></p>
@@ -200,7 +200,7 @@ export default async function CarRentalPage() {
       <NationwideService />
 
       {/* Cách đặt xe */}
-      <section className="bg-brand-dark py-14 text-white md:py-20">
+      <section className="bg-photo-dark py-14 text-white md:py-20">
         <div className="container-x">
           <h2 className={head}><L en="How to book" zh="预订流程" /></h2>
           <p className="mb-8 mt-2 text-white/70"><L en="Three steps from request to arrival." zh="从询价到抵达，只需三步。" /></p>
@@ -239,7 +239,7 @@ export default async function CarRentalPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-sand py-14 md:py-20">
+      <section className="bg-photo-light py-14 md:py-20">
         <div className="container-x grid gap-8 lg:grid-cols-[1fr_1.6fr]">
           <div>
             <h2 className={head}><L en="Frequently asked questions" zh="常见问题" /></h2>

@@ -160,7 +160,7 @@ export default async function VisaPage() {
       </section>
 
       {/* Ma trận gói dịch vụ kiểu tờ khai */}
-      <section className="bg-sand py-14 md:py-20">
+      <section className="bg-photo-light py-14 md:py-20">
         <div className="container-x">
           <h2 className={head}><L en="Pick your service level" zh="选择服务等级" /></h2>
           <p className="mb-8 mt-2 text-muted"><L en="What each option covers, at a glance." zh="各服务包含内容一目了然。" /></p>
@@ -222,7 +222,7 @@ export default async function VisaPage() {
 
       {/* Dịch vụ thật từ dữ liệu */}
       {services.length > 0 && (
-        <section className="bg-sand py-14 md:py-20">
+        <section className="bg-photo-light py-14 md:py-20">
           <div className="container-x">
             <h2 className={`${head} mb-8`}><T k="sec.ft.t" /></h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">{services.map((t) => <TourCard key={t.slug} tour={t} />)}</div>

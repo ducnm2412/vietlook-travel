@@ -62,3 +62,6 @@ export const getCarCities = async () => carCities;
 export const getVehicles = async () => vehicles;
 export const getPosts = async (query = "") => queryPosts(query);
 export const getPost = async (slug: string) => findPost(slug);
+
+// Ảnh đại diện của chủ đề tour (TourTheme.cover)
+export const themeCover = (cover: string) => (cover.startsWith("/") ? cover : findTour(cover)?.image ?? null);

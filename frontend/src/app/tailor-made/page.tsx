@@ -68,7 +68,7 @@ export default async function TailorMadePage() {
       </section>
 
       {/* STEPS: 3 bước ngang */}
-      <section className="bg-brand py-16 text-white">
+      <section className="bg-photo-dark py-16 text-white">
         <div className="container-x grid gap-8 md:grid-cols-3">
           {STEPS.map((s, i) => (
             <div key={s.en} className="flex items-center gap-5">
@@ -100,7 +100,7 @@ export default async function TailorMadePage() {
       </section>
 
       {/* FORM */}
-      <section id="request" className="scroll-mt-32 bg-sand py-20">
+      <section id="request" className="scroll-mt-32 bg-photo-light py-20">
         <div className="container-x max-w-3xl">
           <h2 className="text-center font-card text-4xl font-bold md:text-5xl"><L en="Tell us about your trip" zh="告诉我们您的旅行计划" /></h2>
           <p className="mb-10 mt-4 text-center text-lg text-muted"><L en="Free, no obligation – reply within 24 hours." zh="免费、无义务，24小时内回复。" /></p>

@@ -11,7 +11,7 @@ export default function TravelGuide({ posts }: { posts: Post[] }) {
   if (!posts.length) return null;
 
   return (
-    <section className="bg-sand py-12 md:py-20">
+    <section className="bg-photo-light py-12 md:py-20">
       <div className="container-x">
         <div className="mb-6 md:mb-14 flex flex-col gap-2 md:flex-row md:items-end md:justify-between md:gap-10">
           <div className="max-w-2xl">

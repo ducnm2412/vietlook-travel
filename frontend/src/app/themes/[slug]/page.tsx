@@ -5,8 +5,9 @@ import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
 import TourCard from "@/components/TourCard";
+import Img from "@/components/Img";
 import { L } from "@/lib/i18n";
-import { findTour, getTours } from "@/lib/content";
+import { findTour, getTours, themeCover } from "@/lib/content";
 import { findTheme, TOUR_THEMES } from "@/lib/themes";
 import type { Tour } from "@/lib/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -52,22 +53,35 @@ export default async function ThemePage({ params }: PageProps<"/themes/[slug]">)
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{tours.map((t) => <TourCard key={t.slug} tour={t} />)}</div>
       </section>
 
-      {/* Chủ đề khác */}
-      <section className="bg-brand-light py-14">
+      {/* Chủ đề khác: thẻ ảnh dọc */}
+      <section className="bg-photo-mint py-14">
         <div className="container-x">
-          <SectionHeading center title={<L en="Other tour styles" zh="其他旅行风格" />} />
-          <div className="flex flex-wrap justify-center gap-3">
+          <SectionHeading center kicker={<L en="Find your way to travel" zh="找到适合您的旅行方式" />} title={<L en="Other tour styles" zh="其他旅行风格" />} />
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-7">
             {TOUR_THEMES.filter((t) => t.slug !== theme.slug).map((t) => (
-              <Link key={t.slug} href={`/themes/${t.slug}`} className="rounded-full bg-white px-5 py-2.5 font-semibold text-ink shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:text-brand hover:shadow-md">
-                <L en={t.name} zh={t.zh} />
+              <Link key={t.slug} href={`/themes/${t.slug}`} className="group relative block aspect-[4/3] overflow-hidden sm:aspect-[3/4] rounded-2xl bg-brand-dark shadow-sm">
+                <Img src={themeCover(t.cover)} alt={t.name} width={320} className="absolute inset-0 h-full w-full transition duration-500 group-hover:scale-110" />
+                <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
+                <span className="absolute inset-x-0 bottom-0 p-4 text-white">
+                  <span className="block font-card text-lg font-bold"><L en={t.name} zh={t.zh} /></span>
+                  <span className="mt-0.5 block text-xs text-white/80"><L en={t.tagline} zh={t.taglineZh} /></span>
+                </span>
               </Link>
             ))}
           </div>
-          <div className="mx-auto mt-12 max-w-2xl rounded-2xl bg-brand-dark p-8 text-center text-white">
-            <h2 className="font-serif text-3xl font-bold"><L en="Ready to explore Vietnam?" zh="准备好探索越南了吗？" /></h2>
-            <p className="mt-3 text-white/80"><L en="Get a free, no-obligation itinerary from our local experts." zh="由本地专家为您免费定制行程，无任何义务。" /></p>
-            <Link href="/tailor-made" className="btn btn-accent mt-6 inline-flex"><L en="Plan my trip" zh="规划我的行程" /> <FontAwesomeIcon icon={faArrowRight} /></Link>
-          </div>
+        </div>
+      </section>
+
+      {/* Kêu gọi lên lịch trình: ảnh nền cánh đồng lúa đơn giản, phủ tối để chữ dễ đọc */}
+      <section className="relative isolate overflow-hidden py-20 text-center text-white md:py-28">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/_next/image?url=%2Fimages%2Ftailor-bg.webp&w=1920&q=75" alt="" loading="lazy" decoding="async" className="absolute inset-0 -z-20 h-full w-full object-cover" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-brand-dark/70 via-brand-dark/55 to-brand-dark/80" />
+        <div className="container-x max-w-2xl">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent"><L en="Free trip planning" zh="免费行程规划" /></p>
+          <h2 className="font-serif text-3xl font-bold md:text-5xl"><L en="Ready to explore Vietnam?" zh="准备好探索越南了吗？" /></h2>
+          <p className="mt-4 text-white/85 md:text-lg"><L en="Get a free, no-obligation itinerary from our local experts." zh="由本地专家为您免费定制行程，无任何义务。" /></p>
+          <Link href="/tailor-made" className="btn btn-accent mt-8 inline-flex"><L en="Plan my trip" zh="规划我的行程" /> <FontAwesomeIcon icon={faArrowRight} /></Link>
         </div>
       </section>
 
