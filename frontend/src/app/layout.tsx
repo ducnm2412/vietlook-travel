@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Caveat, Great_Vibes, IBM_Plex_Mono, Inter, Playfair_Display, Poppins } from "next/font/google";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import "./globals.css";
@@ -54,7 +54,8 @@ const ORG_JSON_LD = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const lang = (await cookies()).get("lang")?.value === "zh" ? "zh" : "en";
+  // Ngôn ngữ từ tiền tố đường dẫn (proxy.ts gắn header x-lang), dự phòng bằng cookie
+  const lang = ((await headers()).get("x-lang") ?? (await cookies()).get("lang")?.value) === "zh" ? "zh" : "en";
   // Ảnh cho dropdown menu: điểm đến (/tours?destination=) và thành phố xe (/car-rental/<city>)
   const [dests, carCities] = await Promise.all([getDestinations(), getCarCities()]);
   const menuImages = Object.fromEntries([

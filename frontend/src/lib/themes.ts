@@ -12,7 +12,7 @@ export const TOUR_THEMES: TourTheme[] = [
     tours: ["sunset-cocktail-and-dinner-cruise", "discover-nha-trang-beach-3-island-vip-tour", "luxury-speedboat-snorkeling-trip", "vietnam-luxury-tour", "halong-ambassador-cruise-2-days-1-night", "essence-grand-cruise-halong-2-days-1-night", "aspira-5-star-cruise-ha-long-lan-ha-2-days-1-night", "ambassador-day-cruise-halong-bay", "hanoi-ha-long-sonata-5-star-day-cruise-ninh-binh"],
   },
   {
-    slug: "hand-picked", hero: "/images/tailor-hero.webp", cover: "ha-long-ninh-binh-da-nang-hoi-an-10-days-9-nights-tour", name: "Hand-picked", zh: "精选",
+    slug: "hand-picked", hero: "/images/tailor-hero.webp", cover: "/images/tailor-hero.webp", name: "Hand-picked", zh: "精选",
     tagline: "Our team's favourite routes", taglineZh: "团队最爱的线路",
     intro: "The itineraries our local team recommends most: balanced routes that pair Vietnam's best-known sights with authentic local experiences.",
     introZh: "本地团队最推荐的行程：节奏均衡，将越南最著名的景点与地道的本地体验相结合。",

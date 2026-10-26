@@ -2,6 +2,7 @@
 // lọc giống hệt các route của backend. Chỉ dùng phía server – không import file này từ client component.
 import data from "@/data/content.json";
 import "server-only";
+import { findTopic, GUIDE_TOPICS } from "./guide";
 import type { CarCity, Destination, Post, PostList, Theme, Tour, Vehicle } from "./api";
 
 const all = data.tours as Tour[];
@@ -35,10 +36,12 @@ export const findTour = (slug: string) => all.find((t) => t.slug === slug) ?? nu
 
 export function queryPosts(query: string): PostList {
   const p = new URLSearchParams(query);
-  const category = p.get("category"), type = p.get("type");
+  const category = p.get("category"), type = p.get("type"), q = p.get("q")?.trim().toLowerCase(), topic = findTopic(p.get("topic") ?? "");
   const limit = Number(p.get("limit") || 12), page = Number(p.get("page") || 1);
   let list = category ? posts.filter((x) => x.category === category) : posts;
   if (type) list = list.filter((x) => x.type === type);
+  if (topic?.re) list = list.filter((x) => topic.re!.test(`${x.title} ${x.excerpt}`));
+  if (q) list = list.filter((x) => `${x.title} ${x.titleZh ?? ""} ${x.excerpt}`.toLowerCase().includes(q));
   const start = (page - 1) * limit;
   return {
     total: list.length,
@@ -65,3 +68,16 @@ export const getPost = async (slug: string) => findPost(slug);
 
 // Ảnh đại diện của chủ đề tour (TourTheme.cover)
 export const themeCover = (cover: string) => (cover.startsWith("/") ? cover : findTour(cover)?.image ?? null);
+
+// Bài liên quan: ưu tiên bài chung nhiều chủ đề cẩm nang nhất, rồi cùng chuyên mục; mới nhất trước
+export function relatedPosts(post: Post, n = 3) {
+  const topics = (x: Post) => GUIDE_TOPICS.filter((t) => t.re?.test(`${x.title} ${x.excerpt}`)).map((t) => t.slug);
+  const mine = new Set(topics(post));
+  return posts
+    .filter((x) => x.slug !== post.slug)
+    .map((x) => ({ x, score: topics(x).filter((t) => mine.has(t)).length * 2 + (x.category === post.category ? 1 : 0) }))
+    .filter((r) => r.score > 0)
+    .sort((a, b) => b.score - a.score || b.x.date.localeCompare(a.x.date))
+    .slice(0, n)
+    .map(({ x: { contentHtml, contentHtmlZh, ...x } }) => x);
+}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { clip, pageMeta } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import Img from "@/components/Img";
@@ -8,6 +8,8 @@ import TourCard from "@/components/TourCard";
 import { L, LHtml, T } from "@/lib/i18n";
 import { formatUsd } from "@/lib/api";
 import { getTour, getTours } from "@/lib/content";
+import YouTubeEmbed from "@/components/YouTubeEmbed";
+import { findYouTubeId, TOUR_VIDEOS } from "@/lib/videos";
 
 // Bỏ style độ rộng cố định WordPress gắn vào bảng để bảng luôn vừa khung, không cuộn ngang
 const fitTables = (html: string) => html.replace(/(<(?:table|td|th|col)\b[^>]*?)\s(?:style|width)="[^"]*"/g, "$1");
@@ -30,6 +32,7 @@ export default async function TourDetail({ params }: PageProps<"/tours/[slug]">)
   const filter = tour.destinations[0] ? `?destination=${tour.destinations[0]}` : `?kind=${tour.kind}`;
   const related = (await getTours(`${filter}&limit=4`)).filter((t) => t.slug !== tour.slug).slice(0, 3);
   const gallery = tour.gallery ?? [];
+  const video = TOUR_VIDEOS[tour.slug] ?? findYouTubeId(tour.contentHtml ?? "");
 
   return (
     <>
@@ -63,6 +66,12 @@ export default async function TourDetail({ params }: PageProps<"/tours/[slug]">)
 
       <section className="container-x grid gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_360px]">
         <article className="min-w-0">
+          {video && (
+            <div className="mb-10">
+              <h2 className="mb-4 font-card text-2xl font-bold"><L en="Watch the trip" zh="行程视频" /></h2>
+              <YouTubeEmbed id={video} title={tour.title} />
+            </div>
+          )}
           {/* Nội dung gốc từ vietlooktravel.com; ảnh trong bài đã có ở thư viện ảnh phía trên nên ẩn đi cho gọn */}
           <LHtml className={`tour-content ${gallery.length ? "hide-media" : ""}`} en={fitTables(tour.contentHtml ?? "")} zh={tour.contentHtmlZh ? fitTables(tour.contentHtmlZh) : undefined} />
         </article>

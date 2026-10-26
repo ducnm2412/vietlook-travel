@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import TourFilter from "@/components/TourFilter";
 import { T } from "@/lib/i18n";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { L } from "@/lib/i18n";
 import { getDestinations, getThemes, getTours } from "@/lib/content";
 import { findTheme } from "@/lib/themes";

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { pageMeta } from "@/lib/seo";
 import CarQuoteForm from "@/components/forms/CarQuoteForm";
 import PopularRoutes from "@/components/car/PopularRoutes";

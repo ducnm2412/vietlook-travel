@@ -4,20 +4,26 @@ import type { Metadata } from "next";
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://vietlooktravel.com";
 const DEFAULT_IMAGE = "/images/heroes/tours.webp";
 
-// Meta SEO đầy đủ cho một trang: title, description, canonical, Open Graph, Twitter card
+// Đường dẫn của trang theo từng ngôn ngữ, dùng cho hreflang (metadata và sitemap)
+export const langAlternates = (path: string) => {
+  const p = path === "/" ? "" : path;
+  return { en: `/en${p}`, "zh-Hans": `/zh${p}`, "x-default": `/en${p}` };
+};
+
+// Meta SEO đầy đủ cho một trang: title, description, hreflang /en – /zh, Open Graph, Twitter card
 export function pageMeta({ title, description, path, image = DEFAULT_IMAGE, keywords }: { title: string; description: string; path: string; image?: string | null; keywords?: string[] }): Metadata {
   const img = image || DEFAULT_IMAGE;
   return {
     title,
     description,
     keywords,
-    alternates: { canonical: path },
+    alternates: { languages: langAlternates(path) },
     openGraph: {
       type: "website",
       siteName: "Vietlook Travel",
       title,
       description,
-      url: path,
+      url: langAlternates(path).en,
       images: [{ url: img, width: 1200, height: 630, alt: title }],
       locale: "en_US",
       alternateLocale: ["zh_CN"],

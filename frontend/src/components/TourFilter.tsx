@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { useMemo, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronLeft, faChevronRight, faHeart as faHeartSolid, faMagnifyingGlass, faSliders, faXmark } from "@fortawesome/free-solid-svg-icons";

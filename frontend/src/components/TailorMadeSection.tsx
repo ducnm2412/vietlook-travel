@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faHeadset, faSliders, faWallet } from "@fortawesome/free-solid-svg-icons";
 import { L } from "@/lib/i18n";

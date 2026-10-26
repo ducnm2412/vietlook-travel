@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { notFound } from "next/navigation";
 import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
 import TourCard from "@/components/TourCard";
-import Img from "@/components/Img";
+import ThemeTiles from "@/components/ThemeTiles";
 import { L } from "@/lib/i18n";
-import { findTour, getTours, themeCover } from "@/lib/content";
+import { findTour, getTours } from "@/lib/content";
 import { findTheme, TOUR_THEMES } from "@/lib/themes";
 import type { Tour } from "@/lib/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -56,18 +56,7 @@ export default async function ThemePage({ params }: PageProps<"/themes/[slug]">)
       <section className="bg-photo-mint py-14">
         <div className="container-x">
           <SectionHeading center kicker={<L en="Find your way to travel" zh="找到适合您的旅行方式" />} title={<L en="Other tour styles" zh="其他旅行风格" />} />
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-7">
-            {TOUR_THEMES.filter((t) => t.slug !== theme.slug).map((t) => (
-              <Link key={t.slug} href={`/themes/${t.slug}`} className="group relative block aspect-[4/3] overflow-hidden sm:aspect-[3/4] rounded-2xl bg-brand-dark shadow-sm">
-                <Img src={themeCover(t.cover)} alt={t.name} width={320} className="absolute inset-0 h-full w-full transition duration-500 group-hover:scale-110" />
-                <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
-                <span className="absolute inset-x-0 bottom-0 p-4 text-white">
-                  <span className="block font-card text-lg font-bold"><L en={t.name} zh={t.zh} /></span>
-                  <span className="mt-0.5 block text-xs text-white/80"><L en={t.tagline} zh={t.taglineZh} /></span>
-                </span>
-              </Link>
-            ))}
-          </div>
+          <ThemeTiles themes={TOUR_THEMES.filter((t) => t.slug !== theme.slug)} cols="lg:grid-cols-7" />
         </div>
       </section>
 

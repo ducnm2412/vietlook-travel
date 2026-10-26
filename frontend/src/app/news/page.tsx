@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import GuideCard from "@/components/GuideCard";
 import PageHero from "@/components/PageHero";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { L, T } from "@/lib/i18n";
+import { headers } from "next/headers";
 import { getPosts } from "@/lib/content";
+import { findTopic, GUIDE_GROUPS, topicHref } from "@/lib/guide";
 
 export const metadata: Metadata = pageMeta({
   title: "Vietnam Travel Guide & News",
@@ -23,26 +25,65 @@ const pill = "grid h-10 min-w-10 place-items-center rounded-full border px-3 tex
 
 export default async function NewsPage({ searchParams }: PageProps<"/news">) {
   const sp = await searchParams;
-  const c = typeof sp.c === "string" ? sp.c : "";
+  const str = (k: string) => (typeof sp[k] === "string" ? (sp[k] as string) : "");
+  const c = str("c"), search = str("q").trim(), topic = findTopic(str("topic"));
   const page = Math.max(1, Number(sp.page) || 1);
-  const q = new URLSearchParams({ limit: String(PER_PAGE), page: String(page), ...(c && { category: c }) });
+  const zh = (await headers()).get("x-lang") === "zh";
+  // Giữ chuyên mục, chủ đề và từ khoá khi chuyển trang
+  const keep = { ...(c && { c }), ...(topic && { topic: topic.slug }), ...(search && { q: search }) };
+  const q = new URLSearchParams({ limit: String(PER_PAGE), page: String(page), ...(c && { category: c }), ...(topic && { topic: topic.slug }), ...(search && { q: search }) });
   const { items, total, categories } = await getPosts(`?${q}`);
   const pages = Math.ceil(total / PER_PAGE);
-  const href = (p: number) => `/news?${new URLSearchParams({ ...(c && { c }), page: String(p) })}`;
+  const href = (p: number) => `/news?${new URLSearchParams({ ...keep, page: String(p) })}`;
 
   return (
     <>
       <PageHero title={<T k="nav.news" />} sub={<T k="sec.guide.t" />} image="/images/heroes/news.webp" />
       <section className="container-x py-14">
+        {/* Tìm bài viết (giữ chủ đề đang chọn) */}
+        <form action="/news" className="mb-6 flex max-w-2xl items-center gap-3 rounded-xl border border-black/10 bg-white px-4 py-2 focus-within:border-brand">
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="text-muted" />
+          {topic && <input type="hidden" name="topic" value={topic.slug} />}
+          <input name="q" defaultValue={search} placeholder={zh ? "搜索旅行指南…" : "Search travel guides…"} className="w-full bg-transparent py-1.5 outline-none" />
+          <button className="btn btn-brand !px-5 !py-2 text-sm"><L en="Search" zh="搜索" /></button>
+        </form>
+
+        {/* Chủ đề cẩm nang theo nhóm */}
+        <div className="mb-8 grid gap-4 rounded-2xl bg-sand p-5 sm:grid-cols-2 lg:grid-cols-4">
+          {GUIDE_GROUPS.map((g) => (
+            <div key={g.title}>
+              <p className="mb-2 text-xs font-bold uppercase tracking-wider text-accent"><L en={g.title} zh={g.zh} /></p>
+              <div className="flex flex-wrap gap-1.5">
+                {g.topics.map((t) => (
+                  <Link key={t.slug} href={topicHref(t)} className={`rounded-full border px-3 py-1 text-sm transition ${topic?.slug === t.slug ? "border-brand bg-brand text-white" : "border-black/10 bg-white hover:border-brand hover:text-brand"}`}><L en={t.en} zh={t.zh} /></Link>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {(topic || search) && (
+          <p className="mb-6 text-lg">
+            <b>{total}</b> <L en="articles" zh="篇文章" />
+            {topic && <> · <L en={topic.en} zh={topic.zh} /></>}
+            {search && <> · “{search}”</>}
+            <Link href="/news" className="ml-3 text-sm font-semibold text-brand hover:underline"><L en="Clear" zh="清除" /> ×</Link>
+          </p>
+        )}
+
         <div className="mb-8 flex flex-wrap gap-2">
           <Link href="/news" className={`rounded-full border px-4 py-2 text-sm ${!c ? "border-brand bg-brand text-white" : ""}`}><L en="All" zh="全部" /> ({total && !c ? total : "…"})</Link>
           {categories.map((cat) => (
             <Link key={cat} href={`/news?c=${encodeURIComponent(cat)}`} className={`rounded-full border px-4 py-2 text-sm ${c === cat ? "border-brand bg-brand text-white" : ""}`}><L en={cat} zh={CAT_ZH[cat] ?? cat} /></Link>
           ))}
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map((p) => <GuideCard key={p.slug} post={p} />)}
-        </div>
+        {items.length ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {items.map((p) => <GuideCard key={p.slug} post={p} />)}
+          </div>
+        ) : (
+          <p className="rounded-2xl bg-sand p-10 text-center text-muted"><L en="No articles found. Try another keyword." zh="没有找到相关文章，请换个关键词。" /></p>
+        )}
         {pages > 1 && (
           <nav className="mt-12 flex flex-wrap items-center justify-center gap-2" aria-label="Pagination">
             {page > 1 ? (

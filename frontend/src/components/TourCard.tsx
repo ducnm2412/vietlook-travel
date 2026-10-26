@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import Img from "./Img";
 import { L, T } from "@/lib/i18n";
 import { formatUsd, type Tour } from "@/lib/api";

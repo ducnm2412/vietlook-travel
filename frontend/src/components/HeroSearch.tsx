@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useLang } from "@/lib/i18n";
 import type { Destination } from "@/lib/api";
+import { withLang } from "@/lib/locale";
 import { DUR } from "./TourFilter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -29,9 +30,9 @@ export default function HeroSearch({ destinations, styles }: { destinations: Des
       p.set("maxDays", String(d.max));
     }
     // Chỉ chọn phong cách: mở thẳng trang chủ đề; kết hợp điều kiện khác: lọc trong danh sách tour
-    if (style && !p.size) return router.push(`/themes/${style}`);
+    if (style && !p.size) return router.push(withLang(`/themes/${style}`, lang));
     if (style) p.set("style", style);
-    router.push(`/tours${p.size ? `?${p}` : ""}`);
+    router.push(withLang(`/tours${p.size ? `?${p}` : ""}`, lang));
   };
 
   const label = "mb-1.5 block text-xs font-bold uppercase tracking-wider text-muted";

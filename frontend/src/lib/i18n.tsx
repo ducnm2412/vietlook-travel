@@ -245,14 +245,16 @@ export type DictKey = keyof (typeof dict)["en"];
 
 const LangContext = createContext<{ lang: Lang; setLang: (l: Lang) => void }>({ lang: "en", setLang: () => {} });
 
-// Ngôn ngữ lưu trong cookie "lang" để layout (server) đọc được ở lần tải sau
+// Ngôn ngữ nằm trong đường dẫn (/en, /zh – xem proxy.ts); đổi ngôn ngữ = mở cùng trang với tiền tố còn lại
 export function LangProvider({ children, initial = "en" }: { children: ReactNode; initial?: Lang }) {
   const [lang, setLangState] = useState<Lang>(initial);
 
   const setLang = (l: Lang) => {
+    if (l === lang) return;
     setLangState(l);
-    document.documentElement.lang = l === "zh" ? "zh-Hans" : "en";
     document.cookie = `lang=${l}; path=/; max-age=31536000`;
+    const { pathname, search, hash } = window.location;
+    window.location.assign(`/${l}${pathname.replace(/^\/(en|zh)(?=\/|$)/, "")}${search}${hash}`);
   };
 
   return <LangContext.Provider value={{ lang, setLang }}>{children}</LangContext.Provider>;

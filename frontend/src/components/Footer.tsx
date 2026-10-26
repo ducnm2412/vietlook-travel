@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiamondTurnRight, faEnvelope, faLocationDot, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { faFacebookF, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
@@ -29,6 +29,8 @@ const SERVICES: Item[] = [
 
 const COMPANY: Item[] = [
   { en: "About us", zh: "关于我们", href: "/about" },
+  { en: "Payment policy", zh: "付款政策", href: "/payment-policy" },
+  { en: "Cancellation & changes", zh: "取消与变更", href: "/cancellation-policy" },
   { en: "Privacy policy", zh: "隐私政策", href: "/privacy-policy" },
   { en: "Guest reviews", zh: "客人评价", href: "/#reviews" },
   { en: "News & blog", zh: "新闻与博客", href: "/news" },

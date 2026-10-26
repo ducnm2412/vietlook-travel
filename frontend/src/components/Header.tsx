@@ -1,10 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useLang, type DictKey } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
+import { stripLang } from "@/lib/locale";
+import { GUIDE_GROUPS, topicHref } from "@/lib/guide";
 import Img from "./Img";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark, faChevronDown, faChevronRight } from "@fortawesome/free-solid-svg-icons";
@@ -143,7 +145,12 @@ const MENU: MenuItem[] = [
     ],
   },
   { key: "nav.visa", href: "/visa" },
-  { key: "nav.news", href: "/news" },
+  {
+    key: "nav.news",
+    href: "/news",
+    // Cẩm nang nhiều cấp kiểu localvietnam.com: mỗi cột là một nhóm chủ đề
+    mega: GUIDE_GROUPS.map((g) => ({ title: g.title, zh: g.zh, links: g.topics.map((t) => ({ label: t.en, zh: t.zh, href: topicHref(t) })) })),
+  },
   {
     key: "nav.about",
     href: "/about",
@@ -152,6 +159,8 @@ const MENU: MenuItem[] = [
         title: "About us", zh: "关于我们",
         links: [
           { label: "About Vietlook Travel", zh: "关于 Vietlook Travel", href: "/about" },
+          { label: "Payment policy", zh: "付款政策", href: "/payment-policy" },
+          { label: "Cancellation & changes", zh: "取消与变更", href: "/cancellation-policy" },
           { label: "Privacy policy", zh: "隐私政策", href: "/privacy-policy" },
         ],
       },
@@ -174,7 +183,7 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
   const { t, lang, setLang } = useLang();
   const [open, setOpen] = useState(false);
   const zh = lang === "zh";
-  const pathname = usePathname();
+  const pathname = stripLang(usePathname());
   const [scrolled, setScrolled] = useState(false);
   const [panel, setPanel] = useState(0);
 
@@ -267,8 +276,24 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
                     </div>
                   );
                 })()}
+                {/* Dropdown nhiều cột (menu cẩm nang): mỗi cột một nhóm, cuối có link xem tất cả */}
+                {item.mega && !item.panels && !item.tiles && item.mega.length > 1 && (
+                  <div className="invisible absolute right-0 top-full z-50 w-[min(900px,calc(100vw-2rem))] -translate-y-2 bg-white p-6 normal-case tracking-normal text-ink opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                    <div className="grid grid-cols-4 gap-6">
+                      {item.mega.map((col) => (
+                        <div key={col.title}>
+                          <p className="mb-3 text-xs font-bold uppercase tracking-wider text-accent">{zh && col.zh ? col.zh : col.title}</p>
+                          <ul className="space-y-2 text-sm font-medium">
+                            {col.links.map((l) => <li key={l.href}><Link href={l.href} className="text-ink/80 hover:text-brand">{zh && l.zh ? l.zh : l.label}</Link></li>)}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                    <Link href={item.href} className="mt-5 block border-t border-black/10 pt-4 text-sm font-semibold text-brand hover:underline">{zh ? "全部旅行指南" : "All travel guides"} →</Link>
+                  </div>
+                )}
                 {/* Dropdown dạng danh sách (mục có menu con nhưng không có lưới ảnh) */}
-                {item.mega && !item.panels && !item.tiles && (
+                {item.mega && !item.panels && !item.tiles && item.mega.length === 1 && (
                   <ul className="invisible absolute top-full z-50 min-w-56 bg-white py-2 text-sm normal-case tracking-normal text-ink -translate-y-2 opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
                     {item.mega.flatMap((c) => c.links).map((l) => (
                       <li key={l.href}><Link href={l.href} className="block px-5 py-2.5 font-semibold hover:bg-brand-light hover:text-brand">{zh && l.zh ? l.zh : l.label}</Link></li>
