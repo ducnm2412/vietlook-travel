@@ -24,7 +24,7 @@ export default async function ToursPage({ searchParams }: PageProps<"/tours">) {
       <PageHero title={<T k="nav.tours" />} sub={<T k="sec.long.s" />} image="/images/heroes/tours.webp" />
       <section className="container-x py-14">
         {/* key để bộ lọc reset khi điều hướng từ menu với query mới */}
-        <TourFilter key={JSON.stringify(initial)} tours={tours} destinations={destinations} themes={themes} initial={initial} />
+        <TourFilter key={JSON.stringify(initial)} tours={tours} destinations={destinations} themes={themes} initial={initial} initialPage={Math.max(1, parseInt(pick("page")) || 1)} />
       </section>
     </>
   );

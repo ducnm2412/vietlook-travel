@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownWideShort, faChevronLeft, faChevronRight, faHeart as faHeartSolid, faLocationDot, faMagnifyingGlass, faRotateLeft, faSliders, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
@@ -10,7 +10,7 @@ import { useLang } from "@/lib/i18n";
 import { REGIONS } from "@/lib/site";
 import { formatUsd, USD_TO_VND, type Destination, type Theme, type Tour } from "@/lib/api";
 
-const PAGE = 24;
+const PAGE = 12;
 
 const DUR = [
   { key: "1", en: "1 day", zh: "1天", min: 0, max: 1 },
@@ -99,7 +99,7 @@ function GridCard({ t, zh, fav, onFav, theme, place }: { t: Tour; zh: boolean; f
   );
 }
 
-export default function TourFilter({ tours, destinations, themes, initial }: { tours: Tour[]; destinations: Destination[]; themes: Theme[]; initial: Partial<Filters> }) {
+export default function TourFilter({ tours, destinations, themes, initial, initialPage = 1 }: { tours: Tour[]; destinations: Destination[]; themes: Theme[]; initial: Partial<Filters>; initialPage?: number }) {
   const { lang } = useLang();
   const zh = lang === "zh";
 
@@ -114,12 +114,21 @@ export default function TourFilter({ tours, destinations, themes, initial }: { t
   const [price, setPrice] = useState(maxUsd);
   const [minPrice, setMinPrice] = useState(0);
   const [sort, setSort] = useState("");
-  const [shown, setShown] = useState(PAGE);
+  const [page, setPageState] = useState(initialPage);
+  const top = useRef<HTMLDivElement>(null);
   const [liked, setLiked] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
 
-  const reset = () => { setQ(""); setDestination(""); setRegions([]); setThemeSel([]); setDurs([]); setPrice(maxUsd); setMinPrice(0); setShown(PAGE); };
-  const on = <V,>(fn: (v: V) => void) => (v: V) => { fn(v); setShown(PAGE); };
+  // Lưu trang hiện tại vào URL (?page=N) để bấm Back từ trang chi tiết quay lại đúng trang
+  const setPage = (n: number, scroll = false) => {
+    setPageState(n);
+    const url = new URL(window.location.href);
+    if (n > 1) url.searchParams.set("page", String(n)); else url.searchParams.delete("page");
+    window.history.replaceState(window.history.state, "", url);
+    if (scroll) top.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  const reset = () => { setQ(""); setDestination(""); setRegions([]); setThemeSel([]); setDurs([]); setPrice(maxUsd); setMinPrice(0); setPage(1); };
+  const on = <V,>(fn: (v: V) => void) => (v: V) => { fn(v); setPage(1); };
 
   const result = useMemo(() => {
     const list = tours.filter((t) => {
@@ -139,6 +148,11 @@ export default function TourFilter({ tours, destinations, themes, initial }: { t
     if (sort === "days-desc") list.sort((a, b) => b.days - a.days);
     return list;
   }, [tours, regions, destination, themeSel, durs, price, minPrice, maxUsd, q, sort]);
+
+  const pages = Math.max(1, Math.ceil(result.length / PAGE));
+  const cur = Math.min(page, pages);
+  // Danh sách số trang rút gọn: 1 … 4 5 6 … 10
+  const nums = [...new Set([1, cur - 1, cur, cur + 1, pages])].filter((n) => n >= 1 && n <= pages).sort((a, b) => a - b);
 
   // Đếm số tour cho từng lựa chọn (trên toàn bộ danh sách)
   const count = (fn: (t: Tour) => boolean) => tours.filter(fn).length;
@@ -219,7 +233,7 @@ export default function TourFilter({ tours, destinations, themes, initial }: { t
         </div>
       )}
 
-      <div>
+      <div ref={top} className="scroll-mt-32">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-black/10 pb-5">
           <p className="whitespace-nowrap text-sm">
             <b className="font-card text-base">{result.length} {zh ? "条线路" : "tours"}</b> <span className="text-muted">{zh ? "在越南" : "in Vietnam"}</span>
@@ -230,7 +244,7 @@ export default function TourFilter({ tours, destinations, themes, initial }: { t
             </button>
             <label className="flex items-center gap-2 rounded-full bg-sand px-4 py-2 text-sm font-medium text-brand">
               <FontAwesomeIcon icon={faArrowDownWideShort} />
-              <select value={sort} onChange={(e) => setSort(e.target.value)} className="bg-transparent outline-none" aria-label="Sort">
+              <select value={sort} onChange={(e) => on(setSort)(e.target.value)} className="bg-transparent outline-none" aria-label="Sort">
                 {SORTS.map((s) => <option key={s.v} value={s.v}>{zh ? s.zh : s.en}</option>)}
               </select>
             </label>
@@ -239,17 +253,33 @@ export default function TourFilter({ tours, destinations, themes, initial }: { t
 
         {result.length ? (
           <div className="grid gap-x-6 gap-y-8 sm:grid-cols-2 xl:grid-cols-3">
-            {result.slice(0, shown).map((t) => (
+            {result.slice((cur - 1) * PAGE, cur * PAGE).map((t) => (
               <GridCard key={t.slug} t={t} zh={zh} fav={liked.includes(t.slug)} onFav={() => setLiked(toggle(liked, t.slug))} theme={themeName(t.theme)} place={destName(t.destinations[0])} />
             ))}
           </div>
         ) : (
           <p className="rounded-2xl bg-sand p-10 text-center text-muted">{zh ? "没有符合条件的线路，欢迎联系我们定制行程。" : "No tours match your filters — ask us for a tailor-made itinerary."}</p>
         )}
-        {result.length > shown && (
-          <div className="mt-10 text-center">
-            <button onClick={() => setShown(shown + PAGE)} className="btn btn-outline text-brand">{zh ? "加载更多" : "Load more"} ({result.length - shown})</button>
-          </div>
+        {pages > 1 && (
+          <nav className="mt-10 flex flex-wrap items-center justify-center gap-2" aria-label="Pagination">
+            <button onClick={() => setPage(cur - 1, true)} disabled={cur === 1} aria-label="Previous page"
+              className="grid h-10 w-10 place-items-center rounded-full border border-black/15 text-sm text-brand transition hover:bg-sand disabled:pointer-events-none disabled:opacity-40">
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            {nums.map((n, k) => (
+              <span key={n} className="flex items-center gap-2">
+                {k > 0 && n - nums[k - 1] > 1 && <span className="px-1 text-muted">…</span>}
+                <button onClick={() => setPage(n, true)} aria-current={n === cur ? "page" : undefined}
+                  className={`h-10 min-w-10 rounded-full px-3 text-sm font-semibold transition ${n === cur ? "bg-brand text-white" : "border border-black/15 text-brand hover:bg-sand"}`}>
+                  {n}
+                </button>
+              </span>
+            ))}
+            <button onClick={() => setPage(cur + 1, true)} disabled={cur === pages} aria-label="Next page"
+              className="grid h-10 w-10 place-items-center rounded-full border border-black/15 text-sm text-brand transition hover:bg-sand disabled:pointer-events-none disabled:opacity-40">
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+          </nav>
         )}
       </div>
     </div>
