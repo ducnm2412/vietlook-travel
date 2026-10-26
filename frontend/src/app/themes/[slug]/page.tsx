@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps<"/themes/[slug]">):
     title: `${theme.name} Tours in Vietnam – ${theme.tagline}`,
     description: theme.intro,
     path: `/themes/${theme.slug}`,
-    image: findTour(theme.tours[0])?.image ?? undefined,
+    image: theme.hero,
     keywords: [`Vietnam ${theme.name.toLowerCase()} tours`, `private ${theme.name.toLowerCase()} tour Vietnam`],
   });
 }
@@ -34,14 +34,13 @@ export default async function ThemePage({ params }: PageProps<"/themes/[slug]">)
   const tours = theme.tours.map(findTour).filter((t): t is Tour => !!t).map(({ contentHtml, contentHtmlZh, ...t }) => t);
   // Tour tham khảo cuối trang: tour dài ngày không thuộc chủ đề này
   const others = (await getTours("?minDays=4")).filter((t) => !theme.tours.includes(t.slug)).slice(0, 4);
-  const hero = tours.find((t) => t.image)?.image ?? "/images/heroes/tours.webp";
 
   return (
     <>
       <PageHero
         title={<L en={`${theme.name} tours`} zh={`${theme.zh}之旅`} />}
         sub={<L en={theme.tagline} zh={theme.taglineZh} />}
-        image={hero}
+        image={theme.hero}
       />
 
       <section className="container-x py-14">

@@ -3,6 +3,10 @@ import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
 import { L } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
+import Img from "@/components/Img";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { faAddressCard, faCircleCheck, faEnvelope, faLocationDot, faPhone, faRoute, faShieldHalved, faUserCheck } from "@fortawesome/free-solid-svg-icons";
 
 export const metadata: Metadata = pageMeta({
   title: "Privacy Policy",
@@ -13,8 +17,9 @@ export const metadata: Metadata = pageMeta({
 });
 
 // Nội dung theo trang chính sách của vietlooktravel-operators.vercel.app/policies/privacy
-const SECTIONS: { en: string; zh: string; items: { en: string; zh: string }[] }[] = [
+const SECTIONS: { id: string; icon: IconDefinition; image: string; en: string; zh: string; items: { en: string; zh: string }[] }[] = [
   {
+    id: "collect", icon: faAddressCard, image: "/images/reviews/oldquarter.webp",
     en: "1. Information we collect",
     zh: "1. 我们收集的信息",
     items: [
@@ -24,6 +29,7 @@ const SECTIONS: { en: string; zh: string; items: { en: string; zh: string }[] }[
     ],
   },
   {
+    id: "use", icon: faRoute, image: "/images/reviews/boat.webp",
     en: "2. How we use your information",
     zh: "2. 信息的使用",
     items: [
@@ -33,6 +39,7 @@ const SECTIONS: { en: string; zh: string; items: { en: string; zh: string }[] }[
     ],
   },
   {
+    id: "security", icon: faShieldHalved, image: "/images/reviews/tamcoc.webp",
     en: "3. Security and retention",
     zh: "3. 安全与保存",
     items: [
@@ -41,6 +48,7 @@ const SECTIONS: { en: string; zh: string; items: { en: string; zh: string }[] }[
     ],
   },
   {
+    id: "rights", icon: faUserCheck, image: "/images/reviews/hats.webp",
     en: "4. Your rights",
     zh: "4. 您的权利",
     items: [
@@ -53,22 +61,69 @@ export default function PrivacyPolicyPage() {
   return (
     <>
       <PageHero title={<L en="Privacy Policy" zh="隐私政策" />} sub={<L en="How we collect, use and protect your personal information." zh="我们如何收集、使用和保护您的个人信息。" />} image="/images/heroes/about.webp" />
-      <section className="container-x max-w-3xl py-14">
-        {SECTIONS.map((s) => (
-          <div key={s.en} className="mb-10">
-            <h2 className="font-card text-2xl font-bold"><L en={s.en} zh={s.zh} /></h2>
-            <ul className="mt-4 list-disc space-y-2 pl-5 leading-relaxed text-ink/80">
-              {s.items.map((i) => <li key={i.en}><L en={i.en} zh={i.zh} /></li>)}
-            </ul>
+      {/* Tóm tắt: 4 thẻ icon, bấm để nhảy tới mục */}
+      <section className="container-x py-14">
+        <p className="mx-auto max-w-2xl text-center text-lg text-muted">
+          <L en="Your trust matters to us. Here is a clear summary of what we collect, why, and how you stay in control of your data." zh="您的信任对我们至关重要。以下简要说明我们收集哪些信息、用途，以及您如何掌控自己的数据。" />
+        </p>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {SECTIONS.map((s) => (
+            <a key={s.id} href={`#${s.id}`} className="group rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5 transition duration-300 hover:-translate-y-1.5 hover:shadow-xl">
+              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-light text-2xl text-brand transition duration-300 group-hover:rotate-6 group-hover:scale-110 group-hover:bg-brand group-hover:text-white">
+                <FontAwesomeIcon icon={s.icon} />
+              </span>
+              <p className="mt-4 font-card text-lg font-bold"><L en={s.en.replace(/^\d+\. /, "")} zh={s.zh.replace(/^\d+\. /, "")} /></p>
+              <p className="mt-1 text-sm text-muted"><L en={s.items[0].en} zh={s.items[0].zh} /></p>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* Từng mục: ảnh minh hoạ xen kẽ trái/phải */}
+      {SECTIONS.map((s, k) => (
+        <section key={s.id} id={s.id} className={`scroll-mt-32 py-12 md:py-16 ${k % 2 ? "bg-photo-light" : ""}`}>
+          <div className="container-x grid items-center gap-10 lg:grid-cols-2">
+            <div className={`group relative ${k % 2 ? "lg:order-2" : ""}`}>
+              <div className={`absolute -inset-3 -z-10 rounded-3xl bg-accent/20 transition duration-500 group-hover:rotate-0 ${k % 2 ? "-rotate-2" : "rotate-2"}`} />
+              <Img src={s.image} alt="" width={640} className="aspect-[4/3] rounded-2xl shadow-lg [&_img]:transition [&_img]:duration-700 group-hover:[&_img]:scale-105" />
+              <span className="absolute -bottom-5 left-6 grid h-16 w-16 place-items-center rounded-2xl bg-brand text-2xl text-white shadow-xl">
+                <FontAwesomeIcon icon={s.icon} />
+              </span>
+            </div>
+            <div>
+              <p className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-accent"><L en={`Section ${k + 1}`} zh={`第${k + 1}部分`} /></p>
+              <h2 className="font-card text-3xl font-bold"><L en={s.en.replace(/^\d+\. /, "")} zh={s.zh.replace(/^\d+\. /, "")} /></h2>
+              <ul className="mt-6 space-y-4">
+                {s.items.map((i) => (
+                  <li key={i.en} className="flex gap-3 leading-relaxed text-ink/80">
+                    <FontAwesomeIcon icon={faCircleCheck} className="mt-1 shrink-0 text-brand" />
+                    <span><L en={i.en} zh={i.zh} /></span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-        ))}
-        <div className="rounded-2xl bg-brand-light p-6">
-          <h2 className="font-card text-2xl font-bold"><L en="Contact us" zh="联系我们" /></h2>
-          <ul className="mt-4 space-y-1 text-ink/80">
-            <li>Email: <a href={`mailto:${SITE.email}`} className="text-brand hover:underline">{SITE.email}</a></li>
-            <li><L en="Hotline 24/7" zh="24小时热线" />: <a href={`tel:+${SITE.phoneRaw}`} className="text-brand hover:underline">{SITE.phone}</a></li>
-            <li><L en="Address" zh="地址" />: No 58, Yen Nghia Ward, Ha Dong, Hanoi, Vietnam</li>
-          </ul>
+        </section>
+      ))}
+
+      {/* Liên hệ */}
+      <section className="bg-photo-dark py-16 text-white">
+        <div className="container-x text-center">
+          <h2 className="font-serif text-3xl font-bold md:text-4xl"><L en="Questions about your data?" zh="对您的数据有疑问？" /></h2>
+          <p className="mt-3 text-white/80"><L en="Contact us any time — we reply within 24 hours." zh="欢迎随时联系我们，我们将在24小时内回复。" /></p>
+          <div className="mt-10 grid gap-5 sm:grid-cols-3">
+            {[
+              { icon: faEnvelope, label: { en: "Email", zh: "电子邮件" }, value: SITE.email, href: `mailto:${SITE.email}` },
+              { icon: faPhone, label: { en: "Hotline 24/7", zh: "24小时热线" }, value: SITE.phone, href: `tel:+${SITE.phoneRaw}` },
+              { icon: faLocationDot, label: { en: "Address", zh: "地址" }, value: "No 58, Yen Nghia Ward, Ha Dong, Hanoi, Vietnam", href: undefined },
+            ].map((c) => (
+              <a key={c.label.en} href={c.href} className="rounded-2xl bg-white/10 p-6 ring-1 ring-white/15 backdrop-blur transition duration-300 hover:-translate-y-1 hover:bg-white/15">
+                <FontAwesomeIcon icon={c.icon} className="text-2xl text-accent" />
+                <p className="mt-3 text-sm uppercase tracking-wider text-white/70"><L en={c.label.en} zh={c.label.zh} /></p>
+                <p className="mt-1 break-words font-semibold">{c.value}</p>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
     </>
