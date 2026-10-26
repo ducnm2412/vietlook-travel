@@ -22,7 +22,7 @@ export default async function Home() {
 
   return (
     <>
-      <HeroVideo />
+      <HeroVideo destinations={destinations} />
 
       <PackageTours tours={packages} />
 

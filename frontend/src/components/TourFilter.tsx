@@ -12,7 +12,7 @@ import { formatUsd, USD_TO_VND, type Destination, type Theme, type Tour } from "
 
 const PAGE = 12;
 
-const DUR = [
+export const DUR = [
   { key: "1", en: "1 day", zh: "1天", min: 0, max: 1 },
   { key: "2-5", en: "2 – 5 days", zh: "2–5天", min: 2, max: 5 },
   { key: "1w", en: "1 week", zh: "1周", min: 6, max: 10 },

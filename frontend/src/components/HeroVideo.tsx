@@ -2,10 +2,13 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import HeroBackground from "./HeroBackground";
+import HeroSearch from "./HeroSearch";
+import type { Destination } from "@/lib/api";
+import { TOUR_THEMES } from "@/lib/themes";
 import { T } from "@/lib/i18n";
 
 // Hero toàn màn hình với video nền, bố cục theo auroratravel.asia
-export default function HeroVideo() {
+export default function HeroVideo({ destinations }: { destinations: Destination[] }) {
   return (
     <section className="relative isolate flex min-h-[760px] flex-col overflow-hidden md:h-[115vh]">
       <HeroBackground />
@@ -26,6 +29,9 @@ export default function HeroVideo() {
             <FontAwesomeIcon icon={faPenToSquare} />
             <T k="hero.car" />
           </Link>
+        </div>
+        <div className="mt-8 md:mt-14">
+          <HeroSearch destinations={destinations} styles={TOUR_THEMES.map(({ slug, name, zh }) => ({ slug, name, zh }))} />
         </div>
       </div>
 

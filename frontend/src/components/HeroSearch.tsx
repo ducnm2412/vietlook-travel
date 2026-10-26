@@ -3,68 +3,69 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useLang } from "@/lib/i18n";
-import type { Destination, Theme } from "@/lib/api";
+import type { Destination } from "@/lib/api";
+import { DUR } from "./TourFilter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-export const DURATIONS = [
-  { value: "", en: "Any", zh: "不限" },
-  { value: "1-3", en: "1–3 days", zh: "1–3天" },
-  { value: "4-6", en: "4–6 days", zh: "4–6天" },
-  { value: "7-9", en: "1 week", zh: "一周" },
-  { value: "10-16", en: "2 weeks", zh: "两周" },
-  { value: "17-30", en: "3 weeks+", zh: "三周以上" },
-];
-
-export default function HeroSearch({ destinations, themes }: { destinations: Destination[]; themes: Theme[] }) {
-  const { t, lang } = useLang();
+// Thanh tìm tour ở hero trang chủ: từ khoá, điểm đến, thời lượng, phong cách (chủ đề /themes/*)
+export default function HeroSearch({ destinations, styles }: { destinations: Destination[]; styles: { slug: string; name: string; zh: string }[] }) {
+  const { lang } = useLang();
+  const zh = lang === "zh";
   const router = useRouter();
+  const [q, setQ] = useState("");
   const [destination, setDestination] = useState("");
-  const [theme, setTheme] = useState("");
   const [duration, setDuration] = useState("");
+  const [style, setStyle] = useState("");
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const p = new URLSearchParams();
+    if (q.trim()) p.set("q", q.trim());
     if (destination) p.set("destination", destination);
-    if (theme) p.set("theme", theme);
-    if (duration) {
-      const [min, max] = duration.split("-");
-      p.set("minDays", min);
-      p.set("maxDays", max);
+    const d = DUR.find((x) => x.key === duration);
+    if (d) {
+      if (d.min) p.set("minDays", String(d.min));
+      p.set("maxDays", String(d.max));
     }
-    router.push(`/tours?${p.toString()}`);
+    // Chỉ chọn phong cách: mở thẳng trang chủ đề; kết hợp điều kiện khác: lọc trong danh sách tour
+    if (style && !p.size) return router.push(`/themes/${style}`);
+    if (style) p.set("style", style);
+    router.push(`/tours${p.size ? `?${p}` : ""}`);
   };
 
+  const label = "mb-1.5 block text-xs font-bold uppercase tracking-wider text-muted";
   return (
-    <form onSubmit={submit} className="grid gap-3 rounded-2xl bg-white p-4 shadow-2xl sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end">
+    <form onSubmit={submit} className="grid gap-3 rounded-2xl bg-white p-4 text-ink shadow-2xl sm:grid-cols-2 sm:p-5 lg:grid-cols-[1.4fr_1fr_1fr_1fr_auto] lg:items-end">
       <label>
-        <span className="label">{t("search.destination")}</span>
+        <span className={label}>{zh ? "关键词" : "Keyword"}</span>
+        <span className="relative block">
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-muted" />
+          <input className="field !pl-10" value={q} onChange={(e) => setQ(e.target.value)} placeholder={zh ? "线路名称、地点…" : "Tour name, place…"} />
+        </span>
+      </label>
+      <label>
+        <span className={label}>{zh ? "去哪里？" : "Where to?"}</span>
         <select className="field" value={destination} onChange={(e) => setDestination(e.target.value)}>
-          <option value="">{t("search.any")}</option>
-          {destinations.map((d) => (
-            <option key={d.slug} value={d.slug}>{lang === "zh" ? d.zh : d.name}</option>
-          ))}
+          <option value="">{zh ? "不限" : "Any"}</option>
+          {destinations.map((d) => <option key={d.slug} value={d.slug}>{zh ? d.zh : d.name}</option>)}
         </select>
       </label>
       <label>
-        <span className="label">{t("search.theme")}</span>
-        <select className="field" value={theme} onChange={(e) => setTheme(e.target.value)}>
-          <option value="">{t("search.any")}</option>
-          {themes.map((th) => (
-            <option key={th.slug} value={th.slug}>{lang === "zh" ? th.zh : th.name}</option>
-          ))}
-        </select>
-      </label>
-      <label>
-        <span className="label">{t("search.duration")}</span>
+        <span className={label}>{zh ? "多长时间？" : "How long?"}</span>
         <select className="field" value={duration} onChange={(e) => setDuration(e.target.value)}>
-          {DURATIONS.map((d) => (
-            <option key={d.value} value={d.value}>{lang === "zh" ? d.zh : d.en}</option>
-          ))}
+          <option value="">{zh ? "不限" : "Any"}</option>
+          {DUR.map((d) => <option key={d.key} value={d.key}>{zh ? d.zh : d.en}</option>)}
         </select>
       </label>
-      <button className="btn btn-brand h-[46px]"><FontAwesomeIcon icon={faMagnifyingGlass} /> {t("search.btn")}</button>
+      <label>
+        <span className={label}>{zh ? "旅行风格" : "Travel style"}</span>
+        <select className="field" value={style} onChange={(e) => setStyle(e.target.value)}>
+          <option value="">{zh ? "不限" : "Any"}</option>
+          {styles.map((s) => <option key={s.slug} value={s.slug}>{zh ? s.zh : s.name}</option>)}
+        </select>
+      </label>
+      <button className="btn btn-brand h-[46px] whitespace-nowrap sm:col-span-2 lg:col-span-1"><FontAwesomeIcon icon={faMagnifyingGlass} /> {zh ? "搜索线路" : "Search tours"}</button>
     </form>
   );
 }
