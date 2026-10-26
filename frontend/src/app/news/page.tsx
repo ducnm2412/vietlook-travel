@@ -8,7 +8,7 @@ import { faChevronLeft, faChevronRight, faMagnifyingGlass } from "@fortawesome/f
 import { L, T } from "@/lib/i18n";
 import { headers } from "next/headers";
 import { getPosts } from "@/lib/content";
-import { findTopic, GUIDE_GROUPS, topicHref } from "@/lib/guide";
+import { findTopic } from "@/lib/guide";
 
 export const metadata: Metadata = pageMeta({
   title: "Vietnam Travel Guide & News",
@@ -47,20 +47,6 @@ export default async function NewsPage({ searchParams }: PageProps<"/news">) {
           <input name="q" defaultValue={search} placeholder={zh ? "搜索旅行指南…" : "Search travel guides…"} className="w-full bg-transparent py-1.5 outline-none" />
           <button className="btn btn-brand !px-5 !py-2 text-sm"><L en="Search" zh="搜索" /></button>
         </form>
-
-        {/* Chủ đề cẩm nang theo nhóm */}
-        <div className="mb-8 grid gap-4 rounded-2xl bg-sand p-5 sm:grid-cols-2 lg:grid-cols-4">
-          {GUIDE_GROUPS.map((g) => (
-            <div key={g.title}>
-              <p className="mb-2 text-xs font-bold uppercase tracking-wider text-accent"><L en={g.title} zh={g.zh} /></p>
-              <div className="flex flex-wrap gap-1.5">
-                {g.topics.map((t) => (
-                  <Link key={t.slug} href={topicHref(t)} className={`rounded-full border px-3 py-1 text-sm transition ${topic?.slug === t.slug ? "border-brand bg-brand text-white" : "border-black/10 bg-white hover:border-brand hover:text-brand"}`}><L en={t.en} zh={t.zh} /></Link>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
 
         {(topic || search) && (
           <p className="mb-6 text-lg">
