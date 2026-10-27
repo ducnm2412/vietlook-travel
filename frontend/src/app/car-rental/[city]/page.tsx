@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { pageMeta } from "@/lib/seo";
 import CarQuoteForm from "@/components/forms/CarQuoteForm";
 import TourCard from "@/components/TourCard";
+import BestSellerTours from "@/components/BestSellerTours";
 import { NationwideService } from "@/components/car/CarFleet";
 import { CAR_CITIES, cityPath } from "@/components/car/cities";
 import { L, T } from "@/lib/i18n";
@@ -52,7 +53,7 @@ export default async function CarCityPage({ params }: PageProps<"/car-rental/[ci
             </h1>
             <p className="mt-4 flex items-center gap-2 text-white/85"><FontAwesomeIcon icon={faPlaneArrival} className="text-accent" />{city.airport}</p>
             <ul className="mt-6 space-y-2 text-sm">
-              {[["Fixed price per car, tolls & parking included", "按车固定价格，含过路费和停车费"], ["Professional local drivers", "专业本地司机"], ["Daily departure, any time you choose", "每日出发，时间自选"]].map(([en, zh]) => (
+              {[["Fixed price per car, tolls and parking included", "按车固定价格，含过路费和停车费"], ["Professional local drivers", "专业本地司机"], ["Daily departure, any time you choose", "每日出发，时间自选"]].map(([en, zh]) => (
                 <li key={en} className="flex items-center gap-2"><FontAwesomeIcon icon={faCircleCheck} className="text-accent" /><L en={en} zh={zh} /></li>
               ))}
             </ul>
@@ -70,6 +71,8 @@ export default async function CarCityPage({ params }: PageProps<"/car-rental/[ci
       </section>
 
       <div className="bg-sand"><NationwideService /></div>
+
+      <BestSellerTours />
     </>
   );
 }

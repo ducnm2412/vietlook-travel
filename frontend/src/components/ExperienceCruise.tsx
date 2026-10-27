@@ -9,7 +9,7 @@ import { useLang } from "@/lib/i18n";
 import HandNote from "./HandNote";
 import { formatUsd, type Tour } from "@/lib/api";
 
-// Tour văn hoá & du thuyền: chữ bên trái, khảm ảnh 4 ô bên phải
+// Tour văn hoá and du thuyền: chữ bên trái, khảm ảnh 4 ô bên phải
 export default function ExperienceCruise({ culture, cruise }: { culture: Tour[]; cruise: Tour[] }) {
   const { lang } = useLang();
   const zh = lang === "zh";
@@ -23,7 +23,7 @@ export default function ExperienceCruise({ culture, cruise }: { culture: Tour[];
     <section className="container-x grid items-center gap-10 py-12 md:py-20 lg:grid-cols-[1fr_2.1fr] lg:gap-14">
       <div>
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-muted">{zh ? "选择您的旅程" : "Signature experiences"}</p>
-        <h2 className="whitespace-nowrap font-card text-3xl font-bold leading-tight md:text-4xl 2xl:text-5xl">{zh ? "文化体验与游轮之旅" : "Culture & Cruises"}</h2>
+        <h2 className="whitespace-nowrap font-card text-3xl font-bold leading-tight md:text-4xl 2xl:text-5xl">{zh ? "文化体验与游轮之旅" : "Culture and Cruises"}</h2>
         <span className="mt-4 block h-0.5 w-12 bg-accent" />
           <HandNote lines={[{"en":"Your ideas.","zh":"您的想法。"},{"en":"Our local expertise.","zh":"我们的本地经验。"},{"en":"An unforgettable journey.","zh":"一段难忘的旅程。"}]} />
         <div className="mt-7 flex flex-wrap gap-3">

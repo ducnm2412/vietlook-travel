@@ -4,7 +4,7 @@ import PolicyPage, { type PolicySection } from "@/components/PolicyPage";
 import { faCalendarXmark, faCarSide, faCloudShowersHeavy, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 export const metadata: Metadata = pageMeta({
-  title: "Cancellation & Changes Policy",
+  title: "Cancellation and Changes Policy",
   description: "Vietlook Travel cancellation fees by days before departure, free date changes, day tour and car cancellations, and force majeure refunds.",
   path: "/cancellation-policy",
   image: "/images/heroes/tours.webp",
@@ -30,7 +30,7 @@ const SECTIONS: PolicySection[] = [
     ],
   },
   {
-    icon: faCarSide, en: "Day tours, cars & fast-track", zh: "一日游、包车与快速通关",
+    icon: faCarSide, en: "Day tours, cars and fast-track", zh: "一日游、包车与快速通关",
     items: [
       { en: "Free cancellation up to 24 hours before the service.", zh: "服务开始前24小时可免费取消。" },
       { en: "We track flight delays – your driver waits at no extra cost.", zh: "我们会跟踪航班延误，司机免费等候。" },
@@ -48,7 +48,7 @@ export default function CancellationPolicyPage() {
   return (
     <PolicyPage
       current="/cancellation-policy"
-      title={{ en: "Cancellation & Changes", zh: "取消与变更" }}
+      title={{ en: "Cancellation and Changes", zh: "取消与变更" }}
       sub={{ en: "Clear, fair rules if your plans change.", zh: "计划有变时，清晰公平的规则。" }}
       image="/images/heroes/tours.webp"
       intro={{ en: "Plans change – we understand. These general rules apply unless your booking confirmation says otherwise.", zh: "计划总有变化，我们理解。除预订确认函另有说明外，适用以下一般规则。" }}

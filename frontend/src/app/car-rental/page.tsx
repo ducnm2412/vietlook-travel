@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "@/components/LocaleLink";
 import { pageMeta } from "@/lib/seo";
+import BestSellerTours from "@/components/BestSellerTours";
 import CarQuoteForm from "@/components/forms/CarQuoteForm";
 import PopularRoutes from "@/components/car/PopularRoutes";
 import { CAR_CITIES as CITIES } from "@/components/car/cities";
@@ -11,10 +12,10 @@ import { formatUsd } from "@/lib/api";
 import { getTours, getVehicles } from "@/lib/content";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCircleCheck, faClock, faComments, faHandshake, faHeadset, faPhone,
+  faCircleCheck, faClock, faComments, faHandshake, faHeadset,
   faPlaneArrival, faPlus, faRoad, faRoute, faShieldHalved, faSignHanging, faStar, faSuitcaseRolling, faTag, faUserGroup, faWifi,
 } from "@fortawesome/free-solid-svg-icons";
-import { faWhatsapp, faWeixin } from "@fortawesome/free-brands-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 export const metadata: Metadata = pageMeta({
   title: "Private Car Rental with Driver in Vietnam",
@@ -27,7 +28,7 @@ export const metadata: Metadata = pageMeta({
 
 const STRENGTHS = [
   [faPlaneArrival, "5 airports", "5个机场", "Hanoi, Da Nang, Nha Trang, Saigon, Phu Quoc", "河内、岘港、芽庄、西贡、富国岛"],
-  [faHeadset, "24/7 support", "全天候支持", "Hotline & chat, any time", "热线与在线客服"],
+  [faHeadset, "24/7 support", "全天候支持", "Hotline and chat, any time", "热线与在线客服"],
   [faComments, "Your language", "您的语言", "English and Chinese speaking team", "英语和中文团队"],
   [faTag, "Fixed price", "固定价格", "Tolls, fuel and parking included", "含过路费、油费和停车费"],
 ] as const;
@@ -39,7 +40,7 @@ const CHECKS = [
 ];
 
 const INCLUDED = [
-  [faRoad, "Tolls & parking", "过路费和停车费", "Already in the price you see.", "已包含在报价中。"],
+  [faRoad, "Tolls and parking", "过路费和停车费", "Already in the price you see.", "已包含在报价中。"],
   [faPlaneArrival, "Flight tracking", "航班追踪", "We follow your flight and adjust the pick-up time.", "实时追踪航班，调整接机时间。"],
   [faClock, "Free waiting", "免费等候", "No extra charge if your flight is delayed.", "航班延误不另收费。"],
   [faSignHanging, "Name-sign greeting", "举牌接机", "Driver sends a photo and plate number in advance.", "司机提前发送照片和车牌。"],
@@ -48,7 +49,7 @@ const INCLUDED = [
 ] as const;
 
 const STEPS = [
-  [faRoute, "Choose & request", "选择并询价", "Pick your route, date and car. Get a confirmed price.", "选择路线、日期和车型，获得确认价格。"],
+  [faRoute, "Choose and request", "选择并询价", "Pick your route, date and car. Get a confirmed price.", "选择路线、日期和车型，获得确认价格。"],
   [faHandshake, "Meet your driver", "与司机会面", "Driver waits at arrivals with a name sign.", "司机在到达大厅举牌等候。"],
   [faShieldHalved, "Relax on the road", "安心出行", "Need help? Call the hotline, we are with you all the way.", "需要帮助？随时拨打热线。"],
 ] as const;
@@ -65,13 +66,6 @@ const FAQ = [
   ["What if my flight is delayed?", "航班延误怎么办？", "We track your flight and the driver waits for free. No extra charge.", "我们会追踪航班，司机免费等候，不另收费。"],
   ["What does the price include?", "价格包含什么？", "Car, driver, fuel, tolls, parking and bottled water. No hidden fees.", "包含车辆、司机、油费、过路费、停车费和瓶装水，无隐藏费用。"],
   ["My route is not listed. Can you help?", "我的路线不在列表中，可以安排吗？", "Yes. Send your pick-up and drop-off points and we quote within 30 minutes.", "可以。发送上下车地点，我们30分钟内报价。"],
-];
-
-const CHANNELS = [
-  { label: "WhatsApp", href: SITE.whatsapp, bg: "bg-[#25d366]", icon: faWhatsapp },
-  { label: "Zalo", href: SITE.zalo, bg: "bg-[#0068ff]", icon: null },
-  { label: "WeChat", href: "/contact", bg: "bg-[#07c160]", icon: faWeixin },
-  { label: "Hotline 2", href: `tel:+${SITE.phone2Raw}`, bg: "bg-accent", icon: faPhone },
 ];
 
 // Số khách, hành lý và giá khởi điểm (USD/chuyến) minh hoạ cho từng loại xe
@@ -103,7 +97,7 @@ export default async function CarRentalPage() {
               <span className="text-white"><T k="nav.car" /></span>
             </nav>
             <h1 className="font-card text-4xl font-bold leading-tight md:text-5xl">
-              <L en="Airport transfers & private cars with driver, fixed prices" zh="机场接送与司机包车，价格固定" />
+              <L en="Airport transfers and private cars with driver, fixed prices" zh="机场接送与司机包车，价格固定" />
             </h1>
             <p className="mt-4 max-w-xl text-white/85">
               <L en="Airport pick-up, inter-province transfers and day trips across Vietnam. English and Chinese speaking support, no hidden fees." zh="越南全境机场接送、跨省包车和一日游。中英文客服，无隐藏费用。" />
@@ -203,16 +197,16 @@ export default async function CarRentalPage() {
       <section className="bg-photo-dark py-14 text-white md:py-20">
         <div className="container-x">
           <h2 className={head}><L en="How to book" zh="预订流程" /></h2>
-          <p className="mb-8 mt-2 text-white/70"><L en="Three steps from request to arrival." zh="从询价到抵达，只需三步。" /></p>
+          <p className="mb-8 mt-2 text-white/90"><L en="Three steps from request to arrival." zh="从询价到抵达，只需三步。" /></p>
           <div className="grid gap-5 md:grid-cols-3">
             {STEPS.map(([icon, en, zh, d, dzh], i) => (
-              <div key={en} className="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
+              <div key={en} className="rounded-2xl bg-black/35 p-6 ring-1 ring-white/15 backdrop-blur-md">
                 <div className="relative w-fit">
                   <span className="grid h-12 w-12 place-items-center rounded-xl bg-white/10 text-accent"><FontAwesomeIcon icon={icon} /></span>
                   <span className="absolute -right-2 -top-2 grid h-5 w-5 place-items-center rounded-full bg-accent text-[11px] font-bold text-white">{i + 1}</span>
                 </div>
                 <p className="mt-4 font-card font-bold"><L en={en} zh={zh} /></p>
-                <p className="mt-1 text-sm text-white/70"><L en={d} zh={dzh} /></p>
+                <p className="mt-1 text-sm text-white/85"><L en={d} zh={dzh} /></p>
               </div>
             ))}
           </div>
@@ -261,27 +255,7 @@ export default async function CarRentalPage() {
         </div>
       </section>
 
-      {/* Liên hệ đa kênh */}
-      <section className="container-x py-14 md:py-20">
-        <div className="grid items-center gap-8 rounded-3xl bg-gradient-to-br from-brand-dark to-brand p-8 text-white md:grid-cols-2 md:p-12">
-          <div>
-            <h2 className={head}><L en="Talk to us in your language" zh="用您的语言与我们沟通" /></h2>
-            <p className="mt-3 text-white/75"><L en="Message us on the app you already use. Our team speaks English and Chinese." zh="使用您习惯的应用联系我们，团队会说英语和中文。" /></p>
-            <a href={`tel:+${SITE.phoneRaw}`} className="mt-6 inline-flex items-center gap-4 rounded-2xl bg-white/10 px-5 py-3 ring-1 ring-white/15">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent"><FontAwesomeIcon icon={faPhone} /></span>
-              <span><span className="block text-xs text-white/70">Hotline 24/7</span><b className="text-xl">{SITE.phone}</b></span>
-            </a>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            {CHANNELS.map((c) => (
-              <a key={c.label} href={c.href} target="_blank" rel="noopener" className="flex items-center gap-3 rounded-2xl bg-white/10 p-4 ring-1 ring-white/15 transition hover:bg-white/20">
-                <span className={`grid h-9 w-9 place-items-center rounded-lg ${c.bg}`}>{c.icon ? <FontAwesomeIcon icon={c.icon} /> : <b className="text-[10px]">Zalo</b>}</span>
-                <span className="font-semibold">{c.label}</span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+      <BestSellerTours />
     </>
   );
 }

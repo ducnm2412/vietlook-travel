@@ -76,7 +76,7 @@ export default async function TourDetail({ params }: PageProps<"/tours/[slug]">)
           <LHtml className={`tour-content ${gallery.length ? "hide-media" : ""}`} en={fitTables(tour.contentHtml ?? "")} zh={tour.contentHtmlZh ? fitTables(tour.contentHtmlZh) : undefined} />
         </article>
         {/* Form dính và cuộn riêng khi cao hơn màn hình, nội dung bên trái cuộn theo trang */}
-        <aside className="min-w-0 lg:sticky lg:top-32 lg:max-h-[calc(100vh-9rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:rounded-3xl lg:[scrollbar-width:thin]">
+        <aside id="book" className="min-w-0 scroll-mt-32 lg:sticky lg:top-32 lg:max-h-[calc(100vh-9rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:rounded-3xl lg:[scrollbar-width:thin]">
           <BookingForm tour={tour} />
         </aside>
       </section>

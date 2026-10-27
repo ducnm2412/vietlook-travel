@@ -160,7 +160,7 @@ const MENU: MenuItem[] = [
         links: [
           { label: "About Vietlook Travel", zh: "关于 Vietlook Travel", href: "/about" },
           { label: "Payment policy", zh: "付款政策", href: "/payment-policy" },
-          { label: "Cancellation & changes", zh: "取消与变更", href: "/cancellation-policy" },
+          { label: "Cancellation and changes", zh: "取消与变更", href: "/cancellation-policy" },
           { label: "Privacy policy", zh: "隐私政策", href: "/privacy-policy" },
         ],
       },
@@ -224,7 +224,7 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
         <nav className="hidden lg:block">
           <ul className="flex items-center whitespace-nowrap text-sm font-bold uppercase tracking-wide">
             {MENU.map((item) => (
-              <li key={item.key} className="group">
+              <li key={item.key} className={`group ${item.mega && !item.panels && !item.tiles && item.mega.length === 1 ? "relative" : ""}`}>
                 <Link href={item.href} className={`block rounded-md px-2 py-7 xl:px-3 ${overlay ? "hover:text-accent" : "hover:text-brand"}`}>
                   {t(item.key)} {item.mega && <FontAwesomeIcon icon={faChevronDown} className="ml-1 text-[10px]" />}
                 </Link>
@@ -294,7 +294,7 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
                 )}
                 {/* Dropdown dạng danh sách (mục có menu con nhưng không có lưới ảnh) */}
                 {item.mega && !item.panels && !item.tiles && item.mega.length === 1 && (
-                  <ul className="invisible absolute top-full z-50 min-w-56 bg-white py-2 text-sm normal-case tracking-normal text-ink -translate-y-2 opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                  <ul className="invisible absolute right-0 top-full z-50 min-w-56 bg-white py-2 text-sm normal-case tracking-normal text-ink -translate-y-2 opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
                     {item.mega.flatMap((c) => c.links).map((l) => (
                       <li key={l.href}><Link href={l.href} className="block px-5 py-2.5 font-semibold hover:bg-brand-light hover:text-brand">{zh && l.zh ? l.zh : l.label}</Link></li>
                     ))}

@@ -21,6 +21,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* Không bao giờ hiện thanh cuộn ngang (dropdown ẩn, hiệu ứng trượt… có thể nhô ra mép phải);
+     clip thay vì hidden để không tạo vùng cuộn mới, header sticky vẫn dính */
+  overflow-x: clip;
 }
 
 body {
@@ -366,22 +369,36 @@ body {
   pointer-events: none;
 }
 
-/* Nền section có ảnh phong cảnh làm mờ (ít chi tiết), phủ màu để giữ tông và độ tương phản chữ */
-.bg-photo-light {
-  background-color: var(--color-sand);
-  background-image: linear-gradient(rgba(247, 243, 236, 0.7), rgba(247, 243, 236, 0.84)), url("/images/bg-soft-light.webp");
-  background-size: cover;
-  background-position: center;
-}
-.bg-photo-mint {
-  background-color: var(--color-brand-light);
-  background-image: linear-gradient(rgba(231, 241, 239, 0.7), rgba(231, 241, 239, 0.84)), url("/images/bg-soft-light.webp");
-  background-size: cover;
-  background-position: center;
-}
+/* Nền section bằng ảnh phong cảnh rõ nét (ảnh 1920px), chỉ phủ tối nhẹ.
+   Chữ nằm trực tiếp trên ảnh chuyển sang trắng; chữ trong thẻ nền trắng giữ màu gốc. */
+.bg-photo-light,
+.bg-photo-mint,
 .bg-photo-dark {
   background-color: var(--color-brand-dark);
-  background-image: linear-gradient(rgba(8, 49, 47, 0.74), rgba(8, 49, 47, 0.86)), url("/images/bg-soft-dark.webp");
   background-size: cover;
   background-position: center;
+}
+.bg-photo-light,
+.bg-photo-mint {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.48)), url("/images/heroes/tours.webp");
+}
+/* Ảnh toàn cảnh vịnh Hạ Long (Wikimedia Commons: "HALONG BAY .jpg", CC BY-SA 4.0 – bắt buộc ghi nguồn).
+   Lớp phủ nhẹ để giữ ảnh sáng; chữ dễ đọc nhờ bóng chữ. */
+.bg-photo-dark {
+  position: relative;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.28)), url("/images/bg-halong.webp");
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
+}
+.bg-photo-dark::after {
+  content: "Photo: Trideep Dutta Photography / CC BY-SA 4.0";
+  position: absolute;
+  right: 12px;
+  bottom: 6px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+}
+:is(.bg-photo-light, .bg-photo-mint) :is(h1, h2, h3, p, li, summary, label, b, strong, span):not(.text-accent, .text-white, [class*="bg-"], .btn, .btn *):not(:is([class*="bg-white"], [class*="bg-sand"], [class*="bg-brand-light"], [class*="bg-red"], [class*="bg-accent"], form) *) {
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
 }

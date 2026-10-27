@@ -111,7 +111,7 @@ export default function CarQuoteForm({ vehicles, cars = [] }: { vehicles: Vehicl
           </p>
         )}
         <button type="button" onClick={next} className="w-full rounded-xl bg-accent py-3.5 font-semibold text-white transition hover:bg-accent-dark">{zh ? "获取报价" : "See price"}</button>
-        <p className="text-center text-xs text-muted">{zh ? "固定价格 · 含过路费和停车费" : "Fixed price · Tolls & parking included"}</p>
+        <p className="text-center text-xs text-muted">{zh ? "固定价格 · 含过路费和停车费" : "Fixed price · Tolls and parking included"}</p>
       </div>
 
       <div className={step === 2 ? "mt-5 space-y-3" : "hidden"}>

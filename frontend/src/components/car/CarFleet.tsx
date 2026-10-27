@@ -13,19 +13,19 @@ type T2 = [string, string];
 const FLEET: { img: string; title: T2; pax: string; desc: T2; models: T2[]; uses: T2[] }[] = [
   {
     img: "intro1", pax: "1–4", title: ["3–5 Seater Cars", "3–5座轿车"],
-    desc: ["Sedan & compact class for solo travellers, couples and small groups who want convenience and easy city driving.", "轿车与紧凑型车，适合独行旅客、情侣和小团体，城市出行便捷灵活。"],
+    desc: ["Sedan and compact class for solo travellers, couples and small groups who want convenience and easy city driving.", "轿车与紧凑型车，适合独行旅客、情侣和小团体，城市出行便捷灵活。"],
     models: [["Toyota Vios", "丰田威驰"], ["Hyundai Accent", "现代雅绅特"], ["Mazda 3", "马自达3"], ["Kia Cerato (K3)", "起亚K3"], ["Honda City", "本田锋范"]],
-    uses: [["Airport pick-up & drop-off", "机场接送"], ["Business meetings", "商务会议"], ["City tours", "市内游览"]],
+    uses: [["Airport pick-up and drop-off", "机场接送"], ["Business meetings", "商务会议"], ["City tours", "市内游览"]],
   },
   {
     img: "car1", pax: "4–7", title: ["6–7 Seater Cars", "6–7座商务车"],
-    desc: ["MPV & SUV segment, our most popular choice, balancing space and comfort for families and small groups.", "MPV与SUV车型，最受欢迎，兼顾空间与舒适，适合家庭和小团体。"],
+    desc: ["MPV and SUV segment, our most popular choice, balancing space and comfort for families and small groups.", "MPV与SUV车型，最受欢迎，兼顾空间与舒适，适合家庭和小团体。"],
     models: [["Toyota Innova", "丰田Innova"], ["Mitsubishi Xpander", "三菱Xpander"], ["Toyota Fortuner", "丰田Fortuner"], ["Ford Everest", "福特Everest"], ["Kia Carnival", "起亚嘉华"]],
     uses: [["Family vacations", "家庭度假"], ["Long-distance intercity trips", "长途跨城出行"], ["Resort transfers", "度假村接送"]],
   },
   {
     img: "van1", pax: "7–10", title: ["8–10 Seater Vehicles", "8–10座车型"],
-    desc: ["Extended MPVs & limousine vans for medium groups, with more legroom than a 7-seater and some with reclining seats and LED lighting.", "加长MPV与豪华商务车，适合中型团体，腿部空间更大，部分车型配备可躺座椅和LED氛围灯。"],
+    desc: ["Extended MPVs and limousine vans for medium groups, with more legroom than a 7-seater and some with reclining seats and LED lighting.", "加长MPV与豪华商务车，适合中型团体，腿部空间更大，部分车型配备可躺座椅和LED氛围灯。"],
     models: [["Ford Tourneo", "福特途睿欧"], ["Hyundai Starex", "现代Starex"], ["Toyota Hiace", "丰田海狮"], ["Limousine DCar / Auto Kingdom", "DCar / Auto Kingdom 豪华改装车"]],
     uses: [["Small group tours", "小团游览"], ["Family events", "家庭聚会"], ["Premium shuttles", "高端接驳"]],
   },
@@ -33,22 +33,22 @@ const FLEET: { img: string; title: T2; pax: string; desc: T2; models: T2[]; uses
     img: "van2", pax: "≤16", title: ["12–16 Seater Vehicles", "12–16座面包车"],
     desc: ["Group transport that keeps costs down, with wide seat rows, strong air-conditioning and large luggage space.", "团体出行经济之选，座椅宽敞、空调强劲、行李空间大。"],
     models: [["Ford Transit", "福特全顺"], ["Hyundai Solati", "现代Solati"], ["Toyota Hiace 16", "丰田海狮16座"]],
-    uses: [["Corporate & team building", "企业出行与团建"], ["Tour groups", "旅行团"], ["Large-group airport transfers", "大团机场接送"]],
+    uses: [["Corporate and team building", "企业出行与团建"], ["Tour groups", "旅行团"], ["Large-group airport transfers", "大团机场接送"]],
   },
   {
-    img: "van3", pax: "9–11", title: ["Premium Limousine & VIP", "豪华VIP商务车"],
+    img: "van3", pax: "9–11", title: ["Premium Limousine and VIP", "豪华VIP商务车"],
     desc: ["Business-class reclining seats, individual lighting and charging, TV and sound system, generous legroom.", "商务舱可躺座椅、独立照明与充电、电视音响系统、宽敞腿部空间。"],
     models: [["9-seat Limousine (Transit / Solati)", "9座豪华版（全顺/Solati改装）"], ["11-seat VIP Limousine", "11座VIP豪华版"]],
-    uses: [["VIP guests & executives", "VIP贵宾与高管"], ["High-end trips", "高端旅程"], ["Long-distance premium journeys", "长途高端出行"]],
+    uses: [["VIP guests and executives", "VIP贵宾与高管"], ["High-end trips", "高端旅程"], ["Long-distance premium journeys", "长途高端出行"]],
   },
 ];
 
 const SERVICES = [
   [faCalendarDays, "Daily car rental", "按日包车"],
-  [faRoute, "Intercity & long distance", "跨城与长途"],
+  [faRoute, "Intercity and long distance", "跨城与长途"],
   [faPlaneArrival, "Airport transfers", "机场接送"],
-  [faRing, "Weddings & events", "婚礼与活动"],
-  [faBuilding, "Corporate & team building", "企业出行与团建"],
+  [faRing, "Weddings and events", "婚礼与活动"],
+  [faBuilding, "Corporate and team building", "企业出行与团建"],
   [faFileContract, "Long-term contracts", "长期租车合同"],
 ] as const;
 
@@ -71,7 +71,7 @@ export function FleetByCategory() {
     <section className="container-x py-14 md:py-20">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className={head}><L en="Fleet by category & model" zh="车型分类详解" /></h2>
+          <h2 className={head}><L en="Fleet by category and model" zh="车型分类详解" /></h2>
           <p className="mt-2 max-w-xl text-muted"><L en="Pick by group size. Every car comes with a driver, fuel and tolls." zh="按人数选择，均含司机、油费和过路费。" /></p>
         </div>
       </div>

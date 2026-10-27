@@ -14,7 +14,7 @@ export const metadata: Metadata = pageMeta({
   keywords: ["Vietnam DMC","B2B Vietnam travel","Vietnam ground handler"],
 });
 
-const SERVICES = ["FIT & group tours, MICE and incentives", "Hotel & Halong cruise contracting (3–5★)", "Private cars 4–45 seats nationwide", "English & Chinese speaking guides", "Visa & airport fast-track for groups", "White-label vouchers & itineraries"];
+const SERVICES = ["FIT and group tours, MICE and incentives", "Hotel and Halong cruise contracting (3–5★)", "Private cars 4–45 seats nationwide", "English and Chinese speaking guides", "Visa and airport fast-track for groups", "White-label vouchers and itineraries"];
 
 export default function PartnersPage() {
   return (

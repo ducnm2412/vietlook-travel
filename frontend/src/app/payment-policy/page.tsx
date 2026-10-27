@@ -22,7 +22,7 @@ const SECTIONS: PolicySection[] = [
     ],
   },
   {
-    icon: faPercent, en: "Deposit & balance", zh: "定金与尾款",
+    icon: faPercent, en: "Deposit and balance", zh: "定金与尾款",
     items: [
       { strong: { en: "Multi-day tours:", zh: "多日游：" }, en: "a deposit (usually 30%) secures hotels, cruises and flights; the balance is paid before or on arrival.", zh: "支付定金（通常30%）以确保酒店、游轮和机票，尾款在出发前或抵达时支付。" },
       { strong: { en: "Peak dates", zh: "旺季" }, en: "(Tet, national holidays, Christmas – New Year): full prepayment may be required for cruises and hotels.", zh: "（春节、国家假日、圣诞至新年）：游轮和酒店可能需要全额预付。" },

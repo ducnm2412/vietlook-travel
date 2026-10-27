@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faHeadset, faSliders, faWallet } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faCircleCheck, faClock, faHeadset, faSliders, faWallet } from "@fortawesome/free-solid-svg-icons";
 import TailorRequestForm from "@/components/forms/TailorRequestForm";
-import { L } from "@/lib/i18n";
+import { L, T } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
-import { getDestinations } from "@/lib/content";
+import Link from "@/components/LocaleLink";
 
 export const metadata: Metadata = pageMeta({
   title: "Vietnam Tailor-made Tours – Free Trip Proposal",
@@ -21,10 +21,18 @@ const WHY = [
   { icon: faWallet, en: "Free planning", zh: "免费规划", d: "You only pay for the trip you choose.", dz: "您只需为选择的行程付费。" },
 ];
 
+const PERKS = [
+  ["Hotel class of your choice – 3★ to 5★", "酒店等级任选——3★至5★"],
+  ["Live 24/7 WhatsApp and WeChat support by local experts", "本地专家24/7 WhatsApp与微信在线支持"],
+  ["Fully customizable route, pace and budget", "路线、节奏和预算完全可定制"],
+  ["Tour + private car + visa handled in one place", "行程、包车、签证一站式办理"],
+  ["Free quote, no extra cost for trip planning", "免费报价，行程规划不额外收费"],
+];
+
 const STEPS = [
   { en: "Share your wishes", zh: "告诉我们心愿" },
   { en: "Get a proposal in 24h", zh: "24小时内获得方案" },
-  { en: "Adjust & travel", zh: "调整并出发" },
+  { en: "Adjust and travel", zh: "调整并出发" },
 ];
 
 const FAQ = [
@@ -36,21 +44,28 @@ const FAQ = [
   ["How do I pay?", "如何付款？", "A deposit confirms your booking; the balance is paid before arrival.", "支付定金确认预订，余款在抵达前付清。"],
 ];
 
-export default async function TailorMadePage() {
-  const destinations = await getDestinations();
-
+export default function TailorMadePage() {
   return (
     <>
-      {/* HERO: ảnh lớn, chữ ngắn */}
-      <section className="relative isolate flex min-h-[70vh] items-end">
+      {/* HERO: giới thiệu + checklist bên trái, form 4 bước bên phải */}
+      <section id="request" className="relative isolate scroll-mt-28 overflow-hidden bg-brand-dark text-white">
         <div className="absolute inset-0 -z-20 bg-[url('/images/tailor-hero.webp?v=2')] bg-cover bg-center" aria-hidden />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
-        <div className="container-x pb-16 pt-40 text-white md:pb-24">
-          <p className="text-base font-semibold uppercase tracking-[0.2em] text-accent"><L en="Tailor-made Tours" zh="定制旅游" /></p>
-          <h1 className="mt-4 max-w-3xl font-card text-5xl font-bold leading-[1.1] md:text-7xl">
-            <L en="Vietnam, designed for you." zh="为您量身打造的越南。" />
-          </h1>
-          <a href="#request" className="btn btn-accent mt-10 !px-9 !py-5 text-lg"><L en="Plan my free trip" zh="免费规划我的旅程" /></a>
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-brand-dark via-brand-dark/90 to-brand-dark/50" />
+        <div className="container-x grid items-start gap-10 py-10 md:py-14 lg:grid-cols-[0.75fr_1.25fr]">
+          <div>
+            <nav aria-label="Breadcrumb" className="text-sm text-white/70">
+              <Link href="/" className="hover:text-white"><T k="nav.home" /></Link> <span className="mx-2">›</span> <span className="text-white"><L en="Free Trip Planning" zh="免费行程规划" /></span>
+            </nav>
+            <h1 className="mt-8 font-card text-5xl font-bold leading-[1.05] md:text-6xl"><L en="Plan your trip in 2 minutes" zh="2分钟规划您的旅程" /></h1>
+            <p className="mt-6 text-lg text-white/85"><L en="Tell us your dates, group size and wishes. A travel expert will send you a free proposal." zh="告诉我们您的日期、人数和心愿，旅行专家将免费为您提供方案。" /></p>
+            <ul className="mt-8 space-y-4">
+              {PERKS.map(([en, zh]) => (
+                <li key={en} className="flex gap-3"><FontAwesomeIcon icon={faCircleCheck} className="mt-1 text-accent" /><L en={en} zh={zh} /></li>
+              ))}
+            </ul>
+            <p className="mt-8 flex gap-2 text-sm text-white/70"><FontAwesomeIcon icon={faClock} className="mt-0.5" /><L en="Our travel expert will reply within 24 hours (usually much sooner)." zh="旅行专家将在24小时内回复（通常更快）。" /></p>
+          </div>
+          <TailorRequestForm />
         </div>
         {/* Ảnh Wikimedia Commons, giấy phép CC BY-SA 3.0 yêu cầu ghi nguồn */}
         <a href="https://commons.wikimedia.org/wiki/File:Tam_Coc_(85925447).jpeg" target="_blank" rel="noopener" className="absolute bottom-2 right-3 text-[10px] text-white/60 hover:text-white">Photo: Wolfgang B / CC BY-SA 3.0</a>
@@ -99,14 +114,6 @@ export default async function TailorMadePage() {
         </p>
       </section>
 
-      {/* FORM */}
-      <section id="request" className="scroll-mt-32 bg-photo-light py-20">
-        <div className="container-x max-w-3xl">
-          <h2 className="text-center font-card text-4xl font-bold md:text-5xl"><L en="Tell us about your trip" zh="告诉我们您的旅行计划" /></h2>
-          <p className="mb-10 mt-4 text-center text-lg text-muted"><L en="Free, no obligation – reply within 24 hours." zh="免费、无义务，24小时内回复。" /></p>
-          <TailorRequestForm destinations={destinations} />
-        </div>
-      </section>
     </>
   );
 }

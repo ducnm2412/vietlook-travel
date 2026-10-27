@@ -17,7 +17,7 @@ export default function NewsSection({ posts }: { posts: Post[] }) {
     <section className="container-x py-12 md:py-20">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4 md:mb-10">
         <div>
-          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-accent"><L en="Seasons & Events" zh="季节与活动" /></p>
+          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-accent"><L en="Seasons and Events" zh="季节与活动" /></p>
           <h2 className="font-card text-3xl font-bold leading-tight text-white md:text-5xl"><L en="What's happening in Vietnam" zh="越南最新动态" /></h2>
           <HandNote light lines={[{"en":"Fresh from Vietnam,","zh":"越南新鲜事，"},{"en":"every season.","zh":"四季更新。"}]} />
         </div>

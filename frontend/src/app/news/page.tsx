@@ -11,7 +11,7 @@ import { getPosts } from "@/lib/content";
 import { findTopic } from "@/lib/guide";
 
 export const metadata: Metadata = pageMeta({
-  title: "Vietnam Travel Guide & News",
+  title: "Vietnam Travel Guide and News",
   description: "Local travel tips, seasonal events and destination guides for Hanoi, Sapa, Ha Giang, Ninh Binh, Da Nang, Hoi An, Nha Trang and Phu Quoc.",
   path: "/news",
   image: "/images/heroes/news.webp",
@@ -21,6 +21,8 @@ export const metadata: Metadata = pageMeta({
 const PER_PAGE = 16;
 // Tên chuyên mục từ backend (tiếng Anh) -> tiếng Trung
 const CAT_ZH: Record<string, string> = { News: "新闻", Blog: "博客" };
+// Nút chuyên mục: cùng chiều cao với ô tìm kiếm
+const tab = "inline-flex h-12 flex-1 sm:min-w-28 sm:flex-none items-center justify-center whitespace-nowrap rounded-full border px-6 text-sm font-semibold transition";
 const pill = "grid h-10 min-w-10 place-items-center rounded-full border px-3 text-sm";
 
 export default async function NewsPage({ searchParams }: PageProps<"/news">) {
@@ -40,14 +42,6 @@ export default async function NewsPage({ searchParams }: PageProps<"/news">) {
     <>
       <PageHero title={<T k="nav.news" />} sub={<T k="sec.guide.t" />} image="/images/heroes/news.webp" />
       <section className="container-x py-14">
-        {/* Tìm bài viết (giữ chủ đề đang chọn) */}
-        <form action="/news" className="mb-6 flex max-w-2xl items-center gap-3 rounded-xl border border-black/10 bg-white px-4 py-2 focus-within:border-brand">
-          <FontAwesomeIcon icon={faMagnifyingGlass} className="text-muted" />
-          {topic && <input type="hidden" name="topic" value={topic.slug} />}
-          <input name="q" defaultValue={search} placeholder={zh ? "搜索旅行指南…" : "Search travel guides…"} className="w-full bg-transparent py-1.5 outline-none" />
-          <button className="btn btn-brand !px-5 !py-2 text-sm"><L en="Search" zh="搜索" /></button>
-        </form>
-
         {(topic || search) && (
           <p className="mb-6 text-lg">
             <b>{total}</b> <L en="articles" zh="篇文章" />
@@ -57,11 +51,20 @@ export default async function NewsPage({ searchParams }: PageProps<"/news">) {
           </p>
         )}
 
-        <div className="mb-8 flex flex-wrap gap-2">
-          <Link href="/news" className={`rounded-full border px-4 py-2 text-sm ${!c ? "border-brand bg-brand text-white" : ""}`}><L en="All" zh="全部" /> ({total && !c ? total : "…"})</Link>
-          {categories.map((cat) => (
-            <Link key={cat} href={`/news?c=${encodeURIComponent(cat)}`} className={`rounded-full border px-4 py-2 text-sm ${c === cat ? "border-brand bg-brand text-white" : ""}`}><L en={cat} zh={CAT_ZH[cat] ?? cat} /></Link>
+        {/* Chuyên mục bên trái, ô tìm kiếm kéo dài chiếm hết phần còn lại (điện thoại thì xuống dòng) */}
+        <div className="mb-8 flex flex-wrap items-center gap-3">
+          <div className="flex w-full gap-2 sm:w-auto">
+          {[["", "All", "全部"], ...categories.map((cat) => [cat, cat, CAT_ZH[cat] ?? cat])].map(([v, en, z]) => (
+            <Link key={v || "all"} href={v ? `/news?c=${encodeURIComponent(v)}` : "/news"} className={`${tab} ${c === v ? "border-brand bg-brand text-white" : "border-black/15 hover:border-brand hover:text-brand"}`}><L en={en} zh={z} /></Link>
           ))}
+          </div>
+          {/* Tìm bài viết (giữ chủ đề đang chọn) */}
+          <form action="/news" className="flex h-12 min-w-[280px] flex-1 items-center gap-3 rounded-full border border-black/15 bg-white pl-5 pr-1.5 focus-within:border-brand">
+            <FontAwesomeIcon icon={faMagnifyingGlass} className="text-muted" />
+            {topic && <input type="hidden" name="topic" value={topic.slug} />}
+            <input name="q" defaultValue={search} placeholder={zh ? "搜索旅行指南…" : "Search travel guides…"} className="w-full bg-transparent py-1 text-sm outline-none" />
+            <button className="btn btn-brand h-9 shrink-0 whitespace-nowrap !px-6 !py-0 text-sm"><L en="Search" zh="搜索" /></button>
+          </form>
         </div>
         {items.length ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

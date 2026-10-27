@@ -11,7 +11,7 @@ import { faArrowRight, faCheck, faMinus, faPhone, faPlane } from "@fortawesome/f
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 export const metadata: Metadata = pageMeta({
-  title: "Vietnam Airport Fast Track & Visa Service",
+  title: "Vietnam Airport Fast Track and Visa Service",
   description: "Skip immigration queues in Vietnam: visa stamping, priority immigration, baggage help and VIP fast track at Noi Bai, Tan Son Nhat, Da Nang, Cam Ranh and Phu Quoc airports.",
   path: "/visa",
   image: "/images/heroes/visa.webp",
@@ -31,7 +31,7 @@ const AIRPORTS = [
 const COLS = [["Visa stamp", "盖章"], ["Immigration", "入境"], ["Baggage", "行李"], ["Escort", "护送"]];
 const OPTIONS: [string, string, string, number[], string, string][] = [
   ["FT-01", "Visa Stamping Assistance", "落地签盖章协助", [1, 0, 0, 0], "For Visa on Arrival holders: fast visa stamping without queuing.", "适用于落地签旅客，快速盖章无需排队。"],
-  ["FT-02", "Immigration Fast Track", "快速入境通关", [0, 1, 0, 1], "Meet & escort service through priority immigration lanes.", "接机并护送通过优先入境通道。"],
+  ["FT-02", "Immigration Fast Track", "快速入境通关", [0, 1, 0, 1], "Meet and escort service through priority immigration lanes.", "接机并护送通过优先入境通道。"],
   ["FT-03", "Visa Stamping + Immigration", "盖章 + 快速入境", [1, 1, 0, 1], "Fast visa stamping and priority immigration clearance combined.", "落地签盖章与优先入境通关组合服务。"],
   ["FT-04", "Full Fast Track Package", "全程快速通关套餐", [1, 1, 1, 1], "Visa stamping (if applicable), priority immigration, baggage help and escort to the pick-up point.", "盖章（如需）、优先入境、协助行李并护送至接机点。"],
   ["FT-05", "Business Class / VIP", "商务舱 / VIP", [1, 1, 1, 1], "The most premium option: full airport handling, assisted from the moment you land.", "最高端服务：落地即享全程机场协助。"],
@@ -49,7 +49,7 @@ const DOCS = [
 const WHO = [["Business travellers", "商务旅客"], ["Families with kids", "带孩子的家庭"], ["Elderly passengers", "年长旅客"], ["Pregnant travellers", "孕妇"], ["Tight connections", "转机时间短"], ["Groups", "团体旅客"], ["Anyone who hates airport queues", "不想在机场浪费时间的任何人"]];
 
 const SKIP = [["Visa stamping counters", "落地签盖章柜台"], ["Immigration checkpoints", "入境检查"], ["Security screening", "安检区域"]];
-const TYPES = [["Arrival", "入境", "Express arrival & immigration clearance", "快速入境通关"], ["Departure", "离境", "Priority check-in, security & exit", "优先值机、安检与出境"], ["Transit", "转机", "Smooth connections between flights", "顺利衔接转机航班"]];
+const TYPES = [["Arrival", "入境", "Express arrival and immigration clearance", "快速入境通关"], ["Departure", "离境", "Priority check-in, security and exit", "优先值机、安检与出境"], ["Transit", "转机", "Smooth connections between flights", "顺利衔接转机航班"]];
 const ADVANTAGES = [
   ["Save valuable time", "节省宝贵时间", "Avoid long queues at immigration and security, especially at peak hours.", "避开入境和安检长队，高峰时段尤其有用。"],
   ["Less stress and fatigue", "减少压力与疲劳", "After a long flight, smooth procedures let you start your trip relaxed.", "长途飞行后，顺畅的手续让您轻松开启旅程。"],

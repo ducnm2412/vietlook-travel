@@ -2,7 +2,7 @@
 // lọc giống hệt các route của backend. Chỉ dùng phía server – không import file này từ client component.
 import data from "@/data/content.json";
 import "server-only";
-import { findTopic, GUIDE_TOPICS } from "./guide";
+import { findTopic, GUIDE_TOPICS, inTopic } from "./guide";
 import type { CarCity, Destination, Post, PostList, Theme, Tour, Vehicle } from "./api";
 
 const all = data.tours as Tour[];
@@ -40,7 +40,7 @@ export function queryPosts(query: string): PostList {
   const limit = Number(p.get("limit") || 12), page = Number(p.get("page") || 1);
   let list = category ? posts.filter((x) => x.category === category) : posts;
   if (type) list = list.filter((x) => x.type === type);
-  if (topic?.re) list = list.filter((x) => topic.re!.test(`${x.title} ${x.excerpt}`));
+  if (topic) list = list.filter((x) => inTopic(topic, x));
   if (q) list = list.filter((x) => `${x.title} ${x.titleZh ?? ""} ${x.excerpt}`.toLowerCase().includes(q));
   const start = (page - 1) * limit;
   return {
@@ -69,9 +69,13 @@ export const getPost = async (slug: string) => findPost(slug);
 // Ảnh đại diện của chủ đề tour (TourTheme.cover)
 export const themeCover = (cover: string) => (cover.startsWith("/") ? cover : findTour(cover)?.image ?? null);
 
+// Bài có tiêu đề khớp từ khoá (mới nhất trước), bỏ nội dung dài
+export const postsByTitle = (re: RegExp, n = 4) =>
+  posts.filter((x) => re.test(x.title)).sort((a, b) => b.date.localeCompare(a.date)).slice(0, n).map(({ contentHtml, contentHtmlZh, ...x }) => x);
+
 // Bài liên quan: ưu tiên bài chung nhiều chủ đề cẩm nang nhất, rồi cùng chuyên mục; mới nhất trước
 export function relatedPosts(post: Post, n = 3) {
-  const topics = (x: Post) => GUIDE_TOPICS.filter((t) => t.re?.test(`${x.title} ${x.excerpt}`)).map((t) => t.slug);
+  const topics = (x: Post) => GUIDE_TOPICS.filter((t) => inTopic(t, x)).map((t) => t.slug);
   const mine = new Set(topics(post));
   return posts
     .filter((x) => x.slug !== post.slug)

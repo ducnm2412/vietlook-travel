@@ -19,21 +19,21 @@ const ABOUT_VIETNAM: Item[] = [
 const SERVICES: Item[] = [
   { en: "Tailor-made trips", zh: "定制旅游", href: "/tailor-made" },
   { en: "Package tours", zh: "跟团套餐", href: "/tours?theme=vietnam-tours" },
-  { en: "Day & multi-day tours", zh: "一日游与多日游", href: "/tours" },
+  { en: "Day and multi-day tours", zh: "一日游与多日游", href: "/tours" },
   { en: "Cruises", zh: "游轮之旅", href: "/tours?theme=cruise-tour" },
   { en: "Cultural experiences", zh: "文化体验", href: "/tours?theme=travel-experience" },
   { en: "Private car rental", zh: "包车服务", href: "/car-rental" },
-  { en: "Airport fast track & visa", zh: "快速通关与签证", href: "/visa" },
+  { en: "Airport fast track and visa", zh: "快速通关与签证", href: "/visa" },
   { en: "B2B partners", zh: "B2B合作", href: "/partners" },
 ];
 
 const COMPANY: Item[] = [
   { en: "About us", zh: "关于我们", href: "/about" },
   { en: "Payment policy", zh: "付款政策", href: "/payment-policy" },
-  { en: "Cancellation & changes", zh: "取消与变更", href: "/cancellation-policy" },
+  { en: "Cancellation and changes", zh: "取消与变更", href: "/cancellation-policy" },
   { en: "Privacy policy", zh: "隐私政策", href: "/privacy-policy" },
   { en: "Guest reviews", zh: "客人评价", href: "/#reviews" },
-  { en: "News & blog", zh: "新闻与博客", href: "/news" },
+  { en: "News and blog", zh: "新闻与博客", href: "/news" },
   { en: "Contact", zh: "联系我们", href: "/contact" },
 ];
 

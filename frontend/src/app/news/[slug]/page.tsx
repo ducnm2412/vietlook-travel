@@ -6,6 +6,8 @@ import Img from "@/components/Img";
 import { L, LHtml, T } from "@/lib/i18n";
 import { getPost, getPosts, relatedPosts } from "@/lib/content";
 import GuideCard from "@/components/GuideCard";
+import BestSellerTour from "@/components/BestSellerTour";
+import BestSellerTours from "@/components/BestSellerTours";
 import { DEFAULT_AUTHOR } from "@/lib/guide";
 
 export async function generateMetadata({ params }: PageProps<"/news/[slug]">): Promise<Metadata> {
@@ -71,6 +73,10 @@ export default async function PostPage({ params }: PageProps<"/news/[slug]">) {
         </div>
       </section>
     )}
+
+    {/* Giới thiệu một tour đặc biệt (nền trắng xen giữa 2 section nền ảnh) + các tour tham khảo */}
+    <BestSellerTour bg="bg-white" />
+    <BestSellerTours />
     </>
   );
 }

@@ -7,9 +7,12 @@ import Link from "@/components/LocaleLink";
 import { L } from "@/lib/i18n";
 import { getDestinations, getThemes, getTours } from "@/lib/content";
 import { findTheme } from "@/lib/themes";
+import BestSellerTour from "@/components/BestSellerTour";
+import Reviews from "@/components/Reviews";
+import CarServicePromo from "@/components/CarServicePromo";
 
 export const metadata: Metadata = pageMeta({
-  title: "Vietnam Tours & Holiday Packages",
+  title: "Vietnam Tours and Holiday Packages",
   description: "Browse 200+ private tours across North, Central and South Vietnam: Halong Bay cruises, Sapa trekking, Hoi An, Mekong Delta and multi-week packages.",
   path: "/tours",
   image: "/images/heroes/tours.webp",
@@ -38,6 +41,15 @@ export default async function ToursPage({ searchParams }: PageProps<"/tours">) {
         )}
         <TourFilter key={JSON.stringify({ ...initial, style: style?.slug })} tours={list} destinations={destinations} themes={themes} initial={initial} initialPage={Math.max(1, parseInt(pick("page")) || 1)} />
       </section>
+
+      <BestSellerTour />
+
+      {/* Đánh giá khách: component dùng chữ trắng nên đặt trên nền ảnh tối */}
+      <div className="bg-photo-dark">
+        <Reviews />
+      </div>
+
+      <CarServicePromo />
     </>
   );
 }

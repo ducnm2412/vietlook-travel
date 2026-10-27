@@ -29,13 +29,13 @@ const poppins = Poppins({ variable: "--font-poppins", weight: ["600", "700", "80
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   ...pageMeta({
-    title: "Vietlook Travel – Private Vietnam Tours, Car Rental & Visa",
+    title: "Vietlook Travel – Private Vietnam Tours, Car Rental and Visa",
     description: "Private and tailor-made tours across Vietnam by local born travel specialists: Halong Bay cruises, Sapa, Hoi An, Mekong Delta, private car with driver and airport fast track.",
     path: "/",
     image: "/images/hero-fallback.webp",
     keywords: ["Vietnam tours", "Vietnam travel agency", "private tour Vietnam", "tailor-made Vietnam", "Halong Bay cruise", "越南旅游"],
   }),
-  title: { default: "Vietlook Travel – Private Vietnam Tours, Car Rental & Visa", template: "%s | Vietlook Travel" },
+  title: { default: "Vietlook Travel – Private Vietnam Tours, Car Rental and Visa", template: "%s | Vietlook Travel" },
   robots: { index: true, follow: true },
 };
 

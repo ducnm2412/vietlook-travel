@@ -20,7 +20,7 @@ export const TOUR_THEMES: TourTheme[] = [
   },
   {
     slug: "culture", hero: "/images/tours/conical-hat.webp", cover: "lantern-making-be-a-real-farmer-at-tra-que-village", name: "Culture", zh: "文化",
-    tagline: "Crafts, heritage & people", taglineZh: "手艺、遗产与人文",
+    tagline: "Crafts, heritage and people", taglineZh: "手艺、遗产与人文",
     intro: "Make conical hats with artisans, cook with a local family, cycle through craft villages and meet the ethnic communities of the highlands.",
     introZh: "与匠人一起制作斗笠，与当地家庭一起下厨，骑行穿过手工艺村，探访高原少数民族。",
     tours: ["hanoi-bat-trang-chuong-conical-hat-village-quang-phu-cau-ha-long-ninh-binh", "hanoi-cat-cat-village-fansipan", "hanoi-city-tour-full-day-history-and-culture", "ha-noi-cultural-day-trip", "enjoy-ha-nois-unique-cuisine-and-vietnam-hair-washing", "hanoi-food-tour-and-incense-stick-making-village-experience", "duong-lam-ancient-village-private-day-tour-from-hanoi", "lantern-making-be-a-real-farmer-at-tra-que-village", "my-son-holy-land-hoi-an-ancient-town", "linh-ung-pagoda-marble-mountain-hoi-an-ancient-town", "marble-mountain-coconut-forest-hoi-an-ancient-town", "discover-nha-trang-beach-mun-island-fishing-village-mini-beach"],
@@ -48,7 +48,7 @@ export const TOUR_THEMES: TourTheme[] = [
   },
   {
     slug: "photography", hero: "/images/heroes/news.webp", cover: "hanoi-sapa-cat-cat-lao-chai-ta-van-bac-ha", name: "Photography", zh: "摄影",
-    tagline: "Golden hours & epic views", taglineZh: "黄金时刻与壮丽风光",
+    tagline: "Golden hours and epic views", taglineZh: "黄金时刻与壮丽风光",
     intro: "Tours timed around the best natural light: terraced rice fields, lotus lakes, misty mountains and fishing villages at dawn.",
     introZh: "按最佳光线安排行程：梯田、荷花湖、云雾山峦与黎明时分的渔村。",
     tours: ["hanoi-ha-long-sapa-da-nang-ho-chi-minh", "ha-long-ninh-binh-sapa-8-days-7-nights-tour", "hanoi-ha-long-ninh-binh-sapa", "ha-giang-cao-bang-ban-gioc-waterfall-ba-be-lake", "ha-giang-cao-bang-easy-rider-5-days", "ha-giang-easy-rider-4-days", "hanoi-sapa-cat-cat-lao-chai-ta-van-tram-ton-silver-waterfall", "hanoi-sapa-cat-cat-lao-chai-ta-van-bac-ha", "hanoi-sapa-catcat-fansipan-glass-bridge-lonely-tree-silver-waterfall-moana-check-in-point", "hanoi-sapa-catcat-fansipan-glass-bridge-lonely-tree-silver-waterfall-moana-view", "cao-bang-3-days-2-nights", "ha-giang-easy-rider-3-days"],
