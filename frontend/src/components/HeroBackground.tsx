@@ -24,7 +24,7 @@ export default function HeroBackground() {
     <>
       <picture>
         <source media={QUERY} srcSet="/_next/image?url=%2Fimages%2Fhero-fallback.webp&w=1920&q=75" />
-        <img src="/_next/image?url=%2Fimages%2Fhero-fallback-m.webp&w=828&q=75" alt="Trang An, Ninh Binh" fetchPriority="high" className="ken-burns absolute inset-0 -z-20 h-full w-full object-cover" />
+        <img src="/_next/image?url=%2Fimages%2Fhero-fallback-m.webp&w=828&q=60" srcSet="/_next/image?url=%2Fimages%2Fhero-fallback-m.webp&w=640&q=60 640w, /_next/image?url=%2Fimages%2Fhero-fallback-m.webp&w=828&q=60 828w" sizes="100vw" alt="Trang An, Ninh Binh" fetchPriority="high" className="ken-burns absolute inset-0 -z-20 h-full w-full object-cover" />
       </picture>
       {desktop && (
         <video

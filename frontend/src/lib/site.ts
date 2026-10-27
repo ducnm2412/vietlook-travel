@@ -3,7 +3,7 @@ export const SITE = {
   name: "Vietlook Travel and Trading Company Limited",
   shortName: "Vietlook Travel",
   slogan: "See the world, it's more fantastic than any dreams",
-  logo: "/logo-vietlooktravel2.webp", // tự host để LCP không phải kết nối thêm tên miền
+  logo: "/logo-vietlooktravel2-sm.webp", // bản 260px (đủ nét DPR 3 ở h-14), tự host để LCP không phải kết nối thêm tên miền
   logoFooter: "/images/logo-footer.webp", // cắt sát từ logo-chantrang.png của site gốc
   phone: "+84 98.339.3588",
   phoneRaw: "84983393588",
