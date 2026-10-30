@@ -84,7 +84,7 @@ export default function HeroVideo({ destinations }: { destinations: Destination[
                   </Tag>
                 );
               })()}
-              <div className="hc-in hc-d3 mt-7 flex items-center gap-2 sm:gap-4 md:mt-10">
+              <div className="hc-in hc-d3 mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4 md:mt-10">
                 {i === 0 ? (
                   <>
                     <Link href="/tours" className="hero-pill justify-center gap-2 bg-[#d8b47a] text-xs font-semibold uppercase tracking-wide text-ink shadow-lg transition hover:bg-accent hover:text-white sm:text-[15px]">

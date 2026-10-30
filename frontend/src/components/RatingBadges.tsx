@@ -25,12 +25,12 @@ export default function RatingBadges({ compact = false }: { compact?: boolean })
     { href: SITE.maps, count: SITE.googleReviews, logo: <><FontAwesomeIcon icon={faGoogle} className="text-3xl" /><span className="font-card text-3xl font-semibold">Google</span></>, mark: <FontAwesomeIcon icon={faStar} className="text-xl text-[#fbbc05]" /> },
     { href: SITE.tripadvisor, count: SITE.tripadvisorReviews, logo: <><Owl /><span className="font-card text-3xl font-semibold">Tripadvisor</span></>, mark: <span className="block h-5 w-5 rounded-full border-2 border-[#34e0a1] bg-[#34e0a1] ring-2 ring-[#34e0a1]/40" /> },
   ];
-  // Bản gọn cho hero: 2 viên kính mờ xếp ngang dưới ô tìm kiếm
+  // Bản gọn cho hero: 2 viên kính mờ (logo + sao + số đánh giá); điện thoại xếp dọc, máy tính xếp ngang
   if (compact)
     return (
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-col items-start gap-3 sm:flex-row">
         {items.map((it) => (
-          <a key={it.href} href={it.href} target="_blank" rel="noopener" className="hero-pill gap-3 bg-black/30 pl-3 pr-4 text-white ring-1 ring-white/25 backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-black/45">
+          <a key={it.href} href={it.href} target="_blank" rel="noopener" className="hero-pill gap-3 bg-black/45 pl-3 pr-4 text-white ring-1 ring-white/25 transition hover:-translate-y-0.5 hover:bg-black/60">
             <span className="flex items-center gap-2 max-sm:[&_.font-card]:hidden [&_span]:text-lg [&_svg]:h-6 [&_svg]:w-6">{it.logo}</span>
             <span className="flex flex-col leading-tight">
               <span className="flex gap-0.5 [&_span]:h-3 [&_span]:w-3 [&_svg]:text-xs" role="img" aria-label="5/5">{Array.from({ length: 5 }, (_, i) => <span key={i} className="grid place-items-center">{it.mark}</span>)}</span>
