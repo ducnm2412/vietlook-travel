@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleCheck, faClock, faComments, faHandshake, faHeadset,
   faPlaneArrival, faPlus, faRoad, faRoute, faShieldHalved, faSignHanging, faStar, faSuitcaseRolling, faTag, faUserGroup, faWifi,
+  faQuoteLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
@@ -56,9 +57,9 @@ const STEPS = [
 
 // Đánh giá minh hoạ cho bản demo
 const REVIEWS = [
-  { en: "Our flight landed almost an hour late, and the driver was still there with my name on a sign. Clean car, fair price, no haggling.", zh: "航班晚点了将近一个小时，司机仍举着我的名牌在等候。车很干净，价格公道，无需讨价还价。", name: "Emma W.", from: "Australia", fromZh: "澳大利亚" },
-  { en: "Hanoi to Halong Bay was smooth all the way. The driver was on time and the car was spotless. Support replied quickly in my language.", zh: "从河内到下龙湾一路很顺利，司机准时，车很干净。客服用中文沟通，非常方便。", name: "Chen L.", from: "Taiwan", fromZh: "台湾" },
-  { en: "Booked Hanoi – Ninh Binh – Hanoi for our family of six. The 7-seat car was spacious and the driver knew all the best stops.", zh: "我们一家六口预订了河内—宁平—河内。七座车很宽敞，司机熟悉所有好去处。", name: "David K.", from: "United Kingdom", fromZh: "英国" },
+  { en: "Our flight landed almost an hour late, and the driver was still there with my name on a sign. Clean car, fair price, no haggling.", zh: "航班晚点了将近一个小时，司机仍举着我的名牌在等候。车很干净，价格公道，无需讨价还价。", name: "Emma W.", from: "Australia", fromZh: "澳大利亚", image: "/images/car-rental/intro2.webp", title: "Waited despite our late flight", titleZh: "航班晚点也在等候" },
+  { en: "Hanoi to Halong Bay was smooth all the way. The driver was on time and the car was spotless. Support replied quickly in my language.", zh: "从河内到下龙湾一路很顺利，司机准时，车很干净。客服用中文沟通，非常方便。", name: "Chen L.", from: "Taiwan", fromZh: "台湾", image: "/images/car-rental/van2.webp", title: "Smooth ride to Halong Bay", titleZh: "顺利抵达下龙湾" },
+  { en: "Booked Hanoi – Ninh Binh – Hanoi for our family of six. The 7-seat car was spacious and the driver knew all the best stops.", zh: "我们一家六口预订了河内—宁平—河内。七座车很宽敞，司机熟悉所有好去处。", name: "David K.", from: "United Kingdom", fromZh: "英国", image: "/images/car-rental/car3.webp", title: "Perfect for a family of six", titleZh: "适合六口之家" },
 ];
 
 const FAQ = [
@@ -218,15 +219,23 @@ export default async function CarRentalPage() {
         <h2 className={head}><L en="What travellers say" zh="客户评价" /></h2>
         <p className="mb-8 mt-2 text-muted"><L en="Guests from many countries share their trips." zh="来自各国的客人分享他们的旅程。" /></p>
         <div className="grid gap-5 md:grid-cols-3">
-          {REVIEWS.map((r) => (
-            <figure key={r.name} className="relative rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
-              <span className="absolute right-5 top-0 font-serif text-7xl text-accent/20">&ldquo;</span>
-              <div className="flex gap-0.5 text-xs text-accent">{Array.from({ length: 5 }, (_, i) => <FontAwesomeIcon key={i} icon={faStar} />)}</div>
-              <blockquote className="mt-3 text-sm leading-relaxed"><L en={r.en} zh={r.zh} /></blockquote>
-              <figcaption className="mt-5 flex items-center gap-3">
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-accent font-bold text-white">{r.name[0]}</span>
-                <div><p className="text-sm font-bold">{r.name}</p><p className="text-xs text-muted"><L en={r.from} zh={r.fromZh} /></p></div>
-              </figcaption>
+          {REVIEWS.map((r, i) => (
+            // Cùng kiểu thẻ đánh giá trang chủ (components/Reviews.tsx): ảnh chuyến đi, nút trích dẫn, sao, tiêu đề, avatar chữ cái
+            <figure key={r.name} className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-black/5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={r.image} alt="" loading="lazy" decoding="async" className="aspect-[16/10] w-full object-cover" />
+              <div className="relative flex flex-1 flex-col px-7 pb-7 pt-10">
+                <span className="absolute -top-6 left-7 grid h-12 w-12 place-items-center rounded-full bg-white text-brand shadow-md">
+                  <FontAwesomeIcon icon={faQuoteLeft} />
+                </span>
+                <div className="mb-2 flex gap-1 text-[#f5a623]" aria-label="5/5">{Array.from({ length: 5 }, (_, k) => <FontAwesomeIcon key={k} icon={faStar} />)}</div>
+                <h3 className="font-card text-xl font-bold leading-snug"><L en={r.title} zh={r.titleZh} /></h3>
+                <blockquote className="mb-5 mt-3 text-base leading-relaxed text-muted"><L en={r.en} zh={r.zh} /></blockquote>
+                <figcaption className="mt-auto flex items-center gap-3 border-t border-black/5 pt-5">
+                  <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-full font-card text-sm font-bold text-white shadow ring-2 ring-white ${["bg-brand", "bg-accent", "bg-[#b4532a]"][i % 3]}`} aria-hidden>{r.name.split(" ").map((w) => w[0]).join("").replace(".", "")}</span>
+                  <span className="text-sm leading-tight"><b className="block">{r.name}</b><span className="text-muted"><L en={r.from} zh={r.fromZh} /></span></span>
+                </figcaption>
+              </div>
             </figure>
           ))}
         </div>

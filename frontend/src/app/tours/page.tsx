@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
 import PageHero from "@/components/PageHero";
+import ToursIntro from "@/components/ToursIntro";
 import TourFilter from "@/components/TourFilter";
 import { T } from "@/lib/i18n";
 import Link from "@/components/LocaleLink";
@@ -31,6 +32,7 @@ export default async function ToursPage({ searchParams }: PageProps<"/tours">) {
   return (
     <>
       <PageHero title={<T k="nav.tours" />} sub={<T k="sec.long.s" />} image="/images/heroes/tours.webp" />
+      <ToursIntro />
       <section className="container-x py-14">
         {/* key để bộ lọc reset khi điều hướng từ menu với query mới */}
         {style && (

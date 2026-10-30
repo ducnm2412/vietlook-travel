@@ -1,6 +1,10 @@
 // Thông tin lấy từ vietlooktravel.com
 export const SITE = {
   name: "Vietlook Travel and Trading Company Limited",
+  legalNameVi: "Công ty TNHH Du lịch và Thương mại Vietlook",
+  // Mã số doanh nghiệp / số giấy phép lữ hành: để trống tới khi Vietlook cung cấp số thật (footer tự ẩn dòng này khi trống)
+  taxId: "",
+  travelLicense: "",
   shortName: "Vietlook Travel",
   slogan: "See the world, it's more fantastic than any dreams",
   logo: "/logo-vietlooktravel2-sm.webp", // bản 260px (đủ nét DPR 3 ở h-14), tự host để LCP không phải kết nối thêm tên miền
@@ -17,6 +21,10 @@ export const SITE = {
   address: "No 58, Yen Nghia Ward, Ha Noi, Vietnam",
   facebook: "https://www.facebook.com/vietlooktravelhanoi",
   maps: "https://maps.app.goo.gl/ar5pqAHXgeW42U7W9",
+  tripadvisor: "https://www.tripadvisor.com/Attraction_Review-g17733187-d27950353-Reviews-Vietlook_Travel-Ha_Dong_Hanoi.html",
+  // Số đánh giá hiển thị ở RatingBadges: cập nhật theo số thật trên Google / Tripadvisor ("" = ẩn số)
+  googleReviews: "",
+  tripadvisorReviews: "35",
   mapEmbed: "https://www.google.com/maps?q=58+Yen+Nghia,+Ha+Dong,+Ha+Noi&output=embed",
 };
 

@@ -7,7 +7,9 @@ import BookingForm from "@/components/BookingForm";
 import TourCard from "@/components/TourCard";
 import { L, LHtml, T } from "@/lib/i18n";
 import { formatUsd } from "@/lib/api";
-import { getTour, getTours } from "@/lib/content";
+import { getTour, getTours, postsByTitle } from "@/lib/content";
+import { cityByDest } from "@/lib/cities";
+import GuideCard from "@/components/GuideCard";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { findYouTubeId, TOUR_VIDEOS } from "@/lib/videos";
 
@@ -32,6 +34,10 @@ export default async function TourDetail({ params }: PageProps<"/tours/[slug]">)
   const filter = tour.destinations[0] ? `?destination=${tour.destinations[0]}` : `?kind=${tour.kind}`;
   const related = (await getTours(`${filter}&limit=4`)).filter((t) => t.slug !== tour.slug).slice(0, 3);
   const gallery = tour.gallery ?? [];
+  // Bài blog: bài về thành phố của tour (khớp tiêu đề), thiếu thì bù bằng bài mới nhất
+  const city = tour.destinations.map(cityByDest).find(Boolean);
+  const cityPosts = city ? postsByTitle(city.posts, 3) : [];
+  const blog = [...cityPosts, ...postsByTitle(/./, 6).filter((x) => !cityPosts.some((y) => y.slug === x.slug))].slice(0, 3);
   const video = TOUR_VIDEOS[tour.slug] ?? findYouTubeId(tour.contentHtml ?? "");
 
   return (
@@ -86,6 +92,24 @@ export default async function TourDetail({ params }: PageProps<"/tours/[slug]">)
           <div className="container-x">
             <h2 className="mb-6 font-card text-2xl font-bold md:text-3xl"><L en="You may also like" zh="您可能还喜欢" /></h2>
             <div className="grid gap-6 md:grid-cols-3">{related.map((t) => <TourCard key={t.slug} tour={t} />)}</div>
+          </div>
+        </section>
+      )}
+
+      {/* Blog: cẩm nang / tin tức liên quan tới điểm đến của tour */}
+      {blog.length > 0 && (
+        <section className="bg-[#fdf6ec] py-14 md:py-20">
+          <div className="container-x">
+            <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent"><L en="From our blog" zh="博客精选" /></p>
+                <h2 className="mt-2 font-card text-2xl font-bold md:text-3xl">
+                  {city ? <L en={`Travel tips for ${city.name}`} zh={`${city.zh}旅行贴士`} /> : <L en="Travel tips and stories" zh="旅行贴士与故事" />}
+                </h2>
+              </div>
+              <Link href="/news" className="font-semibold text-brand hover:underline"><L en="View all articles →" zh="查看全部文章 →" /></Link>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{blog.map((p) => <GuideCard key={p.slug} post={p} />)}</div>
           </div>
         </section>
       )}

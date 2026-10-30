@@ -3,11 +3,11 @@
 import { useRef, useState } from "react";
 import { useLang } from "@/lib/i18n";
 import { formData, useInquiry } from "./useInquiry";
-import { VISA_SERVICES } from "@/lib/visa";
+import { FT_AIRPORTS, VISA_SERVICES } from "@/lib/visa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
-const AIRPORTS = [["HAN", "Ha Noi"], ["SGN", "Ho Chi Minh"], ["DAD", "Da Nang"], ["CXR", "Nha Trang"], ["PQC", "Phu Quoc"]];
+const AIRPORTS = FT_AIRPORTS.map((a) => [a.code, a.city]);
 
 // Form 2 bước: (1) chuyến đi, (2) liên hệ. Bước ẩn vẫn nằm trong DOM để FormData lấy đủ giá trị.
 export default function VisaForm() {
@@ -47,9 +47,12 @@ export default function VisaForm() {
             <button type="button" onClick={() => setPax(pax + 1)} className="px-3 py-3 text-muted hover:text-brand"><FontAwesomeIcon icon={faPlus} /></button>
           </div>
         </div>
-        <label className="block"><span className="label">{zh ? "抵达日期" : "Arrival date"} *</span><input required type="date" name="arrival" className="field" /></label>
+        <div className="grid grid-cols-2 gap-3">
+          <label className="block"><span className="label">{zh ? "抵达/出发日期" : "Flight date"} *</span><input required type="date" name="arrival" className="field" /></label>
+          <label className="block"><span className="label">{zh ? "航班号" : "Flight number"} *</span><input required name="flight" placeholder="VN123" className="field uppercase" /></label>
+        </div>
         <div>
-          <span className="label">{zh ? "入境机场" : "Arrival airport"}</span>
+          <span className="label">{zh ? "机场" : "Airport"}</span>
           <div className="flex flex-wrap gap-2">
             {AIRPORTS.map(([code, city], i) => (
               <label key={code} className="cursor-pointer">

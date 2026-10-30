@@ -10,6 +10,7 @@ import { pageMeta, SITE_URL } from "@/lib/seo";
 import Header from "@/components/Header";
 import { themeCover, getCarCities, getDestinations } from "@/lib/content";
 import { TOUR_THEMES } from "@/lib/themes";
+import { destHref } from "@/lib/cities";
 import Footer from "@/components/Footer";
 import FloatingContact from "@/components/FloatingContact";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -60,6 +61,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const [dests, carCities] = await Promise.all([getDestinations(), getCarCities()]);
   const menuImages = Object.fromEntries([
     ...dests.map((d) => [`/tours?destination=${d.slug}`, d.image]),
+    ...dests.map((d) => [destHref(d.slug), d.image]),
     ...carCities.map((c) => [`/car-rental/${c.slug.replace(/-private-cars$/, "")}`, c.image]),
     ["/car-rental", "/images/heroes/car.webp"],
     // Ô "Special tours" chưa có ảnh trong dữ liệu nên dùng ảnh tĩnh

@@ -1,5 +1,6 @@
 import Link from "@/components/LocaleLink";
 import Img from "./Img";
+import BronzeDrum from "./BronzeDrum";
 import { L } from "@/lib/i18n";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faCarSide, faMapLocationDot, faPlaneArrival, faTags } from "@fortawesome/free-solid-svg-icons";
@@ -14,12 +15,17 @@ const POINTS = [
 // Giới thiệu dịch vụ xe riêng kèm tài xế (đặt cuối trang danh sách tour), dẫn sang /car-rental
 export default function CarServicePromo() {
   return (
-    <section className="py-14 md:py-20">
+    <section className="relative isolate overflow-hidden bg-[#f1ece2] py-14 md:py-20">
+      {/* Nền kiểu tranh sơn thuỷ giống khối "Plan your trip": đồi vàng – núi xanh mờ dần lên trên,
+          trống đồng xoay chậm sau ảnh xe */}
+      <div className="absolute inset-0 -z-20 bg-[url('/images/plan-bg-hills.webp')] bg-cover bg-bottom opacity-45 [mask-image:linear-gradient(to_bottom,transparent_5%,#000_45%,#000_75%,transparent)]" aria-hidden />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_30%_40%,rgba(255,255,255,0.85),rgba(255,255,255,0)_55%)]" aria-hidden />
+      <BronzeDrum className="drum-spin pointer-events-none absolute -right-40 top-1/2 -z-10 hidden w-[760px] -translate-y-1/2 opacity-25 lg:block" />
       <div className="container-x grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
         <div className="order-2 lg:order-1">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent"><L en="Private car hire with driver" zh="包车服务（含司机）" /></p>
           <h2 className="mt-3 font-card text-3xl font-bold leading-tight md:text-4xl"><L en="Travel at your own pace with a private driver" zh="专车专司机，按自己的节奏出行" /></h2>
-          <p className="mt-4 text-muted"><L en="Add a car to any tour, or book transfers on their own – English-speaking drivers, clean modern vehicles, 24/7 support." zh="可为任何线路加订包车，也可单独预订接送：会英语的司机、干净的新车、全天候支持。" /></p>
+          <p className="mt-4 text-muted"><L en="Add a car to any tour, or book transfers on their own – English- or Chinese-speaking drivers nationwide, clean modern vehicles, 24/7 support." zh="可为任何线路加订包车，也可单独预订接送：全国均有会英语或中文的司机、干净的新车、全天候支持。" /></p>
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
             {POINTS.map((p) => (
               <div key={p.en} className="group flex gap-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-md">

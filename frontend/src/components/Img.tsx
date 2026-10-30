@@ -8,8 +8,10 @@ const WIDTHS = [256, 384, 480, 640, 828, 1080, 1200, 1920];
 // Ảnh wp-content gốc (jpg/png nặng) và ảnh trong /images/ đi qua /_next/image để được resize + avif/webp;
 // ảnh CDN cdn.ngay.net nhận ?w= để trả đúng kích thước (format=auto → webp/avif)
 function sized(src: string, w: number) {
+  // Ảnh điểm đến đã xuất sẵn webp nét cao: dùng nguyên bản, không nén lại
+  if (src.startsWith("/images/destinations/")) return null;
   if (src.startsWith("https://vietlooktravel.com/wp-content/") || src.startsWith("/images/")) {
-    return `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=75`;
+    return `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=85`;
   }
   if (!src.includes("cdn.ngay.net") || /[?&]w=/.test(src)) return null;
   return `${src}${src.includes("?") ? "&" : "?"}w=${w}`;

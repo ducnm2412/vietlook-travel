@@ -45,9 +45,9 @@ export default function TailorMadeSection() {
       {/* Ghép 2 ảnh: ảnh lớn bo góc + ảnh nhỏ viền trắng đè góc dưới */}
       <div className="relative order-1 mx-auto w-full max-w-[260px] pb-10 sm:max-w-sm lg:order-2 lg:max-w-lg lg:pb-16">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/_next/image?url=%2Fimages%2Ftailor-hoian.webp&w=640&q=75" alt="Hoi An ancient town" className="ml-auto aspect-[4/5] w-[85%] rounded-[1.5rem] lg:rounded-[2rem] object-cover shadow-2xl" loading="lazy" />
+        <img src="/_next/image?url=%2Fimages%2Ftailor-hoian.webp&w=640&q=85" alt="Hoi An ancient town" className="ml-auto aspect-[4/5] w-[85%] rounded-[1.5rem] lg:rounded-[2rem] object-cover shadow-2xl" loading="lazy" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/_next/image?url=%2Fimages%2Ftailor-hmong.webp&w=640&q=75" alt="Local people in Sapa" className="absolute bottom-0 left-0 aspect-square w-[45%] rounded-2xl border-4 border-white lg:rounded-[1.5rem] lg:border-[6px] object-cover shadow-2xl" loading="lazy" />
+        <img src="/_next/image?url=%2Fimages%2Ftailor-hmong.webp&w=640&q=85" alt="Local people in Sapa" className="absolute bottom-0 left-0 aspect-square w-[45%] rounded-2xl border-4 border-white lg:rounded-[1.5rem] lg:border-[6px] object-cover shadow-2xl" loading="lazy" />
       </div>
       </div>
     </section>

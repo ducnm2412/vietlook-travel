@@ -171,7 +171,7 @@ body {
   transform: translate3d(-28px, 0, 0);
   transition: opacity 0.8s ease-out 0.15s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
 }
-.reveal-fx img:not(.stagger img) {
+.reveal-fx img:not(.stagger img, .b2b-float, .b2b-star img) {
   -webkit-clip-path: inset(0 0 100% 0);
   clip-path: inset(0 0 100% 0);
   transition: -webkit-clip-path 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.2s, clip-path 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
@@ -180,7 +180,7 @@ body {
   opacity: 1;
   transform: none;
 }
-.reveal-fx.reveal-in img:not(.stagger img) {
+.reveal-fx.reveal-in img:not(.stagger img, .b2b-float, .b2b-star img) {
   -webkit-clip-path: inset(0 0 0 0);
   clip-path: inset(0 0 0 0);
 }
@@ -193,36 +193,6 @@ body {
     -webkit-clip-path: none;
     clip-path: none;
     transition: none;
-  }
-}
-
-/* Sóng chuyển động ở đáy hero trang chủ */
-.hero-waves use {
-  animation: hero-wave-move 18s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
-}
-.hero-waves use:nth-child(1) {
-  animation-delay: -2s;
-  animation-duration: 10s;
-}
-.hero-waves use:nth-child(2) {
-  animation-delay: -4s;
-  animation-duration: 14s;
-}
-.hero-waves use:nth-child(3) {
-  animation-delay: -6s;
-  animation-duration: 22s;
-}
-@keyframes hero-wave-move {
-  0% {
-    transform: translate3d(-44px, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-waves use {
-    animation: none;
   }
 }
 
@@ -402,3 +372,178 @@ body {
   color: #fff;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
 }
+
+/* Vòng chữ "VIETLOOK TRAVEL" quanh logo huy hiệu xoay chậm (LogoBadge) */
+.logo-ring-spin {
+  transform-box: view-box;
+  transform-origin: 100px 100px;
+  animation: logo-ring-spin 20s linear infinite;
+}
+@keyframes logo-ring-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-ring-spin { animation: none; }
+}
+
+/* Section B2B kiểu "wallpaper": nền giấy kem + các vòng tròn đồng tâm mờ lệch về bên phải.
+   Máy có chuột: nền đứng yên khi cuộn (như hình nền); điện thoại cuộn bình thường (iOS/Android không hỗ trợ fixed). */
+.b2b-wallpaper {
+  background-color: #f7f2ea;
+  background-image:
+    radial-gradient(circle at 72% 50%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 55%),
+    repeating-radial-gradient(circle at 72% 50%, rgba(160, 130, 80, 0.09) 0 1px, transparent 1px 26px);
+}
+@media (hover: hover) and (min-width: 1024px) {
+  .b2b-wallpaper { background-attachment: fixed; }
+}
+/* Ảnh ghép nổi nhẹ lên xuống */
+.b2b-float { animation: b2b-float 7s ease-in-out infinite; }
+@keyframes b2b-float {
+  50% { transform: translate3d(0, -12px, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .b2b-float { animation: none; }
+}
+/* Mép dưới và 2 mép bên của ảnh ghép tan dần vào nền giấy (ảnh gốc bị cắt thẳng) */
+.b2b-fade {
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent), linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, #000 72%, transparent), linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-composite: intersect;
+}
+
+/* ===== Hiệu ứng sinh động toàn trang ===== */
+/* Nút: nhấc nhẹ + vệt sáng lướt qua khi rê chuột */
+.btn { position: relative; overflow: hidden; isolation: isolate; transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s; }
+.btn::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+}
+@media (hover: hover) {
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 22px -8px rgba(0, 0, 0, 0.35); }
+  .btn:hover::after { transform: translateX(120%); transition: transform 0.8s ease; }
+}
+.btn:active { transform: translateY(0) scale(0.97); }
+
+/* Nút liên hệ nổi: vòng sóng lan ra thu hút sự chú ý */
+.fab-pulse { position: relative; }
+.fab-pulse::before {
+  content: ""; position: absolute; inset: 0; border-radius: 9999px; background: inherit; z-index: -1;
+  animation: fab-pulse 2.4s ease-out infinite;
+}
+@keyframes fab-pulse { 0% { transform: scale(1); opacity: 0.6; } 80%, 100% { transform: scale(1.7); opacity: 0; } }
+.fab-pop { transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.fab-pop:hover { transform: scale(1.12) rotate(-6deg); }
+
+/* Menu chính: gạch chân chạy ra từ giữa */
+.nav-line { position: relative; }
+.nav-line::after {
+  content: ""; position: absolute; left: 50%; right: 50%; bottom: 1.25rem; height: 2px; border-radius: 2px;
+  background: var(--color-accent); transition: left 0.3s ease, right 0.3s ease;
+}
+.nav-line:hover::after { left: 0.75rem; right: 0.75rem; }
+
+/* Dòng chữ nhỏ trên tiêu đề (kicker): giãn chữ dần khi section hiện */
+.reveal-fx p.uppercase { letter-spacing: 0.02em; opacity: 0; transition: letter-spacing 1.1s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease; }
+.reveal-fx.reveal-in p.uppercase { letter-spacing: 0.18em; opacity: 1; }
+
+/* Section B2B: ảnh xoay nhẹ phóng vào, icon bắt tay vẫy, đường kẻ chạy ra, danh sách bật lần lượt */
+.reveal .b2b-in { opacity: 0; transform: scale(0.85) rotate(-6deg); }
+.reveal.reveal-in .b2b-in { animation: b2b-in 2.2s cubic-bezier(0.25, 1.15, 0.5, 1) 0.15s both; }
+@keyframes b2b-in { from { opacity: 0; transform: scale(0.85) rotate(-6deg); } to { opacity: 1; transform: none; } }
+.b2b-wave { display: inline-block; transform-origin: 70% 80%; animation: b2b-wave 3.2s ease-in-out infinite; }
+@keyframes b2b-wave { 0%, 60%, 100% { transform: rotate(0); } 10%, 30% { transform: rotate(-14deg); } 20%, 40% { transform: rotate(10deg); } }
+.reveal .b2b-line { transform: scaleX(0); transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.4s; }
+.reveal .b2b-line:first-child { transform-origin: right; }
+.reveal .b2b-line:last-child { transform-origin: left; }
+.reveal.reveal-in .b2b-line { transform: scaleX(1); }
+.b2b-diamond { animation: logo-ring-spin 6s linear infinite; }
+.reveal .b2b-list > li { opacity: 0; transform: translate3d(24px, 0, 0); }
+.reveal.reveal-in .b2b-list > li { animation: b2b-li 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.reveal.reveal-in .b2b-list > li:nth-child(1) { animation-delay: 0.5s; }
+.reveal.reveal-in .b2b-list > li:nth-child(2) { animation-delay: 0.62s; }
+.reveal.reveal-in .b2b-list > li:nth-child(3) { animation-delay: 0.74s; }
+.reveal.reveal-in .b2b-list > li:nth-child(4) { animation-delay: 0.86s; }
+@keyframes b2b-li { from { opacity: 0; transform: translate3d(24px, 0, 0); } to { opacity: 1; transform: none; } }
+.b2b-list > li:hover svg { transform: scale(1.25) rotate(360deg); transition: transform 0.6s ease; }
+/* Logo in chìm xoay rất chậm phía sau */
+.b2b-watermark { animation: b2b-spin 60s linear infinite; }
+@keyframes b2b-spin { to { rotate: 360deg; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .btn::after, .fab-pulse::before, .b2b-wave, .b2b-diamond, .reveal .b2b-in, .reveal .b2b-line, .reveal .b2b-list > li, .reveal-fx p.uppercase {
+    animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important;
+  }
+  .reveal-fx p.uppercase { letter-spacing: 0.18em; }
+  .b2b-watermark { animation: none; }
+}
+
+/* Hoa văn trống đồng ở nền section tour theo miền */
+@keyframes drum-spin { to { rotate: 360deg; } }
+.drum-spin { animation: drum-spin 120s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .drum-spin { animation: none; } }
+
+/* Ngôi sao ruy băng B2B: rê chuột vào một cánh -> ảnh phóng to, sáng lên, hiện tên địa danh; các cánh khác tối đi.
+   Bấm -> nảy nhẹ. Khung ruy băng phát sáng vàng khi rê chuột vào cả khối. */
+.b2b-petal img { transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease; }
+.b2b-label { opacity: 0; transform: translateY(8px); transition: opacity 0.35s ease, transform 0.35s ease; }
+.b2b-ribbon { transition: filter 0.5s ease; }
+@media (hover: hover) {
+  .b2b-star:hover .b2b-petal img { filter: brightness(0.72) saturate(0.85); }
+  .b2b-star .b2b-petal:hover img { transform: scale(1.14); filter: brightness(1.12) saturate(1.2); }
+  .b2b-petal:hover .b2b-label { opacity: 1; transform: none; }
+  .b2b-star:hover .b2b-ribbon { filter: drop-shadow(0 0 10px rgba(255, 200, 80, 0.75)) brightness(1.08); }
+}
+.b2b-petal:active img { transform: scale(1.04) !important; transition-duration: 0.15s; }
+/* Điện thoại (không có hover): tên địa danh hiện sẵn nhưng nhỏ gọn khi chạm */
+@media (hover: none) {
+  .b2b-petal:active .b2b-label { opacity: 1; transform: none; }
+}
+/* Ảnh trong các cánh tự "thở" nhẹ lần lượt cho khối ảnh có hồn */
+.b2b-petal:nth-child(odd) img { animation: b2b-breathe 9s ease-in-out infinite; }
+.b2b-petal:nth-child(even) img { animation: b2b-breathe 9s ease-in-out 4.5s infinite; }
+@keyframes b2b-breathe { 50% { scale: 1.06; } }
+@media (prefers-reduced-motion: reduce) {
+  .b2b-petal img { animation: none !important; transition: none !important; }
+}
+
+/* Danh sách điểm đến trong mega menu: hiện lần lượt khi đổi tab miền */
+.dest-list > li { animation: fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.dest-list > li:nth-child(n + 3) { animation-delay: 0.05s; }
+.dest-list > li:nth-child(n + 5) { animation-delay: 0.1s; }
+.dest-list > li:nth-child(n + 7) { animation-delay: 0.15s; }
+.dest-list { scrollbar-width: thin; scrollbar-color: var(--color-brand) transparent; }
+@media (prefers-reduced-motion: reduce) { .dest-list > li { animation: none; } }
+
+
+/* Logo huy hiệu ở ảnh đầu các trang con: bay vào khi mở trang rồi lơ lửng nhẹ (vòng chữ tự xoay trong LogoBadge) */
+.hero-badge > * { animation: hero-badge-in 1s cubic-bezier(0.34, 1.4, 0.64, 1) 0.3s both, b2b-float 6s ease-in-out 1.3s infinite; }
+@keyframes hero-badge-in { from { opacity: 0; transform: scale(0.6) rotate(-90deg); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .hero-badge > * { animation: none; } }
+
+/* Hero trang chủ: điểm đánh giá và 2 nút dùng chung một chỗ, thay phiên nhau mỗi 5 giây */
+.hero-swap > * { grid-area: 1 / 1; }
+.hero-swap > .hero-swap-a { animation: hero-swap-a 10s cubic-bezier(0.22, 1, 0.36, 1) 1.2s infinite both; }
+.hero-swap > .hero-swap-b { animation: hero-swap-b 10s cubic-bezier(0.22, 1, 0.36, 1) 1.2s infinite both; }
+.hero-swap:hover > * { animation-play-state: paused; }
+@keyframes hero-swap-a {
+  0%, 42% { opacity: 1; transform: none; visibility: visible; }
+  50%, 92% { opacity: 0; transform: translateY(-14px); visibility: hidden; }
+  100% { opacity: 1; transform: none; visibility: visible; }
+}
+@keyframes hero-swap-b {
+  0%, 42% { opacity: 0; transform: translateY(14px); visibility: hidden; }
+  50%, 92% { opacity: 1; transform: none; visibility: visible; }
+  100% { opacity: 0; transform: translateY(14px); visibility: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-swap > * { animation: none !important; grid-area: auto; }
+  .hero-swap { gap: 1rem; }
+}
+
+/* Viên nút trong hero: nút hành động và huy hiệu đánh giá cùng kích thước để khi thay phiên không bị nhảy */
+.hero-pill { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; border-radius: 9999px; width: 10.5rem; height: 2.75rem; flex-shrink: 0; overflow: hidden; }
+@media (min-width: 640px) { .hero-pill { width: 15.5rem; height: 3.5rem; } }
+

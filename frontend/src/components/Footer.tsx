@@ -1,7 +1,8 @@
+import LogoBadge from "./LogoBadge";
 import Link from "@/components/LocaleLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiamondTurnRight, faEnvelope, faLocationDot, faPhone } from "@fortawesome/free-solid-svg-icons";
-import { faFacebookF, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { faCcJcb, faCcMastercard, faCcVisa, faFacebookF, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { L, T } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
 
@@ -37,6 +38,20 @@ const COMPANY: Item[] = [
   { en: "Contact", zh: "联系我们", href: "/contact" },
 ];
 
+// Nhóm link pháp lý ở dải cuối footer
+const LEGAL: Item[] = [
+  { en: "Terms of use", zh: "使用条款", href: "/terms-of-use" },
+  { en: "Privacy policy", zh: "隐私政策", href: "/privacy-policy" },
+  { en: "Payment and refund policy", zh: "付款与退款政策", href: "/payment-policy" },
+  { en: "Cancellation and change policy", zh: "取消与改团政策", href: "/cancellation-policy" },
+];
+
+const PAYMENTS = [
+  { icon: faCcVisa, name: "Visa" },
+  { icon: faCcMastercard, name: "Mastercard" },
+  { icon: faCcJcb, name: "JCB" },
+];
+
 function Column({ title, items }: { title: { en: string; zh: string }; items: Item[] }) {
   return (
     <div>
@@ -54,11 +69,18 @@ function Column({ title, items }: { title: { en: string; zh: string }; items: It
 
 export default function Footer() {
   return (
-    <footer className="bg-brand-dark text-white/75">
+    <footer className="relative isolate overflow-hidden bg-brand-dark text-white/75">
+      {/* Logo in chìm lớn phía sau footer, vòng chữ xoay chậm */}
+      <div aria-hidden className="pointer-events-none absolute -right-24 top-10 -z-10 opacity-[0.06] lg:-right-16">
+        <LogoBadge alt="" className="h-[420px] w-[420px] grayscale lg:h-[560px] lg:w-[560px]" />
+      </div>
       <div className="container-x grid grid-cols-2 gap-x-6 gap-y-8 py-10 lg:grid-cols-[1.3fr_1fr_1.1fr_0.8fr_1.3fr] lg:gap-10 lg:py-16">
         <div className="col-span-2 flex items-center justify-between gap-4 lg:col-span-1 lg:block">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={SITE.logoFooter} alt={SITE.shortName} className="h-12 w-auto lg:h-16" loading="lazy" />
+          {/* Logo đặt trên nền trắng bo góc để chữ xanh – đỏ nổi rõ trên nền xanh đậm */}
+          <span className="inline-block rounded-2xl bg-white px-4 py-2 shadow-lg">
+            <img src="/logo-vietlooktravel2.webp" alt={SITE.shortName} width={548} height={356} className="h-14 w-auto lg:h-20" loading="lazy" />
+          </span>
           <p className="mt-4 hidden text-sm leading-relaxed lg:block"><T k="footer.about" /></p>
           <div className="flex gap-2 lg:mt-6 lg:gap-3">
             <a href={SITE.facebook} target="_blank" rel="noopener" aria-label="Facebook" className="grid h-9 w-9 place-items-center rounded-full bg-white/10 lg:h-10 lg:w-10 transition hover:bg-accent hover:text-white"><FontAwesomeIcon icon={faFacebookF} /></a>
@@ -97,8 +119,36 @@ export default function Footer() {
           <iframe src={SITE.mapEmbed} title="Vietlook Travel office map" loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="h-40 w-full rounded-2xl border-0 lg:h-56" />
         </div>
       </div>
-      <div className="border-t border-white/10 py-6 text-center text-xs text-white/50">
-        Copyright {new Date().getFullYear()} © {SITE.name}
+      {/* Dải pháp lý: tên công ty, địa chỉ, liên hệ, mã số doanh nghiệp, link chính sách, phương thức thanh toán */}
+      <div className="border-t border-white/10 bg-black/20">
+        <div className="container-x grid gap-6 py-8 text-xs leading-relaxed text-white/60 lg:grid-cols-[1.4fr_1fr] lg:items-center lg:text-sm">
+          <div className="space-y-1">
+            <p className="font-card text-sm font-bold text-white lg:text-base">{SITE.legalNameVi}</p>
+            <p>{SITE.name}</p>
+            <p><L en="Address" zh="地址" />: {SITE.address}</p>
+            <p>
+              Hotline / WhatsApp: <a href={`tel:+${SITE.phoneRaw}`} className="hover:text-accent">{SITE.phone}</a> · <a href={`tel:+${SITE.phone2Raw}`} className="hover:text-accent">{SITE.phone2}</a> · Email: <a href={`mailto:${SITE.email}`} className="hover:text-accent">{SITE.email}</a>
+            </p>
+            {SITE.taxId && <p><L en="Business registration no." zh="企业注册号" />: {SITE.taxId}</p>}
+            {SITE.travelLicense && <p><L en="International travel licence" zh="国际旅行社经营许可证" />: {SITE.travelLicense}</p>}
+          </div>
+          <div className="space-y-4 lg:text-right">
+            <ul className="flex flex-wrap gap-x-4 gap-y-1 lg:justify-end">
+              {LEGAL.map((i) => (
+                <li key={i.href}><Link href={i.href} className="text-white/75 underline-offset-4 transition hover:text-accent hover:underline"><L en={i.en} zh={i.zh} /></Link></li>
+              ))}
+            </ul>
+            <div className="flex items-center gap-3 lg:justify-end">
+              <span><L en="We accept" zh="支付方式" />:</span>
+              {PAYMENTS.map((p) => (
+                <FontAwesomeIcon key={p.name} icon={p.icon} title={p.name} className="text-3xl text-white/85" />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="border-t border-white/10 py-4 text-center text-xs text-white/45">
+          Copyright {new Date().getFullYear()} © {SITE.name}
+        </div>
       </div>
     </footer>
   );

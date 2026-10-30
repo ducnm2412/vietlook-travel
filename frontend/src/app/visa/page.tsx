@@ -6,8 +6,10 @@ import VisaForm from "@/components/forms/VisaForm";
 import { L, T } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
 import { getTours } from "@/lib/content";
+import FastTrackPricing from "@/components/FastTrackPricing";
+import { FT_STEPS } from "@/lib/visa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faCheck, faMinus, faPhone, faPlane } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faPassport, faPhone, faPlane, faPlaneArrival, faPlaneDeparture } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 export const metadata: Metadata = pageMeta({
@@ -27,17 +29,6 @@ const AIRPORTS = [
   ["PQC", "Phu Quoc International", "富国国际机场", "Phu Quoc", "富国岛"],
 ];
 
-// Ma trận gói dịch vụ: S = visa stamping, I = immigration, B = baggage, E = escort ra cửa
-const COLS = [["Visa stamp", "盖章"], ["Immigration", "入境"], ["Baggage", "行李"], ["Escort", "护送"]];
-const OPTIONS: [string, string, string, number[], string, string][] = [
-  ["FT-01", "Visa Stamping Assistance", "落地签盖章协助", [1, 0, 0, 0], "For Visa on Arrival holders: fast visa stamping without queuing.", "适用于落地签旅客，快速盖章无需排队。"],
-  ["FT-02", "Immigration Fast Track", "快速入境通关", [0, 1, 0, 1], "Meet and escort service through priority immigration lanes.", "接机并护送通过优先入境通道。"],
-  ["FT-03", "Visa Stamping + Immigration", "盖章 + 快速入境", [1, 1, 0, 1], "Fast visa stamping and priority immigration clearance combined.", "落地签盖章与优先入境通关组合服务。"],
-  ["FT-04", "Full Fast Track Package", "全程快速通关套餐", [1, 1, 1, 1], "Visa stamping (if applicable), priority immigration, baggage help and escort to the pick-up point.", "盖章（如需）、优先入境、协助行李并护送至接机点。"],
-  ["FT-05", "Business Class / VIP", "商务舱 / VIP", [1, 1, 1, 1], "The most premium option: full airport handling, assisted from the moment you land.", "最高端服务：落地即享全程机场协助。"],
-  ["FT-06", "Transit Fast Track", "转机快速通关", [0, 1, 1, 1], "For transit passengers: immigration, security, baggage and check-in for your next flight.", "适用于转机旅客：协助入境、安检、行李及下一航班值机。"],
-];
-
 const DOCS = [
   ["Passport valid for at least 6 months", "护照有效期至少6个月"],
   ["E-visa printout or visa approval letter", "电子签证打印件或签证批准函"],
@@ -55,6 +46,12 @@ const ADVANTAGES = [
   ["Less stress and fatigue", "减少压力与疲劳", "After a long flight, smooth procedures let you start your trip relaxed.", "长途飞行后，顺畅的手续让您轻松开启旅程。"],
   ["Ideal for priority travellers", "优先旅客的理想选择", "Executives, families with young children, elderly and pregnant travellers, groups.", "高管、带幼儿家庭、年长旅客、孕妇及团体。"],
   ["A great first impression", "美好的第一印象", "Efficient airport handling makes arriving in Vietnam a pleasure.", "高效的机场服务让抵达越南成为一种享受。"],
+];
+
+const PROCESSES = [
+  { key: "arrival" as const, icon: faPlaneArrival, k: "Arrival", kzh: "入境", en: "Meet and assist", zh: "接机流程", bg: "bg-brand text-white" },
+  { key: "departure" as const, icon: faPlaneDeparture, k: "Departure", kzh: "出境", en: "See-off", zh: "送机流程", bg: "bg-tarmac text-white" },
+  { key: "evisa" as const, icon: faPassport, k: "Before you fly", kzh: "出发前", en: "Apply for an e-visa", zh: "申请电子签证", bg: "bg-sign text-tarmac" },
 ];
 
 const mono = "font-mono uppercase tracking-wider";
@@ -159,39 +156,42 @@ export default async function VisaPage() {
         </ol>
       </section>
 
-      {/* Ma trận gói dịch vụ kiểu tờ khai */}
-      <section className="bg-photo-light py-14 md:py-20">
+      {/* Bảng giá theo sân bay: 3 nhóm Đón / Tiễn / Dịch vụ đi kèm */}
+      <section id="prices" className="bg-photo-light scroll-mt-24 py-14 md:py-20">
         <div className="container-x">
-          <h2 className={head}><L en="Pick your service level" zh="选择服务等级" /></h2>
-          <p className="mb-8 mt-2 text-muted"><L en="What each option covers, at a glance." zh="各服务包含内容一目了然。" /></p>
-          <div className="overflow-x-auto rounded-2xl bg-white ring-1 ring-black/10">
-            <table className="w-full min-w-[640px] text-sm">
-              <thead>
-                <tr className={`border-b-2 border-tarmac text-left text-xs ${mono}`}>
-                  <th className="p-4">Code</th>
-                  <th className="p-4"><L en="Service" zh="服务" /></th>
-                  {COLS.map(([en, zh]) => <th key={en} className="p-4 text-center"><L en={en} zh={zh} /></th>)}
-                  <th className="p-4" />
-                </tr>
-              </thead>
-              <tbody>
-                {OPTIONS.map(([code, en, zh, has, d, dzh]) => (
-                  <tr key={code} className="border-b border-dashed border-black/10 last:border-0">
-                    <td className="p-4 font-mono font-bold text-muted">{code}</td>
-                    <td className="p-4"><p className="font-semibold"><L en={en} zh={zh} /></p><p className="mt-0.5 text-xs text-muted"><L en={d} zh={dzh} /></p></td>
-                    {has.map((v, i) => (
-                      <td key={i} className="p-4 text-center">{v ? <FontAwesomeIcon icon={faCheck} className="text-brand" /> : <FontAwesomeIcon icon={faMinus} className="text-black/20" />}</td>
-                    ))}
-                    <td className="p-4 text-right"><a href="#apply" className="font-semibold text-brand hover:underline"><L en="Request" zh="预订" /></a></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-4 text-sm text-muted">
+          <p className={`text-xs font-bold text-accent ${mono}`}><L en="Price list · USD" zh="价格表 · 美元" /></p>
+          <h2 className={`${head} mt-2`}><L en="Fast-track prices by airport" zh="各机场快速通关价格" /></h2>
+          <p className="mb-8 mt-2 text-muted"><L en="Choose your airport to see the price of each service." zh="选择机场，查看各项服务价格。" /></p>
+          <FastTrackPricing />
+          <p className="mt-6 text-sm text-muted">
             <span className="font-semibold text-ink"><L en="Good for: " zh="适合：" /></span>
             {WHO.map(([en, zh], i) => <span key={en}>{i > 0 && " · "}<L en={en} zh={zh} /></span>)}
           </p>
+        </div>
+      </section>
+
+      {/* Quy trình: Đón (nhập cảnh) · Tiễn (xuất cảnh) · E-visa – mỗi quy trình 5 bước */}
+      <section className="container-x py-14 md:py-20">
+        <p className={`text-xs font-bold text-accent ${mono}`}><L en="How it works" zh="服务流程" /></p>
+        <h2 className={`${head} mt-2 mb-10`}><L en="Step by step, from landing to take-off" zh="从落地到起飞，每一步都清清楚楚" /></h2>
+        <div className="grid gap-6 lg:grid-cols-3">
+          {PROCESSES.map((pr) => (
+            <div key={pr.key} className="relative overflow-hidden rounded-2xl bg-white p-6 ring-1 ring-black/10">
+              <div className={`-mx-6 -mt-6 mb-6 flex items-center gap-3 px-6 py-4 ${pr.bg}`}>
+                <FontAwesomeIcon icon={pr.icon} className="text-2xl" />
+                <div><p className={`text-[11px] opacity-75 ${mono}`}><L en={pr.k} zh={pr.kzh} /></p><p className="font-card text-xl font-bold"><L en={pr.en} zh={pr.zh} /></p></div>
+              </div>
+              <ol className="relative space-y-5 before:absolute before:bottom-3 before:left-[15px] before:top-3 before:w-0.5 before:bg-black/10">
+                {FT_STEPS[pr.key].map((st, i) => (
+                  <li key={st.en} className="relative flex gap-4">
+                    <span className="relative grid h-8 w-8 shrink-0 place-items-center rounded-full bg-sign font-mono text-sm font-bold text-tarmac ring-4 ring-white">{i + 1}</span>
+                    <span className="pt-1 text-sm leading-relaxed"><L en={st.en} zh={st.zh} /></span>
+                  </li>
+                ))}
+              </ol>
+              {pr.key === "evisa" && <a href="https://evisa.gov.vn" target="_blank" rel="noopener" className="mt-5 inline-block text-sm font-semibold text-brand hover:underline">evisa.gov.vn →</a>}
+            </div>
+          ))}
         </div>
       </section>
 

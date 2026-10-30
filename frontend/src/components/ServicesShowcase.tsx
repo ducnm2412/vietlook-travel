@@ -2,7 +2,6 @@ import Link from "@/components/LocaleLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Img from "./Img";
-import Divider from "./Divider";
 import { T, type DictKey } from "@/lib/i18n";
 
 // 3 dịch vụ chính, theo bố cục khối dịch vụ trên vietlooktravel.com
@@ -12,13 +11,20 @@ const SERVICES: { key: DictKey; href: string; image: string }[] = [
   { key: "nav.visa", href: "/visa", image: "https://cdn.ngay.net/khach/welcome-vietlook.png?format=auto" },
 ];
 
+const WAVE_MASK = `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" preserveAspectRatio="none"><path d="M0 0H1440V44C1330 52 1180 70 1010 66C840 62 760 26 620 26C440 26 300 76 0 50Z"/></svg>')}")`;
+
 export default function ServicesShowcase() {
   return (
     <section className="relative isolate overflow-hidden pb-20 pt-20 md:pb-40 md:pt-40">
-      <Divider shape="mountains" to="#ffffff" overlay="top" />
-      {/* Ảnh nền Tràng An (Ninh Bình) */}
-      <div className="absolute inset-0 -z-20 bg-[url('/images/services-bg.webp')] bg-cover bg-center parallax-bg" aria-hidden />
-      <div className="absolute inset-0 -z-10 bg-brand-dark/55" />
+      {/* Ảnh nền xích lô Hội An nắng chiều (khung hình từ video-src/15815621), tông be vàng hợp nền giấy B2B */}
+      <div className="absolute inset-0 -z-20 bg-[url('/images/services-bg-cyclo.webp')] bg-cover bg-center parallax-bg" aria-hidden />
+      <div className="absolute inset-0 -z-10 bg-[#3a2414]/50" />
+      {/* Mép trên lượn mềm (một nhịp lên xuống) cùng màu nền giấy của section B2B, thêm một lớp mờ lệch xuống tạo chiều sâu */}
+      <svg className="absolute inset-x-0 -top-px h-14 w-full md:h-24" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden>
+        <path d="M0 0H1440V62C1330 68 1180 82 1010 80C840 78 760 50 620 50C440 50 300 92 0 66Z" fill="#f7f2ea" fillOpacity="0.45" />
+      </svg>
+      {/* Lớp đặc dùng chính nền giấy kẻ vòng của section B2B (cắt theo hình sóng) để các đường cong chạy liền xuống */}
+      <div className="b2b-wallpaper absolute inset-x-0 -top-px h-14 md:h-24" style={{ maskImage: WAVE_MASK, WebkitMaskImage: WAVE_MASK, maskSize: "100% 100%", WebkitMaskSize: "100% 100%" }} aria-hidden />
       <div className="stagger container-x grid gap-8 md:grid-cols-3">
         {SERVICES.map((s) => (
           <Link key={s.key} href={s.href} className="group block">
@@ -37,17 +43,6 @@ export default function ServicesShowcase() {
         ))}
       </div>
 
-      {/* Sóng ở đáy, lớp cuối cùng màu be trùng nền section tour theo miền */}
-      <svg className="hero-waves absolute inset-x-0 -bottom-px h-16 w-full md:h-24" viewBox="0 24 150 28" preserveAspectRatio="none" aria-hidden>
-        <defs>
-          <path id="services-wave" d="M-160 44c7.5 0 14.5-8 22-8s14.5 8 22 8 14.5-8 22-8 14.5 8 22 8 14.5-8 22-8 14.5 8 22 8 14.5-8 22-8 14.5 8 22 8 14.5-8 22-8 14.5 8 22 8 14.5-8 22-8 14.5 8 22 8 14.5-8 22-8 14.5 8 22 8 14.5-8 22-8 14.5 8 22 8 14.5-8 22-8 14.5 8 22 8v44h-352z" />
-        </defs>
-        <g>
-          <use href="#services-wave" x="48" y="0" fill="rgba(247,243,236,0.3)" />
-          <use href="#services-wave" x="48" y="3" fill="rgba(247,243,236,0.55)" />
-          <use href="#services-wave" x="48" y="7" fill="#f7f3ec" />
-        </g>
-      </svg>
     </section>
   );
 }

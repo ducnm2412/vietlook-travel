@@ -42,3 +42,6 @@ next-env.d.ts
 
 # raw video gốc quá lớn (>100MB)
 /public/17066248_*.mp4
+
+# Video gốc chưa nén (bản dùng trên web ở public/videos/hero)
+/video-src

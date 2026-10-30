@@ -63,7 +63,7 @@ export default async function ThemePage({ params }: PageProps<"/themes/[slug]">)
       {/* Kêu gọi lên lịch trình: ảnh nền cánh đồng lúa đơn giản, phủ tối để chữ dễ đọc */}
       <section className="relative isolate overflow-hidden py-20 text-center text-white md:py-28">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/_next/image?url=%2Fimages%2Ftailor-bg.webp&w=1920&q=75" alt="" loading="lazy" decoding="async" className="absolute inset-0 -z-20 h-full w-full object-cover" />
+        <img src="/_next/image?url=%2Fimages%2Ftailor-bg.webp&w=1920&q=85" alt="" loading="lazy" decoding="async" className="absolute inset-0 -z-20 h-full w-full object-cover" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-brand-dark/70 via-brand-dark/55 to-brand-dark/80" />
         <div className="container-x max-w-2xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-accent"><L en="Free trip planning" zh="免费行程规划" /></p>

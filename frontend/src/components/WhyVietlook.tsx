@@ -9,7 +9,7 @@ const ICONS = [faUsers, faHandHoldingHeart, faHeadset, faHouseFlag, faMoneyBillW
 // Khối "Lý do chọn Vietlook" trên trang chủ (nội dung dùng chung với trang About)
 export default function WhyVietlook() {
   return (
-    <section className="bg-photo-light py-14 md:py-20">
+    <section className="b2b-wallpaper pb-14 pt-4 md:pb-20 md:pt-6">
       <div className="container-x">
         <SectionHeading center kicker={<L en="Why Vietlook Travel" zh="为什么选择 Vietlook" />} title={<L en="Six reasons travellers choose us" zh="旅客选择我们的六个理由" />} />
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

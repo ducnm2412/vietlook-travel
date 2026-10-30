@@ -8,68 +8,100 @@ import { SITE } from "@/lib/site";
 import { stripLang } from "@/lib/locale";
 import { GUIDE_GROUPS, topicHref } from "@/lib/guide";
 import Img from "./Img";
+import LogoBadge from "./LogoBadge";
+import DestinationsMega from "./DestinationsMega";
+import { TOUR_THEMES } from "@/lib/themes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark, faChevronDown, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
-type MenuLink = { label: string; zh?: string; href: string };
-type MenuItem = { key: DictKey; href: string; mega?: { title: string; zh?: string; links: MenuLink[] }[]; tiles?: string[]; extra?: number; panels?: { title: string; zh: string; col: number; all?: MenuLink }[] };
+type MenuLink = { label: string; zh?: string; href: string; img?: string };
+type MenuItem = { key: DictKey; href: string; mega?: { title: string; zh?: string; links: MenuLink[]; all?: MenuLink }[]; tiles?: string[]; extra?: number; panels?: { title: string; zh: string; col: number; all?: MenuLink }[]; cols?: string };
 
 // Ảnh cho ô dropdown, lấy theo href (truyền từ layout: ảnh điểm đến và thành phố xe)
 export type MenuImages = Record<string, string | null>;
 
-// Menu theo vietlooktravel.com, trình bày mega menu kiểu localvietnam.com
-const MENU: MenuItem[] = [
-  { key: "nav.home", href: "/" },
-  {
-    key: "nav.tours",
-    href: "/tours",
-    // Dropdown desktop 2 cột: trái là các nhóm (theo miền / tour đặc biệt), rê chuột để đổi lưới ảnh bên phải
-    panels: [
-      { title: "Tours in North Vietnam", zh: "越南北部线路", col: 0, all: { label: "All North Vietnam tours", zh: "全部北部线路", href: "/tours?region=north" } },
-      { title: "Tours in Central Vietnam", zh: "越南中部线路", col: 1, all: { label: "All Central Vietnam tours", zh: "全部中部线路", href: "/tours?region=central" } },
-      { title: "Tours in South Vietnam", zh: "越南南部线路", col: 2, all: { label: "All South Vietnam tours", zh: "全部南部线路", href: "/tours?region=south" } },
-      { title: "Special tours", zh: "特色旅游", col: 3, all: { label: "All Vietnam tours", zh: "全部越南线路", href: "/tours" } },
-    ],
-    mega: [
+// Điểm đến theo miền (menu điện thoại mục Destinations; desktop dùng DestinationsMega)
+const REGION_MEGA: NonNullable<MenuItem["mega"]> = [
       {
         title: "North Vietnam", zh: "越南北部",
         links: [
-          { label: "Ha Noi", zh: "河内", href: "/tours?destination=ha-noi-tour" },
-          { label: "Sapa", zh: "沙坝", href: "/tours?destination=sapa-tour" },
-          { label: "Ha Giang", zh: "河江", href: "/tours?destination=ha-giang-tour" },
-          { label: "Ha Long Bay", zh: "下龙湾", href: "/tours?destination=ha-long-tour" },
-          { label: "Ninh Binh", zh: "宁平", href: "/tours?destination=ninh-binh-tour" },
-          { label: "Cao Bang", zh: "高平", href: "/tours?destination=cao-bang-tour" },
+          { label: "Ha Noi", zh: "河内", href: "/destinations/ha-noi" },
+          { label: "Sapa", zh: "沙坝", href: "/destinations/sapa" },
+          { label: "Ha Giang", zh: "河江", href: "/destinations/ha-giang" },
+          { label: "Ha Long Bay", zh: "下龙湾", href: "/destinations/ha-long-bay" },
+          { label: "Ninh Binh", zh: "宁平", href: "/destinations/ninh-binh" },
+          { label: "Cao Bang", zh: "高平", href: "/destinations/cao-bang" },
         ],
       },
       {
         title: "Central Vietnam", zh: "越南中部",
         links: [
-          { label: "Hoi An", zh: "会安", href: "/tours?destination=hoi-an" },
-          { label: "Hue", zh: "顺化", href: "/tours?destination=hue-tour" },
-          { label: "Da Nang", zh: "岘港", href: "/tours?destination=da-nang-tour" },
-          { label: "Phong Nha", zh: "风牙", href: "/tours?destination=quang-binh-tour" },
-          { label: "Nha Trang", zh: "芽庄", href: "/tours?destination=nha-trang-tour" },
+          { label: "Hoi An", zh: "会安", href: "/destinations/hoi-an" },
+          { label: "Hue", zh: "顺化", href: "/destinations/hue" },
+          { label: "Da Nang", zh: "岘港", href: "/destinations/da-nang" },
+          { label: "Phong Nha", zh: "风牙", href: "/destinations/quang-binh" },
+          { label: "Nha Trang", zh: "芽庄", href: "/destinations/nha-trang" },
         ],
       },
       {
         title: "South Vietnam", zh: "越南南部",
         links: [
-          { label: "Ho Chi Minh City", zh: "胡志明市", href: "/tours?destination=ho-chi-minh-tour" },
+          { label: "Ho Chi Minh City", zh: "胡志明市", href: "/destinations/ho-chi-minh-city" },
           { label: "Mekong Delta", zh: "湄公河三角洲", href: "/tours?q=mekong" },
-          { label: "Phu Quoc", zh: "富国岛", href: "/tours?destination=phu-quoc-tour" },
-          { label: "Mui Ne", zh: "美奈", href: "/tours?destination=mui-ne-tour" },
+          { label: "Phu Quoc", zh: "富国岛", href: "/destinations/phu-quoc" },
+          { label: "Mui Ne", zh: "美奈", href: "/destinations/mui-ne" },
+        ],
+      },
+    ];
+
+// Menu theo vietlooktravel.com, trình bày mega menu kiểu localvietnam.com
+const MENU: MenuItem[] = [
+  {
+    key: "nav.tours",
+    href: "/tours",
+    // Dropdown 4 cột: theo miền · theo số ngày · theo chủ đề · ảnh + tour nổi bật
+    cols: "/images/destinations/quang-binh-tour.webp",
+    mega: [
+      {
+        title: "By region", zh: "按地区",
+        all: { label: "All Vietnam tours", zh: "全部越南线路", href: "/tours" },
+        links: [
+          { label: "Northern Vietnam", zh: "越南北部", href: "/tours?region=north", img: "ha-long-tour" },
+          { label: "Central Vietnam", zh: "越南中部", href: "/tours?region=central", img: "hoi-an" },
+          { label: "Southern Vietnam", zh: "越南南部", href: "/tours?region=south", img: "mekong" },
         ],
       },
       {
-        title: "Special tours", zh: "特色旅游",
+        title: "By duration", zh: "按天数",
+        all: { label: "All durations", zh: "全部天数", href: "/tours" },
         links: [
-          { label: "Ha Giang Loop tours", zh: "河江环线", href: "/tours?q=loop" },
-          { label: "Best Halong Bay cruises", zh: "下龙湾游轮", href: "/tours?theme=cruise-tour" },
-          { label: "Sapa Trekking tours", zh: "沙坝徒步", href: "/tours?q=trek" },
-          { label: "Vietnam Food tours", zh: "美食之旅", href: "/tours?q=food" },
-          { label: "Adventure tours", zh: "探险之旅", href: "/tours?q=adventure" },
-          { label: "Cultural Experience", zh: "文化体验", href: "/tours?theme=travel-experience" },
+          { label: "Day trips", zh: "一日游", href: "/tours?minDays=1&maxDays=1", img: "ha-noi-tour" },
+          { label: "Around 1 week", zh: "约1周", href: "/tours?minDays=5&maxDays=9", img: "ninh-binh-tour" },
+          { label: "Around 2 weeks", zh: "约2周", href: "/tours?minDays=10&maxDays=16", img: "sapa-tour" },
+          { label: "3 weeks or more", zh: "3周以上", href: "/tours?minDays=17&maxDays=999", img: "phu-quoc-tour" },
+        ],
+      },
+      {
+        title: "By theme", zh: "按主题",
+        all: { label: "All tour themes", zh: "全部主题", href: "/themes/hand-picked" },
+        links: [
+          { label: "Luxury tours", zh: "奢华之旅", href: "/themes/luxury", img: "theme-luxury" },
+          { label: "Hand-picked tours", zh: "精选线路", href: "/themes/hand-picked", img: "theme-hand-picked" },
+          { label: "Cultural tours", zh: "文化之旅", href: "/themes/culture", img: "theme-culture" },
+          { label: "Family tours", zh: "家庭之旅", href: "/themes/family", img: "theme-family" },
+          { label: "Honeymoon tours", zh: "蜜月之旅", href: "/themes/honeymoon", img: "theme-honeymoon" },
+          { label: "Classic tours", zh: "经典线路", href: "/themes/classic", img: "theme-classic" },
+          { label: "Photography tours", zh: "摄影之旅", href: "/themes/photography", img: "theme-photography" },
+        ],
+      },
+      {
+        title: "All Vietnam tours", zh: "全部越南线路",
+        links: [
+          { label: "All Vietnam tours", zh: "全部越南线路", href: "/tours", img: "da-nang-tour" },
+          { label: "Ha Long Bay cruises", zh: "下龙湾游轮", href: "/tours?theme=cruise-tour", img: "theme-cruise" },
+          { label: "Ha Giang Loop tours", zh: "河江环线", href: "/tours?q=loop", img: "ha-giang-tour" },
+          { label: "Sapa trekking tours", zh: "沙坝徒步", href: "/tours?q=trek", img: "sapa-tour" },
+          { label: "Tailor-made tour", zh: "私人定制", href: "/tailor-made", img: "theme-tailor-made" },
         ],
       },
     ],
@@ -77,50 +109,49 @@ const MENU: MenuItem[] = [
   {
     key: "nav.packages",
     href: "/tours?theme=vietnam-tours",
-    // Cùng layout với Tours: trái chọn nhóm, phải là lưới ảnh
-    panels: [
-      { title: "Our package tours", zh: "我们的套餐", col: 0 },
-      { title: "Duration", zh: "行程天数", col: 1 },
-      { title: "Travel Styles", zh: "旅行风格", col: 2 },
-      { title: "Popular trips", zh: "热门行程", col: 3 },
-    ],
+    // Cùng kiểu dropdown 4 cột với Tours
+    cols: "/images/destinations/hoi-an.webp",
     mega: [
       {
-        title: "Our package tours", zh: "我们的套餐",
+        title: "Our packages", zh: "我们的套餐",
+        all: { label: "All package tours", zh: "全部套餐", href: "/tours?theme=vietnam-tours" },
         links: [
-          { label: "All Vietnam package tours", zh: "全部越南套餐", href: "/tours?theme=vietnam-tours" },
-          { label: "Tailor-Made Trip", zh: "定制行程", href: "/tailor-made" },
+          { label: "All Vietnam package tours", zh: "全部越南套餐", href: "/tours?theme=vietnam-tours", img: "ha-long-tour" },
+          { label: "Tailor-Made Trip", zh: "定制行程", href: "/tailor-made", img: "theme-tailor-made" },
         ],
       },
       {
-        title: "Duration", zh: "行程天数",
+        title: "By duration", zh: "按天数",
+        all: { label: "All durations", zh: "全部天数", href: "/tours" },
         links: [
-          { label: "2 – 5 Days Tours", zh: "2–5天线路", href: "/tours?minDays=2&maxDays=5" },
-          { label: "1 Week Vietnam", zh: "越南1周", href: "/tours?minDays=6&maxDays=10" },
-          { label: "2 Weeks Vietnam", zh: "越南2周", href: "/tours?minDays=11&maxDays=17" },
-          { label: "3 Weeks Vietnam", zh: "越南3周", href: "/tours?minDays=18&maxDays=24" },
-          { label: "More than 3 Weeks", zh: "3周以上", href: "/tours?minDays=25&maxDays=999" },
+          { label: "2 – 5 Days Tours", zh: "2–5天线路", href: "/tours?minDays=2&maxDays=5", img: "ha-noi-tour" },
+          { label: "1 Week Vietnam", zh: "越南1周", href: "/tours?minDays=6&maxDays=10", img: "ninh-binh-tour" },
+          { label: "2 Weeks Vietnam", zh: "越南2周", href: "/tours?minDays=11&maxDays=17", img: "sapa-tour" },
+          { label: "3 Weeks Vietnam", zh: "越南3周", href: "/tours?minDays=18&maxDays=24", img: "hue-tour" },
+          { label: "More than 3 Weeks", zh: "3周以上", href: "/tours?minDays=25&maxDays=999", img: "phu-quoc-tour" },
         ],
       },
       {
-        title: "Travel Styles", zh: "旅行风格",
+        title: "By travel style", zh: "按旅行风格",
+        all: { label: "All travel styles", zh: "全部旅行风格", href: "/themes/hand-picked" },
         links: [
-          { label: "Luxury", zh: "奢华", href: "/themes/luxury" },
-          { label: "Honeymoon", zh: "蜜月", href: "/themes/honeymoon" },
-          { label: "Hand-picked", zh: "精选", href: "/themes/hand-picked" },
-          { label: "Classic", zh: "经典", href: "/themes/classic" },
-          { label: "Culture", zh: "文化", href: "/themes/culture" },
-          { label: "Photography", zh: "摄影", href: "/themes/photography" },
-          { label: "Family", zh: "家庭", href: "/themes/family" },
-          { label: "Tailor-made", zh: "私人定制", href: "/themes/tailor-made" },
+          { label: "Luxury", zh: "奢华", href: "/themes/luxury", img: "theme-luxury" },
+          { label: "Honeymoon", zh: "蜜月", href: "/themes/honeymoon", img: "theme-honeymoon" },
+          { label: "Hand-picked", zh: "精选", href: "/themes/hand-picked", img: "theme-hand-picked" },
+          { label: "Classic", zh: "经典", href: "/themes/classic", img: "theme-classic" },
+          { label: "Culture", zh: "文化", href: "/themes/culture", img: "theme-culture" },
+          { label: "Photography", zh: "摄影", href: "/themes/photography", img: "theme-photography" },
+          { label: "Family", zh: "家庭", href: "/themes/family", img: "theme-family" },
+          { label: "Tailor-made", zh: "私人定制", href: "/themes/tailor-made", img: "theme-tailor-made" },
         ],
       },
       {
         title: "Popular trips", zh: "热门行程",
+        all: { label: "All Vietnam tours", zh: "全部越南线路", href: "/tours" },
         links: [
-          { label: "North Vietnam trips", zh: "北部行程", href: "/tours?region=north" },
-          { label: "Central Vietnam trips", zh: "中部行程", href: "/tours?region=central" },
-          { label: "South Vietnam trips", zh: "南部行程", href: "/tours?region=south" },
+          { label: "North Vietnam trips", zh: "北部行程", href: "/tours?region=north", img: "ha-long-tour" },
+          { label: "Central Vietnam trips", zh: "中部行程", href: "/tours?region=central", img: "hoi-an" },
+          { label: "South Vietnam trips", zh: "南部行程", href: "/tours?region=south", img: "mekong" },
         ],
       },
     ],
@@ -168,10 +199,21 @@ const MENU: MenuItem[] = [
   },
 ];
 
+// Theo menu mẫu: Tours · Destinations · Tour Themes · Private Car · Visa and Fast-track
+MENU.splice(1, 0,
+  { key: "nav.destinations", href: "/tours", mega: REGION_MEGA },
+  {
+    key: "nav.themes",
+    href: "/themes/hand-picked",
+    tiles: TOUR_THEMES.map((t) => `/themes/${t.slug}`),
+    mega: [{ title: "Tour Themes", zh: "旅行主题", links: TOUR_THEMES.map((t) => ({ label: t.name, zh: t.zh, href: `/themes/${t.slug}` })) }],
+  },
+);
+
 // Ô ảnh trong dropdown: ảnh nền tối, tên nằm giữa
 function Tile({ href, label, src }: { href: string; label: string; src?: string | null }) {
   return (
-    <Link href={href} className="group/tile relative block aspect-[16/9] overflow-hidden bg-brand-dark">
+    <Link href={href} className="group/tile relative block aspect-[16/9] overflow-hidden rounded-xl bg-brand-dark">
       <Img src={src ?? null} alt={label} width={400} className="absolute inset-0 h-full w-full transition duration-500 group-hover/tile:scale-110" />
       <span className="absolute inset-0 bg-black/35 transition group-hover/tile:bg-black/15" />
       <span className="absolute inset-0 grid place-items-center px-4 text-center text-sm font-bold uppercase leading-tight tracking-wide text-white [overflow-wrap:anywhere] [text-wrap:balance] xl:text-base [text-shadow:0_2px_8px_rgba(0,0,0,.6)]">{label}</span>
@@ -216,32 +258,32 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
       </div>
 
       <div className={`container-x relative flex h-[76px] items-center justify-between gap-4 ${overlay ? "border-b border-white/30" : ""}`}>
-        <Link href="/" className="shrink-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={SITE.logo} alt={SITE.shortName} width={260} height={169} fetchPriority="high" decoding="async" className="h-12 w-auto md:h-14" />
+        {/* Logo huy hiệu tròn, to và nhô xuống dưới thanh header cho nổi bật */}
+        <Link href="/" className="relative z-10 shrink-0 self-start pt-2 transition hover:scale-105">
+          <LogoBadge alt={SITE.shortName} className="h-[84px] w-[84px] md:h-[104px] md:w-[104px]" />
         </Link>
 
         <nav className="hidden lg:block">
-          <ul className="flex items-center whitespace-nowrap text-sm font-bold uppercase tracking-wide">
+          <ul className="flex items-center whitespace-nowrap text-[15px] font-semibold">
             {MENU.map((item) => (
               <li key={item.key} className={`group ${item.mega && !item.panels && !item.tiles && item.mega.length === 1 ? "relative" : ""}`}>
-                <Link href={item.href} className={`block rounded-md px-2 py-7 xl:px-3 ${overlay ? "hover:text-accent" : "hover:text-brand"}`}>
+                <Link href={item.href} className={`nav-line block rounded-md px-2 py-7 xl:px-3 ${overlay ? "hover:text-accent" : "hover:text-brand"}`}>
                   {t(item.key)} {item.mega && <FontAwesomeIcon icon={faChevronDown} className="ml-1 text-[10px]" />}
                 </Link>
                 {item.panels && item.mega && (() => {
                   const p = item.panels[panel] ?? item.panels[0];
                   return (
-                    <div className="invisible absolute right-0 top-full z-50 flex w-[min(1100px,calc(100vw-2rem))] bg-white normal-case tracking-normal text-ink -translate-y-2 opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-                      <div className="w-72 shrink-0 border-r border-black/10 py-4">
+                    <div className="invisible absolute right-0 top-full z-50 overflow-hidden rounded-2xl flex w-[min(1100px,calc(100vw-2rem))] bg-white normal-case tracking-normal text-ink -translate-y-2 opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                      <div className="w-72 shrink-0 border-r border-black/10 p-3">
                         {item.panels.map((x, i) => (
-                          <button key={x.title} type="button" onMouseEnter={() => setPanel(i)} onFocus={() => setPanel(i)} onClick={() => setPanel(i)} className={`flex w-full items-center justify-between gap-3 whitespace-normal border-b border-black/5 px-5 py-3.5 text-left text-sm font-bold uppercase tracking-wide transition ${i === panel ? "text-brand" : "text-ink/70 hover:text-brand"}`}>
+                          <button key={x.title} type="button" onMouseEnter={() => setPanel(i)} onFocus={() => setPanel(i)} onClick={() => setPanel(i)} className={`flex w-full items-center justify-between gap-3 whitespace-normal rounded-xl px-4 py-3.5 text-left text-sm font-bold uppercase tracking-wide transition ${i === panel ? "bg-brand-light text-brand" : "text-ink/70 hover:bg-sand hover:text-brand"}`}>
                             {zh ? x.zh : x.title}
                             <FontAwesomeIcon icon={faChevronRight} className={`text-[10px] transition ${i === panel ? "opacity-100" : "opacity-0"}`} />
                           </button>
                         ))}
-                        <Link href={p.all?.href ?? item.href} className="block px-5 py-3.5 text-sm font-semibold text-accent hover:underline">{p.all ? (zh ? p.all.zh : p.all.label) : (zh ? "查看全部" : "View all")} →</Link>
+                        <Link href={p.all?.href ?? item.href} className="block px-4 py-3.5 text-sm font-semibold text-accent hover:underline">{p.all ? (zh ? p.all.zh : p.all.label) : (zh ? "查看全部" : "View all")} →</Link>
                       </div>
-                      <div className="grid flex-1 grid-cols-3 content-start gap-1.5 p-1.5">
+                      <div className="grid flex-1 grid-cols-3 content-start gap-3 p-4">
                         {item.mega[p.col].links.map((l) => <Tile key={l.href} href={l.href} label={zh && l.zh ? l.zh : l.label} src={images[l.href]} />)}
                       </div>
                     </div>
@@ -252,13 +294,13 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
                   const all: MenuLink = { label: zh ? "查看全部" : "View all", href: item.href };
                   const extra = item.extra != null ? item.mega[item.extra] : null;
                   return (
-                    <div className="invisible absolute right-0 top-full z-50 w-[min(900px,calc(100vw-2rem))] bg-white p-1.5 normal-case tracking-normal text-ink -translate-y-2 opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-                      <div className="grid grid-cols-4 gap-1.5">
+                    <div className="invisible absolute right-0 top-full z-50 overflow-hidden rounded-2xl w-[min(900px,calc(100vw-2rem))] bg-white p-4 normal-case tracking-normal text-ink -translate-y-2 opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                      <div className="grid grid-cols-4 gap-3">
                         {item.tiles.map((href) => {
                           const l = links.find((x) => x.href === href) ?? (href === item.href ? all : null);
                           if (!l) return null;
                           return (
-                            <Link key={href} href={href} className="group/tile relative block aspect-[16/9] overflow-hidden">
+                            <Link key={href} href={href} className="group/tile relative block aspect-[16/9] overflow-hidden rounded-xl">
                               <Img src={images[href]} alt={l.label} width={400} className="absolute inset-0 h-full w-full transition duration-500 group-hover/tile:scale-110" />
                               <span className="absolute inset-0 bg-black/35 transition group-hover/tile:bg-black/15" />
                               <span className="absolute inset-0 grid place-items-center px-4 text-center text-sm font-bold uppercase leading-tight tracking-wide text-white [overflow-wrap:anywhere] [text-wrap:balance] xl:text-base [text-shadow:0_2px_8px_rgba(0,0,0,.6)]">{zh && l.zh ? l.zh : l.label}</span>
@@ -277,8 +319,43 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
                   );
                 })()}
                 {/* Dropdown nhiều cột (menu cẩm nang): mỗi cột một nhóm, cuối có link xem tất cả */}
-                {item.mega && !item.panels && !item.tiles && item.mega.length > 1 && (
-                  <div className="invisible absolute right-0 top-full z-50 w-[min(900px,calc(100vw-2rem))] -translate-y-2 bg-white p-6 normal-case tracking-normal text-ink opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                {/* Dropdown 4 cột (Tours, Packages): 3 cột link + cột cuối có ảnh và nhóm nổi bật */}
+                {item.cols && item.mega && (
+                  <div className="invisible absolute right-0 top-full z-50 grid w-[min(1100px,calc(100vw-2rem))] -translate-y-2 grid-cols-4 gap-8 overflow-hidden rounded-2xl bg-white p-8 normal-case tracking-normal text-ink opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                    {item.mega.map((col, ci) => (
+                      <div key={col.title} className="min-w-0">
+                        {ci === item.mega!.length - 1 && (
+                          <Link href={col.links[0]?.href ?? item.href} className="group/pic mb-5 block overflow-hidden rounded-xl">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={item.cols} alt="" loading="lazy" decoding="async" className="aspect-[16/7] w-full object-cover transition duration-700 group-hover/pic:scale-110" />
+                          </Link>
+                        )}
+                        <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-accent">{zh && col.zh ? col.zh : col.title}</p>
+                        <ul className="space-y-2.5 text-[15px] font-medium">
+                          {col.links.map((l) => (
+                            <li key={l.href + l.label}>
+                              <Link href={l.href} className="group/lk flex items-center gap-3 whitespace-normal text-ink/85 transition hover:text-brand">
+                                {l.img && (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img src={`/images/destinations/thumb/${l.img}.webp`} alt="" width={64} height={40} loading="lazy" className="h-10 w-16 shrink-0 rounded-lg object-cover transition duration-300 group-hover/lk:scale-105 group-hover/lk:shadow-md" />
+                                )}
+                                <span className="transition group-hover/lk:translate-x-1">{zh && l.zh ? l.zh : l.label}</span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                        {col.all && <Link href={col.all.href} className="mt-4 inline-block whitespace-normal text-[15px] font-bold text-ink transition hover:text-brand">{zh && col.all.zh ? col.all.zh : col.all.label} →</Link>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {item.key === "nav.destinations" && (
+                  <div className="invisible absolute right-0 top-full z-50 overflow-hidden rounded-2xl w-[min(1100px,calc(100vw-2rem))] -translate-y-2 rounded-b-2xl bg-sand normal-case tracking-normal text-ink opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                    <DestinationsMega zh={zh} />
+                  </div>
+                )}
+                {item.mega && !item.panels && !item.tiles && item.mega.length > 1 && item.key !== "nav.destinations" && !item.cols && (
+                  <div className="invisible absolute right-0 top-full z-50 overflow-hidden rounded-2xl w-[min(900px,calc(100vw-2rem))] -translate-y-2 bg-white p-6 normal-case tracking-normal text-ink opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
                     <div className="grid grid-cols-4 gap-6">
                       {item.mega.map((col) => (
                         <div key={col.title}>
@@ -289,12 +366,12 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
                         </div>
                       ))}
                     </div>
-                    <Link href={item.href} className="mt-5 block border-t border-black/10 pt-4 text-sm font-semibold text-brand hover:underline">{zh ? "全部旅行指南" : "All travel guides"} →</Link>
+                    <Link href={item.href} className="mt-5 block border-t border-black/10 pt-4 text-sm font-semibold text-brand hover:underline">{item.key === "nav.news" ? (zh ? "全部旅行指南" : "All travel guides") : (zh ? "查看全部线路" : "View all tours")} →</Link>
                   </div>
                 )}
                 {/* Dropdown dạng danh sách (mục có menu con nhưng không có lưới ảnh) */}
                 {item.mega && !item.panels && !item.tiles && item.mega.length === 1 && (
-                  <ul className="invisible absolute right-0 top-full z-50 min-w-56 bg-white py-2 text-sm normal-case tracking-normal text-ink -translate-y-2 opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                  <ul className="invisible absolute right-0 top-full z-50 overflow-hidden rounded-2xl min-w-56 bg-white py-2 text-sm normal-case tracking-normal text-ink -translate-y-2 opacity-0 shadow-2xl transition duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
                     {item.mega.flatMap((c) => c.links).map((l) => (
                       <li key={l.href}><Link href={l.href} className="block px-5 py-2.5 font-semibold hover:bg-brand-light hover:text-brand">{zh && l.zh ? l.zh : l.label}</Link></li>
                     ))}
