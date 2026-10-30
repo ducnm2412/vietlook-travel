@@ -35,38 +35,42 @@ export default function HeroSearch({ destinations, styles }: { destinations: Des
     router.push(withLang(`/tours${p.size ? `?${p}` : ""}`, lang));
   };
 
-  const label = "mb-1.5 block text-xs font-bold uppercase tracking-wider text-muted";
+  // Điện thoại: gọn 2 hàng (từ khoá + nút tìm | 3 ô chọn), ẩn nhãn, ô chọn ghi rõ "Any destination…"
+  const label = "mb-1.5 block text-xs font-bold uppercase tracking-wider text-muted max-sm:sr-only";
+  const sel = "field max-sm:!px-2 max-sm:!py-2 max-sm:text-[13px]";
   return (
-    <form onSubmit={submit} className="grid gap-3 rounded-2xl bg-white p-4 text-ink shadow-2xl sm:grid-cols-2 sm:p-5 lg:grid-cols-[1.4fr_1fr_1fr_1fr_auto] lg:items-end">
-      <label>
+    <form onSubmit={submit} className="grid grid-cols-6 gap-2 rounded-2xl bg-white p-3 text-ink shadow-2xl sm:grid-cols-2 sm:gap-3 sm:p-5 lg:grid-cols-[1.4fr_1fr_1fr_1fr_auto] lg:items-end">
+      <label className="col-span-5 sm:col-span-1">
         <span className={label}>{zh ? "关键词" : "Keyword"}</span>
         <span className="relative block">
           <FontAwesomeIcon icon={faMagnifyingGlass} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-muted" />
-          <input className="field !pl-10" value={q} onChange={(e) => setQ(e.target.value)} placeholder={zh ? "线路名称、地点…" : "Tour name, place…"} />
+          <input className="field !pl-10 max-sm:!py-2.5" value={q} onChange={(e) => setQ(e.target.value)} placeholder={zh ? "线路名称、地点…" : "Tour name, place…"} />
         </span>
       </label>
-      <label>
+      <label className="col-span-2 sm:col-span-1">
         <span className={label}>{zh ? "去哪里？" : "Where to?"}</span>
-        <select className="field" value={destination} onChange={(e) => setDestination(e.target.value)}>
-          <option value="">{zh ? "不限" : "Any"}</option>
+        <select className={sel} value={destination} onChange={(e) => setDestination(e.target.value)}>
+          <option value="">{zh ? "全部目的地" : "Anywhere"}</option>
           {destinations.map((d) => <option key={d.slug} value={d.slug}>{zh ? d.zh : d.name}</option>)}
         </select>
       </label>
-      <label>
+      <label className="col-span-2 sm:col-span-1">
         <span className={label}>{zh ? "多长时间？" : "How long?"}</span>
-        <select className="field" value={duration} onChange={(e) => setDuration(e.target.value)}>
-          <option value="">{zh ? "不限" : "Any"}</option>
+        <select className={sel} value={duration} onChange={(e) => setDuration(e.target.value)}>
+          <option value="">{zh ? "不限天数" : "Any length"}</option>
           {DUR.map((d) => <option key={d.key} value={d.key}>{zh ? d.zh : d.en}</option>)}
         </select>
       </label>
-      <label>
+      <label className="col-span-2 sm:col-span-1">
         <span className={label}>{zh ? "旅行风格" : "Travel style"}</span>
-        <select className="field" value={style} onChange={(e) => setStyle(e.target.value)}>
-          <option value="">{zh ? "不限" : "Any"}</option>
+        <select className={sel} value={style} onChange={(e) => setStyle(e.target.value)}>
+          <option value="">{zh ? "全部风格" : "Any style"}</option>
           {styles.map((s) => <option key={s.slug} value={s.slug}>{zh ? s.zh : s.name}</option>)}
         </select>
       </label>
-      <button className="btn btn-brand h-[46px] whitespace-nowrap sm:col-span-2 lg:col-span-1"><FontAwesomeIcon icon={faMagnifyingGlass} /> {zh ? "搜索线路" : "Search tours"}</button>
+      <button aria-label={zh ? "搜索线路" : "Search tours"} className="btn btn-brand col-start-6 row-start-1 h-full !px-0 whitespace-nowrap sm:col-span-2 sm:col-start-auto sm:row-start-auto sm:h-[46px] sm:!px-6 lg:col-span-1">
+        <FontAwesomeIcon icon={faMagnifyingGlass} /> <span className="hidden sm:inline">{zh ? "搜索线路" : "Search tours"}</span>
+      </button>
     </form>
   );
 }

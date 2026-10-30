@@ -39,10 +39,13 @@ export default function FastTrackPricing() {
 
       {/* Gọn: chọn nhóm dịch vụ bằng tab, mỗi gói là 1 dòng bảng (tên + mô tả | giá 5 sân bay, cột sân bay đang chọn tô đậm | nút đặt).
           Điện thoại chỉ hiện giá ở sân bay đang chọn. */}
-      <div className="mb-4 flex flex-wrap gap-2">
+      {/* Điện thoại: 3 tab chia đều một hàng, tên rút gọn (Arrival / Departure / Add-on) */}
+      <div className="mb-4 grid grid-cols-3 gap-1 rounded-full bg-white p-1 ring-1 ring-black/10 sm:flex sm:flex-wrap sm:gap-2 sm:bg-transparent sm:p-0 sm:ring-0">
         {FT_GROUPS.map((g, i) => (
-          <button key={g.key} type="button" onClick={() => setGi(i)} className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition ${i === gi ? "bg-brand text-white shadow" : "bg-white text-ink ring-1 ring-black/10 hover:ring-brand/40"}`}>
-            <FontAwesomeIcon icon={ICONS[g.key]} /> {zh ? g.zh : g.en}
+          <button key={g.key} type="button" onClick={() => setGi(i)} className={`inline-flex items-center justify-center gap-1.5 rounded-full px-2 py-2 text-xs font-semibold transition sm:gap-2 sm:px-5 sm:py-2.5 sm:text-sm ${i === gi ? "bg-brand text-white shadow" : "bg-white text-ink sm:ring-1 sm:ring-black/10 hover:ring-brand/40"}`}>
+            <FontAwesomeIcon icon={ICONS[g.key]} />
+            <span className="sm:hidden">{zh ? g.zh.slice(0, 4) : g.en.split(/ – | services/)[0]}</span>
+            <span className="hidden sm:inline">{zh ? g.zh : g.en}</span>
           </button>
         ))}
       </div>

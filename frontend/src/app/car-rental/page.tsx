@@ -228,7 +228,7 @@ export default async function CarRentalPage() {
                 <span className="absolute -top-6 left-7 grid h-12 w-12 place-items-center rounded-full bg-white text-brand shadow-md">
                   <FontAwesomeIcon icon={faQuoteLeft} />
                 </span>
-                <div className="mb-2 flex gap-1 text-[#f5a623]" aria-label="5/5">{Array.from({ length: 5 }, (_, k) => <FontAwesomeIcon key={k} icon={faStar} />)}</div>
+                <div className="mb-2 flex gap-1 text-[#f5a623]" role="img" aria-label="5/5">{Array.from({ length: 5 }, (_, k) => <FontAwesomeIcon key={k} icon={faStar} />)}</div>
                 <h3 className="font-card text-xl font-bold leading-snug"><L en={r.title} zh={r.titleZh} /></h3>
                 <blockquote className="mb-5 mt-3 text-base leading-relaxed text-muted"><L en={r.en} zh={r.zh} /></blockquote>
                 <figcaption className="mt-auto flex items-center gap-3 border-t border-black/5 pt-5">

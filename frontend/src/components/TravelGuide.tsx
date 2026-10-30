@@ -22,7 +22,8 @@ export default function TravelGuide({ posts }: { posts: Post[] }) {
         </div>
 
         <div className="stagger grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {posts.map((p) => <GuideCard key={p.slug} post={p} />)}
+          {/* Chỉ 4 bài mới nhất */}
+          {posts.slice(0, 4).map((p) => <GuideCard key={p.slug} post={p} />)}
         </div>
 
         <div className="mt-12 text-center">

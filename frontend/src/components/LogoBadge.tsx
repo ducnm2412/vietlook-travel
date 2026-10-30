@@ -3,7 +3,8 @@
 const BLUE = "#1680c0";
 const RED = "#ed1f28";
 
-export default function LogoBadge({ className = "", alt = "Vietlook Travel" }: { className?: string; alt?: string }) {
+// plain: bỏ vòng chữ (dùng cho logo in chìm mờ – chữ quá nhạt sẽ bị Lighthouse báo thiếu tương phản)
+export default function LogoBadge({ className = "", alt = "Vietlook Travel", plain = false }: { className?: string; alt?: string; plain?: boolean }) {
   const word = (
     <>
       <tspan fill={BLUE}>VIETLOOK</tspan> <tspan fill={RED}>TRAVEL</tspan> <tspan fill={BLUE}>•</tspan>{" "}
@@ -19,6 +20,7 @@ export default function LogoBadge({ className = "", alt = "Vietlook Travel" }: {
         <circle cx="100" cy="100" r="96" fill="none" stroke={BLUE} strokeWidth="3" />
         <circle cx="100" cy="100" r="66" fill="none" stroke={RED} strokeWidth="1.5" />
         {/* Chỉ vòng chữ xoay (CSS .logo-ring-spin); biểu tượng và viền đứng yên */}
+        {!plain && (
         <g className="logo-ring-spin">
           <text fontSize="17" fontWeight="800" letterSpacing="1.5" fontFamily="var(--font-poppins), system-ui, sans-serif">
             <textPath href="#logo-badge-ring" textLength="490" lengthAdjust="spacingAndGlyphs">
@@ -27,6 +29,7 @@ export default function LogoBadge({ className = "", alt = "Vietlook Travel" }: {
             </textPath>
           </text>
         </g>
+        )}
       </svg>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/images/logo-mark.webp" alt={alt} width={210} height={210} fetchPriority="high" decoding="async" className="absolute left-1/2 top-1/2 w-[63%] -translate-x-1/2 -translate-y-1/2" />

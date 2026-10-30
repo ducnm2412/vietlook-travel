@@ -213,9 +213,10 @@ export default async function VisaPage() {
         <div>
           <h2 className={head}><L en="Not sure which option you need?" zh="不确定选哪项服务？" /></h2>
           <p className="mt-3 text-muted"><L en="Send us your flight number. We check your visa type and suggest the right service, usually within 30 minutes." zh="发送航班号给我们，我们会确认您的签证类型并推荐合适服务，通常30分钟内回复。" /></p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <a href={SITE.whatsapp} target="_blank" rel="noopener" className="btn bg-[#25d366] text-white"><FontAwesomeIcon icon={faWhatsapp} /> WhatsApp</a>
-            <a href={`tel:+${SITE.phoneRaw}`} className="btn border border-black/15"><FontAwesomeIcon icon={faPhone} /> {SITE.phone}</a>
+          {/* 2 nút luôn nằm cùng một hàng, chia đều bề ngang (điện thoại thu nhỏ chữ) */}
+          <div className="mt-6 grid grid-cols-2 gap-2 sm:flex sm:gap-3">
+            <a href={SITE.whatsapp} target="_blank" rel="noopener" className="btn whitespace-nowrap bg-[#25d366] !px-3 text-sm text-white sm:!px-6 sm:text-base"><FontAwesomeIcon icon={faWhatsapp} /> WhatsApp</a>
+            <a href={`tel:+${SITE.phoneRaw}`} className="btn whitespace-nowrap border border-black/15 !px-3 text-sm sm:!px-6 sm:text-base"><FontAwesomeIcon icon={faPhone} /> {SITE.phone}</a>
           </div>
         </div>
       </section>

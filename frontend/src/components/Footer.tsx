@@ -69,10 +69,10 @@ function Column({ title, items }: { title: { en: string; zh: string }; items: It
 
 export default function Footer() {
   return (
-    <footer className="relative isolate overflow-hidden bg-brand-dark text-white/75">
+    <footer className="relative isolate overflow-hidden bg-brand-dark text-white/85">
       {/* Logo in chìm lớn phía sau footer, vòng chữ xoay chậm */}
       <div aria-hidden className="pointer-events-none absolute -right-24 top-10 -z-10 opacity-[0.06] lg:-right-16">
-        <LogoBadge alt="" className="h-[420px] w-[420px] grayscale lg:h-[560px] lg:w-[560px]" />
+        <LogoBadge plain alt="" className="h-[420px] w-[420px] grayscale lg:h-[560px] lg:w-[560px]" />
       </div>
       <div className="container-x grid grid-cols-2 gap-x-6 gap-y-8 py-10 lg:grid-cols-[1.3fr_1fr_1.1fr_0.8fr_1.3fr] lg:gap-10 lg:py-16">
         <div className="col-span-2 flex items-center justify-between gap-4 lg:col-span-1 lg:block">
@@ -97,7 +97,7 @@ export default function Footer() {
           <p className="mb-3 font-card text-sm font-bold uppercase tracking-wide text-white lg:mb-5 lg:text-base"><L en="Contact us" zh="联系我们" /></p>
           <ul className="space-y-3 text-sm lg:space-y-4 lg:text-[15px]">
             <li className="flex gap-3"><FontAwesomeIcon icon={faLocationDot} className="mt-1 w-4 text-accent" /><span>{SITE.address}<a href={SITE.maps} target="_blank" rel="noopener" className="mt-1 flex items-center gap-1.5 text-xs font-semibold text-accent lg:hidden"><FontAwesomeIcon icon={faDiamondTurnRight} /> <L en="Get directions" zh="获取路线" /></a></span></li>
-            <li className="flex gap-3"><FontAwesomeIcon icon={faPhone} className="mt-1 w-4 text-accent" /><span><a href={`tel:+${SITE.phoneRaw}`} className="hover:text-accent">{SITE.phone}</a><br /><span className="text-xs text-white/50">Zalo / WhatsApp / WeChat</span></span></li>
+            <li className="flex gap-3"><FontAwesomeIcon icon={faPhone} className="mt-1 w-4 text-accent" /><span><a href={`tel:+${SITE.phoneRaw}`} className="hover:text-accent">{SITE.phone}</a><br /><span className="text-xs text-white/75">Zalo / WhatsApp / WeChat</span></span></li>
             <li className="flex gap-3"><FontAwesomeIcon icon={faPhone} className="mt-1 w-4 text-accent" /><a href={`tel:+${SITE.phone2Raw}`} className="hover:text-accent">{SITE.phone2}</a></li>
             <li className="flex gap-3"><FontAwesomeIcon icon={faEnvelope} className="mt-1 w-4 text-accent" /><a href={`mailto:${SITE.email}`} className="break-all hover:text-accent">{SITE.email}</a></li>
           </ul>
@@ -121,7 +121,7 @@ export default function Footer() {
       </div>
       {/* Dải pháp lý: tên công ty, địa chỉ, liên hệ, mã số doanh nghiệp, link chính sách, phương thức thanh toán */}
       <div className="border-t border-white/10 bg-black/20">
-        <div className="container-x grid gap-6 py-8 text-xs leading-relaxed text-white/60 lg:grid-cols-[1.4fr_1fr] lg:items-center lg:text-sm">
+        <div className="container-x grid gap-6 py-8 text-xs leading-relaxed text-white/80 lg:grid-cols-[1.4fr_1fr] lg:items-center lg:text-sm">
           <div className="space-y-1">
             <p className="font-card text-sm font-bold text-white lg:text-base">{SITE.legalNameVi}</p>
             <p>{SITE.name}</p>
@@ -146,7 +146,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="border-t border-white/10 py-4 text-center text-xs text-white/45">
+        <div className="border-t border-white/10 py-4 text-center text-xs text-white/75">
           Copyright {new Date().getFullYear()} © {SITE.name}
         </div>
       </div>

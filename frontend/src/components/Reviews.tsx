@@ -59,7 +59,7 @@ export default function Reviews() {
                     <FontAwesomeIcon icon={faQuoteLeft} />
                   </span>
                   {/* Sao đánh giá: các đánh giá này là 5 sao trên Tripadvisor (đổi r.rating nếu có đánh giá khác) */}
-                  <div className="mb-2 flex gap-1 text-[#f5a623]" aria-label={`${r.rating ?? 5}/5`}>
+                  <div className="mb-2 flex gap-1 text-[#f5a623]" role="img" aria-label={`${r.rating ?? 5}/5`}>
                     {Array.from({ length: 5 }, (_, k) => <FontAwesomeIcon key={k} icon={faStar} className={k < (r.rating ?? 5) ? "" : "text-black/15"} />)}
                   </div>
                   <h3 className="font-card text-xl font-bold leading-snug">{zh ? r.titleZh : r.title}</h3>

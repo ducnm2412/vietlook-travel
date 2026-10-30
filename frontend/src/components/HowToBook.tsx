@@ -49,19 +49,21 @@ export default function HowToBook() {
   return (
     <div className="mt-16 md:mt-24">
       <SectionHeading center kicker={<L en="Booking process" zh="预订流程" />} title={<L en="How to book a tour with us" zh="如何向我们预订行程" />} />
-      <ol className="stagger relative grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+      {/* Điện thoại / tablet: danh sách dọc gọn (số – icon – mô tả) nối bằng đường chấm dọc; màn rộng: 5 cột như mẫu */}
+      <ol className="stagger relative mx-auto grid max-w-md gap-5 lg:max-w-none lg:grid-cols-5 lg:gap-x-4">
+        <span className="absolute bottom-6 left-[1.6rem] top-6 border-l-2 border-dotted border-brand/40 lg:hidden" aria-hidden />
         {/* Đường chấm nối các bước (chỉ trên màn rộng, đi qua hàng chấm vàng) */}
         <span className="absolute inset-x-[10%] top-[164px] md:top-[160px] hidden border-t-2 border-dotted border-brand/40 lg:block" aria-hidden />
         {STEPS.map((s, i) => (
-          <li key={s.en} className="group relative flex flex-col items-center text-center">
-            <svg viewBox="0 0 48 48" className="h-16 w-16 text-brand-dark transition duration-300 group-hover:-translate-y-1 md:h-20 md:w-20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <li key={s.en} className="group relative flex items-center gap-4 lg:flex-col lg:gap-0 lg:text-center">
+            <svg viewBox="0 0 48 48" className="h-12 w-12 shrink-0 text-brand-dark transition duration-300 group-hover:-translate-y-1 lg:h-20 lg:w-20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
               {ICONS[i]}
             </svg>
-            <p className="mt-4 min-h-[3rem] max-w-[13rem] font-card text-sm font-semibold leading-snug text-ink md:text-[15px]">
+            <p className="font-card lg:mt-4 lg:min-h-[3rem] lg:max-w-[13rem] text-sm font-semibold leading-snug text-ink md:text-[15px]">
               <L en={s.en} zh={s.zh} />
             </p>
-            <span className="relative z-10 mt-3 h-3 w-3 rounded-full bg-brand ring-4 ring-white/80" aria-hidden />
-            <span className="mt-3 font-card text-5xl font-extrabold tracking-tight text-brand-dark drop-shadow-[0_2px_0_rgba(255,255,255,0.7)] md:text-6xl">{String(i + 1).padStart(2, "0")}</span>
+            <span className="relative z-10 mt-3 hidden h-3 w-3 rounded-full bg-brand ring-4 ring-white/80 lg:block" aria-hidden />
+            <span className="relative z-10 order-first grid h-14 w-14 shrink-0 place-items-center rounded-full bg-[#f3e8d2] font-card text-2xl font-extrabold lg:order-none lg:mt-3 lg:block lg:h-auto lg:w-auto lg:rounded-none lg:bg-transparent lg:text-6xl tracking-tight text-brand-dark lg:drop-shadow-[0_2px_0_rgba(255,255,255,0.7)]">{String(i + 1).padStart(2, "0")}</span>
           </li>
         ))}
       </ol>

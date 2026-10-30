@@ -33,7 +33,7 @@ export default function RatingBadges({ compact = false }: { compact?: boolean })
           <a key={it.href} href={it.href} target="_blank" rel="noopener" className="hero-pill gap-3 bg-black/30 pl-3 pr-4 text-white ring-1 ring-white/25 backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-black/45">
             <span className="flex items-center gap-2 max-sm:[&_.font-card]:hidden [&_span]:text-lg [&_svg]:h-6 [&_svg]:w-6">{it.logo}</span>
             <span className="flex flex-col leading-tight">
-              <span className="flex gap-0.5 [&_span]:h-3 [&_span]:w-3 [&_svg]:text-xs" aria-label="5/5">{Array.from({ length: 5 }, (_, i) => <span key={i} className="grid place-items-center">{it.mark}</span>)}</span>
+              <span className="flex gap-0.5 [&_span]:h-3 [&_span]:w-3 [&_svg]:text-xs" role="img" aria-label="5/5">{Array.from({ length: 5 }, (_, i) => <span key={i} className="grid place-items-center">{it.mark}</span>)}</span>
               <span className="mt-1 text-[11px] font-semibold text-white/80">{it.count ? <L en={`${it.count} reviews`} zh={`${it.count} 条评价`} /> : <L en="Read reviews" zh="查看评价" />}</span>
             </span>
           </a>
@@ -46,7 +46,7 @@ export default function RatingBadges({ compact = false }: { compact?: boolean })
       {items.map((it) => (
         <a key={it.href} href={it.href} target="_blank" rel="noopener" className="group flex flex-col items-center gap-2 rounded-3xl bg-white/10 px-6 py-6 text-white ring-1 ring-white/15 backdrop-blur transition hover:-translate-y-1 hover:bg-white/15">
           <span className="flex items-center gap-3">{it.logo}</span>
-          <span className="flex gap-1.5" aria-label="5/5">{Array.from({ length: 5 }, (_, i) => <span key={i}>{it.mark}</span>)}</span>
+          <span className="flex gap-1.5" role="img" aria-label="5/5">{Array.from({ length: 5 }, (_, i) => <span key={i}>{it.mark}</span>)}</span>
           <span className="text-sm font-semibold text-white/85 group-hover:text-accent">
             {it.count ? <L en={`Based on ${it.count} reviews`} zh={`基于 ${it.count} 条评价`} /> : <L en="Read our reviews" zh="查看我们的评价" />} →
           </span>

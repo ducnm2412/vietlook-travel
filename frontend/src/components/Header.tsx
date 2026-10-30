@@ -259,7 +259,17 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
 
       <div className={`container-x relative flex h-[76px] items-center justify-between gap-4 ${overlay ? "border-b border-white/30" : ""}`}>
         {/* Logo huy hiệu tròn, to và nhô xuống dưới thanh header cho nổi bật */}
-        <Link href="/" className="relative z-10 shrink-0 self-start pt-2 transition hover:scale-105">
+        {/* Đang ở trang chủ: bấm logo cuộn mượt về đầu trang thay vì tải lại */}
+        <Link
+          href="/"
+          onClick={(e) => {
+            if (pathname !== "/") return;
+            e.preventDefault();
+            setOpen(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="relative z-10 shrink-0 self-start pt-2 transition hover:scale-105"
+        >
           <LogoBadge alt={SITE.shortName} className="h-[84px] w-[84px] md:h-[104px] md:w-[104px]" />
         </Link>
 
@@ -383,7 +393,8 @@ export default function Header({ images = {} }: { images?: MenuImages }) {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link href="/tailor-made" className="btn btn-accent hidden whitespace-nowrap !py-2.5 md:max-lg:inline-flex">{t("nav.tailor")}</Link>
+          {/* Nút báo giá hiện cả trên điện thoại (thu nhỏ) để lấp khoảng trống giữa logo và nút menu */}
+          <Link href="/tailor-made" className="btn btn-accent whitespace-nowrap !px-4 !py-2 text-xs sm:!px-6 sm:!py-2.5 sm:text-sm lg:hidden">{t("nav.tailor")}</Link>
           <button className="rounded-md p-2 text-2xl lg:hidden" onClick={() => setOpen(!open)} aria-label="Menu"><FontAwesomeIcon icon={open ? faXmark : faBars} className="w-6" /></button>
         </div>
       </div>

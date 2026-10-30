@@ -19,7 +19,7 @@ const CYCLE_CSS = `
 /* Vòng 16 giây: khung 1 hiện ~5 giây, trống ~2,5 giây, khung 2 hiện ~5 giây, trống ~2,5 giây.
    Từng phần tử vào lần lượt (cách nhau 0,15 giây): chữ chào trượt từ trái, "Welcome to" / "Vietnam" và cặp nút trượt lên rõ dần (không làm nhoè để không bị mờ giữa chừng),
    cặp nút bật lên từ dưới; khi rời khung thì cả khung mờ và trượt lên */
-.hero-cycle .hc-in { will-change: transform, opacity; animation: 16s cubic-bezier(0.22, 1, 0.36, 1) infinite both; }
+.hero-cycle .hc-in { will-change: transform, opacity; backface-visibility: hidden; animation: 16s cubic-bezier(0.22, 1, 0.36, 1) infinite both; }
 .hero-cycle-a .hc-in { animation-name: hc-a; }
 .hero-cycle-b .hc-in { animation-name: hc-b; }
 .hero-cycle .hc-in.hc-left { animation-name: var(--hc-left); }
@@ -78,7 +78,7 @@ export default function HeroVideo({ destinations }: { destinations: Destination[
               {(() => {
                 const Tag = i ? "p" : "h1";
                 return (
-                  <Tag className="max-w-4xl font-script text-5xl leading-[1.1] text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.5)] sm:text-7xl md:text-[8.5rem]">
+                  <Tag className="max-w-4xl font-script text-5xl leading-[1.1] text-white [text-shadow:0_4px_24px_rgba(0,0,0,0.5)] sm:text-7xl md:text-[8.5rem]">
                     <span className="hc-in hc-d1 block"><T k="hero.big1" /></span>
                     <span className="hc-in hc-d2 block text-accent"><T k="hero.big2" /></span>
                   </Tag>

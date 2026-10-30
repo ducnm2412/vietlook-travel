@@ -27,7 +27,7 @@ export default function TourGrid({ tours, action }: { tours: Tour[]; action?: Re
       </div>
       <div className="mt-8 flex items-center justify-center gap-2 sm:mt-10">
         {!open && hidden > 0 && (
-          <button onClick={() => setOpen(true)} className="btn btn-outline whitespace-nowrap !px-4 !py-2.5 text-sm text-brand sm:hidden">
+          <button onClick={() => setOpen(true)} className="btn btn-outline whitespace-nowrap bg-white !px-4 !py-2.5 text-sm text-brand shadow-md sm:hidden">
             {lang === "zh" ? `查看更多 (${hidden})` : `Show more (${hidden})`} <FontAwesomeIcon icon={faChevronDown} />
           </button>
         )}
